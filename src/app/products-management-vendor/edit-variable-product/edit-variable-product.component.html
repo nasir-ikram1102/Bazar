@@ -1,0 +1,207 @@
+<div class="content-heading">
+  <div class="container">
+    <div class="heading-left">
+      <h2 class="page-title">Update Product</h2>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<div class="clear"></div>
+<div class="container">
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <a [routerLink]='["/products-vendor"]' class="btn btn-default pull-right"><i class="fa fa-angle-double-left"></i> Back To List  </a>
+      </div>
+    </div>
+    <!-- <div *ngIf="product.productAttributeVariants == null" class="sm-loader"></div>-->
+    <div class="row">
+      <div class="panel">
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="control-label col-sm-3" for="name">Product Name</label>
+            <div class="col-sm-6">
+              {{product.name}}
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <label class="control-label col-sm-3" for="url">Url</label>
+            <div class="col-sm-6">
+              {{product.url}}
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <label class="control-label col-sm-3">Selected Category</label>
+            <div class="col-sm-6">
+              {{SelectedCategory}}
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="form-group">
+            <div class="customscroll">
+              <div class="table-responsive">
+                <table class='table table-striped table-hover' *ngIf="product.productVariations != null && product.productVariations.length > 0">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Product ID</th>
+                      <th>Regular Price</th>
+                      <th>SalePrice</th>
+                      <th>Commission</th>
+                      <th>Stock Level</th>
+                      <th>SKU</th>
+                      <ng-container *ngFor="let variants of productAttributeVariants">
+                        <th>{{variants.name}}</th>
+                      </ng-container>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let prod of product.productVariations;let i=index;trackBy: i">
+                      <td>
+                        {{prod.name}}
+                        <div class="">
+                          <!--<span class="label label-success" *ngIf="category.isActive">Active</span>-->
+                          <span class="label label-danger" *ngIf="!prod.isActive">InActive</span>
+                        </div>
+                        <div class="">
+                          <span class="label label-danger" *ngIf="prod.masterProduct===0">Master</span>
+                        </div>
+                      </td>
+                      <td>{{prod.sku}}</td>
+                      <td>
+                        {{prod.regularPrice}}
+                      </td>
+                      <td>
+                        {{prod.salePrice}}
+                      </td>
+                      <!--<td>
+                        {{prod.commissionPrices}}
+                      </td>-->
+                      <td>
+
+                        {{prod.commissionAmount | number : '1.2-2'}}
+                      </td>
+
+                      <td>
+                        {{prod.stockQuantity}}
+                      </td>
+                      <td>
+                        {{prod.vendorSKU}}
+                      </td>
+                      <ng-container *ngFor="let variants of prod.variants">
+                        <td>{{variants.slug}}</td>
+                      </ng-container>
+                      <td>
+                        <ng-container *ngIf="prod.productID===0 ? true:false">
+                          <a *ngIf="prod.masterProduct != 0" class="delete" title="Delete" [routerLink]="" (click)="RemoveVariant(i)"><i class="fa fa-trash"></i></a>
+                        </ng-container>
+                        <ng-container *ngIf="prod.productID!=0 ? true:false">
+                          <a class="delete" title="Status" [routerLink]="" (click)="deleteProduct(prod.id)"><i class="fa fa-refresh"></i></a>
+                          <a class="" [routerLink]='["/edit-single-veriable-product",masterproduct,prod.id]' title="Edit"><i class="fa fa-pencil"></i></a>
+                        </ng-container>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <!--popup model to add new variations-->
+          <div class="form-group">
+            <div class="col-sm-12">
+              <ng-template #template>
+                <div class="category-suggestion-modal">
+                  <div class="modal-header">
+                    <h4 class="modal-title pull-left">Add new Variations</h4>
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div id="divProductVariationsSection" class="col-sm-12">
+                      <form (ngSubmit)="af.form.valid && AddVariant()" #af="ngForm" novalidate>
+                        <div>
+                          <div class="form-group row">
+                            <div *ngFor="let attributeVariant of productAttributeVariants; index as i">
+                              <label class="control-label col-sm-3">{{attributeVariant.name}}</label>
+                              <div class="col-sm-9">
+                                <ng-container *ngFor="let attr of selectedAttributeVariants; index as i">
+                                  <label class="radiomargin" *ngIf="attr.attributeID === attributeVariant.attributeID">
+                                    <input class="option-input radio" type="radio"
+                                           [name]="attributeVariant.name"
+                                           [(ngModel)]="attributeVariant.slug"
+                                           [checked]="attr.slug == attributeVariant.slug"
+                                           (click)="setSlugValue(attr.attributeID,attr.slug)"
+                                           value={{attr.slug}} required /> {{attr.slug}}
+
+                                    <!--<div *ngIf="af.submitted && {{attributeVariant.name}}.invalid" class="invalid-feedback">
+                                      <div *ngIf="{{attributeVariant.name}}.errors.required"><span class="text-danger">Attribute value is required</span></div>
+                                    </div>-->
+                                    <!--[checked]="attr.slug == attributeVariant.slug"-->
+                                  </label>
+                                </ng-container>
+                                nt
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="control-label col-sm-3" for="url">Regular Price</label>
+                            <div class="col-sm-9">
+                              <textarea height="150px" (keypress)="keyPress($event)" minHeight="50px" class="form-control" [placeholder]="'Enter Product Reqular Price...'" name="newVariantRegularPrice" [spellcheck]="true" [(ngModel)]="newVariantRegularPrice" required></textarea>
+                              <div *ngIf="(af.submitted || newVariantRegularPrice?.touched) && newVariantRegularPrice?.invalid" class="invalid-feedback">
+                                <div *ngIf="newVariantRegularPrice.errors.required"><span class="text-danger">Regular price is required</span></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="control-label col-sm-3" for="url">Sale Price</label>
+                            <div class="col-sm-9">
+                              <textarea height="150px" (keypress)="keyPress($event)" minHeight="50px" class="form-control" [placeholder]="'Enter Product Sale Price...'" name="newVariantSalePrice" [spellcheck]="true" [(ngModel)]="newVariantSalePrice" required></textarea>
+                              <div *ngIf="(af.submitted || newVariantSalePrice.touched) && newVariantSalePrice.invalid" class="invalid-feedback">
+                                <div *ngIf="newVariantSalePrice.errors.required"><span class="text-danger">Sale price is required</span></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="control-label col-sm-3" for="url">Stock Level</label>
+                            <div class="col-sm-9">
+                              <textarea height="150px" (keypress)="keyPress($event)" minHeight="50px" class="form-control" [placeholder]="'Enter Product Stock Level...'" name="newVariantStock" [spellcheck]="true" [(ngModel)]="newVariantStock" required></textarea>
+                              <div *ngIf="(af.submitted || newVariantStock.touched) && newVariantStock.invalid" class="invalid-feedback">
+                                <div *ngIf="newVariantStock.errors.required"><span class="text-danger">Stock level is required</span></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="control-label col-sm-3" for="url">SKU</label>
+                            <div class="col-sm-9">
+                              <textarea height="150px" minHeight="50px" class="form-control" [placeholder]="'Enter Product SKU...'" name="newVariantSku" [spellcheck]="true" [(ngModel)]="newVariantSku" required></textarea>
+                              <div *ngIf="(af.submitted || newVariantSku.touched) && newVariantSku.invalid" class="invalid-feedback">
+                                <div *ngIf="newVariantSku.errors.required"><span class="text-danger">SKU is required</span></div>
+                              </div>
+                            </div>
+                          </div>
+                          <hr />
+                          <div class="form-group row">
+                            <button [disabled]="!af.form.valid" type="submit" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>Add Variant</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <!--popup model add new variations-->
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+
+

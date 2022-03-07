@@ -1,0 +1,88 @@
+/*News letter .css*/
+.newsletterdiv {
+  color: #fff;
+  background: #b61f24;
+  padding: 15px 0 0 0;
+  font-size: 16px;
+  line-height: 30px
+}
+
+.newsletterdiv:after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 15px solid #b61f24;
+  position: relative;
+  margin: auto;
+  display: block;
+  bottom: -15px
+}
+
+.newsletterdiv span {
+  padding-top: 5px;
+  display: block
+}
+
+.newsletterdiv input {
+  width: 80%;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 2px
+}
+
+.newsletterdiv .btn {
+  width: 20%;
+  padding: 5px 10px;
+  height: 40px;
+  background: #faa51a;
+  border: solid 1px #faa51a;
+  color: #000;
+  text-shadow: none;
+  margin-top: -3px;
+  margin-left: -1px;
+  font-weight: 700;
+  -webkit-border-top-right-radius: 2px;
+  -webkit-border-bottom-right-radius: 2px;
+  -moz-border-radius-topright: 2px;
+  -moz-border-radius-bottomright: 2px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px
+}
+
+.newsletterdiv .btn:hover {
+  color: #fff
+}
+
+.payment-imgs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.payment-imgs li {
+  display: inline-block;
+  margin-right: 5px;
+  margin-bottom: 9px;
+}
+
+.text-footer {
+  margin: 50px 0 0 0 !important;
+}
+
+.whatsapp-color {
+  color: #4FCE5D;
+}
+
+.reddit-color {
+  color: #FF63AC;
+}
+
+.tumblr-color {
+  color: #34526F;
+}
+
+.flickr-color {
+  color: #FF0084;
+}

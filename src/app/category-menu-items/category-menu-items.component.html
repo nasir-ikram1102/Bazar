@@ -1,0 +1,29 @@
+<div class="clearfix menu-web menu-desktop relative">
+  <ul class="menu">
+    <div class="arrow-border"></div>
+    <li *ngFor="let first of displayCategoryList">
+      <!--<a [routerLink]='["/products/category/1", first.categoryID]'>
+        <i class={{first.iconClass}}></i>
+        <p>{{first.categoryName }}</p>
+      </a>-->
+      <!--<a [routerLink]="['/',first.url]">-->
+      <a href="/{{first.url}}">
+        <i class={{first.iconClass}}></i>
+        <p>{{first.categoryName }}</p>
+      </a>
+      <div class="megadrop">
+        <section class="menu-widget" *ngFor="let second of first.subCategory">
+          <h3><a href="/{{second.url}}">{{ second.categoryName }}</a></h3>
+          <ul>
+            <li *ngFor="let third of displaySubCategoryList">
+            <a *ngIf="third.parentCategoryID===second.categoryID" href="/{{third.url}}">{{ third.categoryName }}</a>
+            </li>
+          </ul>
+          <hr />
+        </section>
+      </div>
+    </li>
+  </ul>
+</div>
+
+

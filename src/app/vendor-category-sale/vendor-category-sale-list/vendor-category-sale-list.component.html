@@ -1,0 +1,109 @@
+<div class="panel">
+  <div class="panel-heading">
+    <h1 class="panel-title">Category Level Sale</h1>
+  </div>
+
+  <div class="panel-body">
+    <div class="loadermain" *ngIf="!filteredItems">
+      <div class="loader">Loading...</div>
+    </div>
+    <div class="table-responsive">
+      <!--<div class="form-group">
+        <div class="row">
+          <div class="col-sm-4">
+            <input placeholder="Search..." class="form-control" (input)="onSearch($event.target.value)">
+          </div>
+          <div class="col-sm-4">
+          </div>
+          <div class="col-sm-2">
+            <select class="form-control pull-right" name="rowsOnPage" [(ngModel)]="rowsOnPage">
+              <ng-container *ngFor="let rowsPerPage of arrRowsPerPage">
+                <option [value]="rowsPerPage">{{rowsPerPage}}</option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+      </div>-->
+      <!--<table class="table table-striped" [mfData]="filteredItems" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage">
+    <thead>
+      <tr>
+        <th><mfDefaultSorter by="title">Title</mfDefaultSorter></th>
+        <th><mfDefaultSorter by="description">Description</mfDefaultSorter></th>
+        <th><mfDefaultSorter by="startDate">StartDate</mfDefaultSorter></th>
+        <th><mfDefaultSorter by="endDate">EndDate</mfDefaultSorter></th>
+        <th><mfDefaultSorter by="dicsountPercent">CompanyDicsount%</mfDefaultSorter></th>
+        <th><mfDefaultSorter by="vendorDicsountPercent">VendorDicsount</mfDefaultSorter></th>
+        <th><mfDefaultSorter by="isActive">Active</mfDefaultSorter></th>
+        <th colspan="2">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let vendor of mf.data">
+        <td>{{vendor.title}}</td>
+        <td>{{vendor.description}}</td>
+        <td>{{vendor.startDate|date}}</td>
+        <td>{{vendor.endDate|date}}</td>
+        <td>{{vendor.dicsountPercent}}</td>
+        <td>{{vendor.vendorDicsountPercent}}</td>
+        <td>
+          <label class="switch">
+            <input (click)="onChange(vendor.id)" [checked]="vendor.isActive" type="checkbox">
+            <span class="slider round"></span>
+          </label>
+        </td>
+        <td>
+          <a class="btn btn-xs btn-primary" title="Edit" [routerLink]='["/edit-vendor-category-sales",vendor.id]'><i class="fa fa-edit"></i></a>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="16">
+          <mfBootstrapPaginator></mfBootstrapPaginator>
+        </td>
+      </tr>
+    </tfoot>
+  </table>-->
+      <table class="table table-striped" [mfData]="filteredItems" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>StartDate</th>
+            <th>EndDate</th>
+            <th>CompanyDicsount%</th>
+            <th>VendorDicsount</th>
+            <th>Active</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vendor of vendorCategoryLevelSaleList">
+            <td>{{vendor.title}}</td>
+            <td>{{vendor.description}}</td>
+            <td>{{vendor.startDate|date}}</td>
+            <td>{{vendor.endDate|date}}</td>
+            <td>{{vendor.dicsountPercent}}</td>
+            <td>{{vendor.vendorDicsountPercent}}</td>
+            <td>
+              <label class="switch">
+                <input (click)="onChange(vendor.id)" [checked]="vendor.isActive" type="checkbox">
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td>
+              <a class="btn btn-xs btn-primary" title="Edit" [routerLink]='["/edit-vendor-category-sale",vendor.id]'><i class="fa fa-edit"></i></a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="16">
+              <mfBootstrapPaginator></mfBootstrapPaginator>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

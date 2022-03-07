@@ -1,0 +1,241 @@
+<div class="img-zoom-container">
+</div>
+<div class="relative">
+  <div class="container">
+    <div class="breadcrumb-web">
+      <ul class="clear-margin">
+        <li class="animate-default title-hover-red">
+          <a [routerLink]='["/"]'>Home</a>
+        </li>
+        <li *ngFor="let breadcrumb of breadcrumbs; let i = index" class="animate-default title-hover-red">
+          <a [routerLink]="['/', breadcrumb.url]">{{breadcrumb.categoryName}}</a>
+        </li>
+        <li class="animate-default current">
+          <a>{{product.name}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="container-web relative">
+  <div class="container">
+    <div class="row ">
+      <div class="col-md-12 relative clear-padding">
+        <div class="col-sm-12 col-xs-12 col-md-1 relative overfollow-hidden clear-padding button-show-sidebar clearfix">
+          <p onclick="showSideBar()"><span class="ti-filter"></span> Sidebar</p>
+        </div>
+        <div class="top-product-detail">
+          <div class="col-md-4 col-sm-12 col-xs-12 relative clear-padding">
+            <div class="top-product-detail">
+              <div id="owl-big-slide" class="relative slick-slider pull-right">
+                <div class="item center-vertical-image">
+                  <div class="img-zoom-container">
+                    <div class="picturediv">
+                      <img id="myimage" class="zoom-in" src="{{product.productDefaultImage}}" onError="this.onerror=null;this.src='/no-image.png';">
+                    </div>
+                    <div class="megadrop">
+                      <div id="myresult" class="img-zoom-result">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <angular-image-slider *ngIf="imagesUrl.length>1" (click)="selectImage(imagesUrl[1],$event)" id="" [images]="imagesUrl"></angular-image-slider>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8 col-sm-12 col-xs-12 detail">
+            <div class="row">
+              <div class="col-md-7 col-sm-12 col-xs-12">
+                <div class="name-ranking-product relative bottom-padding-15-default bottom-margin-15-default">
+                  <h1 class="name-product">{{product.name}}</h1>
+                  <div class="ranking-color">
+                    <div *ngIf="ratingCount.averageRating >'0.1' && ratingCount.averageRating < '1'"><i class="fa fa-star-half"></i></div>
+                    <div *ngIf="ratingCount.averageRating =='1.0'"><i class="fa fa-star"></i></div>
+                    <div *ngIf="ratingCount.averageRating >'1.1' && ratingCount.averageRating < '2'"><i class="fa fa-star"></i><i class="fa fa-star-half"></i></div>
+                    <div *ngIf="ratingCount.averageRating =='2.0'"><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                    <div *ngIf="ratingCount.averageRating >'2' && ratingCount.averageRating < '3'"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></div>
+                    <div *ngIf="ratingCount.averageRating =='3.0'"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                    <div *ngIf="ratingCount.averageRating >'3.1' && ratingCount.averageRating < '4'"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></div>
+                    <div *ngIf="ratingCount.averageRating =='4.0'"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                    <div *ngIf="ratingCount.averageRating >'4.1' && ratingCount.averageRating < '5'"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half"></i></div>
+                    <div *ngIf="ratingCount.averageRating =='5.0'"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+                  </div>
+                  <div class="clear"></div>
+                  <p class="clearfix price-product" *ngIf="product.appliedDiscoutType>0">
+                    {{(product.salePrice | currencyConversion:DummyCounter)}}
+                  </p>
+                  <p class="clearfix price-product" *ngIf="product.appliedDiscoutType<=0">
+                    {{(product.regularPrice | currencyConversion:DummyCounter)}}
+                  </p>
+                  <p class="clearfix price-product">
+                    <span class="price-old" *ngIf="product.appliedDiscoutType>0"> {{(product.regularPrice | currencyConversion:DummyCounter)}}</span>
+                  </p>
+                  <div class="clear"></div>
+                  <p *ngIf="product.inStock" class="float-left clear-margin">Available: <span class="text-green">In stock</span></p>
+                  <p *ngIf="!product.inStock" class="float-left clear-margin">Available: <span class="text-green">Out of stock</span></p>
+                  <div class="clear"></div>
+                  <p *ngIf="product.brandLogoImage!='' && product.brandName!=''" class="clearfix price-product"><span class="graytext">Brand:</span> <span *ngIf="brandLogoNotExist" class="prod-det-brand-logo" ><img  [src]="product.brandLogoImage" (error)="updateUrl($event)"  /></span><span *ngIf="!brandLogoNotExist">{{product.brandName}}</span></p>
+                  <p class="skulabel" *ngIf="product.sku">{{product.sku}}<span *ngIf="product.vendorSKU">: {{product.vendorSKU}}</span></p>
+                </div>
+                <div class="relative intro-product-detail">
+                  <div id="shortdesId" *ngIf="product.shortDetail" class="clear-margin" [title]="decodeHtml(product.shortDetail)" [innerHTML]="product.shortDetail| slice:0:200"></div>
+                </div>
+                <div class="singleproduct bottom-margin-15-default">
+                  <ul class="listicons">
+                    <li><a href="javascript:void(0)" (click)="AddToCart(product)"><i class="fa fa-shopping-cart"></i></a></li>
+                    <li><a href="javascript:void(0)" (click)="openModal(loginModel, ratingModel,product.productID)" [class.special]="product.isFavourite"><i class="fa fa-heart"></i></a></li>
+                  </ul>
+                </div>
+                <div class="relative option-product-2 bottom-margin-15-default ng-star-inserted">
+                  <div class="relative option-product-detail bottom-padding-15-default">
+                    <div *ngFor="let slug of result; let slugCounter=index" class="relative option-product-2">
+                      <div class="info-box pull-left">
+                        <span class="sizelabel">{{slug.type}}: </span>
+                        <div class="product-colors">
+                          <span [class.checked]="isAttributeActive(slugCounter,counterAttribute)" *ngFor="let attribute of slug.data let counterAttribute = index" (click)="GetVariantProduct(attribute.ids, slugCounter,counterAttribute,false)" class="color-btn">
+                            <span id="{{slug}}" class="product-size" data-text="">{{attribute.slug}}</span>
+                          </span>
+                        </div>
+                        <div class="clear"></div>
+                      </div>
+                      <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="option-product-son pull-left quantitybox">
+                    <p class="float-left text-right">Qty:</p>
+                    <div class="input-number-group">
+                      <div class="input-group-button">
+                        <span class="" (click)="increment(false)"><i class="fa fa-angle-left"></i></span>
+                      </div>
+                      <input (keypress)="keyPress($event)" class="input-number" id="quanty" type="text" [(ngModel)]="quantity" #quantityName="ngModel" min="1" max="10" name="num">
+                      <div class="input-group-button" (click)="increment(true)">
+                        <span class=""><i class="fa fa-angle-right"></i></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="relative button-product-list full-width clearfix">
+                  <ul *ngIf="product.inStock" class="clear-margin clearfix bottom-margin-default">
+                    <li class="button-hover-red"><a href="javascript:void(0)" (click)="Buy(product)" class="animate-default">Buy Now</a></li>
+                    <li class="button-hover-red"><a href="javascript:void(0)" (click)="AddToCart(product)" class="animate-default full">Add to Cart</a></li>
+                  </ul>
+                  <div class="btn-print hidden">
+                    <a href="javascript:;" class="right-margin-default" onclick="printWebsite()"><i class="fa fa-print" aria-hidden="true"></i> Print</a>
+                    <a href="mailto:"><i class="fa fa-envelope" aria-hidden="true"></i> Send to a Friend</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-5 col-sm-12 col-xs-12">
+                <div class="sider-bar-category bg-gray-single">
+                  <p *ngIf="product.standardDelivery" class="title-siderbar bold">Delivery Option</p>
+                  <ul *ngIf="product.standardDelivery" class="getintouch">
+                    <li *ngIf="shippingAddress">
+                      <i class="fa fa-map-marker"></i><label>{{shippingAddress.mailingAddress}}</label>
+                    </li>
+                    <li>
+                      <i class="fa fa-truck"></i><label>Standard Delivery<br><small>{{product.standardDelivery}}</small></label>
+                    </li>
+                  </ul>
+                  <ul *ngIf="product.isOnCash" class="getintouch">
+                    <li>
+                      <i class="fa fa-map-marker"></i><label>Cash on Delivery available</label>
+                    </li>
+                  </ul>
+                  <p *ngIf="product.warranty || product.returnPolicyName" class="title-siderbar bold">Return Policy & warranty</p>
+                  <ul class="getintouch">
+                    <li *ngIf="product.returnPolicyName">
+                      <i class="fa fa-refresh"></i><label>{{product.returnPolicyName}}<br><small>{{product.returnPolicyDescription}}</small></label><!--Change of mind is not applicable-->
+                    </li>
+                    <li *ngIf="product.warranty">
+                      <i class="fa fa-shield"></i><label>{{product.warranty}}<br><small>{{product.warrantyDescription}}</small></label>
+                    </li>
+                  </ul>
+                  <p *ngIf="product.shopeName!=null" class="title-siderbar bold">Sold By: <span class="text-red">{{product.shopeName.toUpperCase()}}</span></p><!--{{product.venderName}}</p>-->
+                  <p class="text-center"><a [routerLink]="['/store/', product.shopeName]" class="text-red">Go to Store</a></p>
+                </div>
+              </div>
+            </div>   
+          </div>
+        </div>
+        <div class="clear"></div>
+        <div class="info-product-detail bottom-margin-default relative">
+          <div class="row">
+            <div class="col-md-12 relative overfollow-hidden">
+              <ul class="title-tabs clearfix relative">
+                <li onclick="changeTabsProductDetail(1)" class="title-tabs-product-detail title-tabs-1 active-title-tabs bold uppercase">Description</li>
+                <li onclick="changeTabsProductDetail(2)" class="title-tabs-product-detail title-tabs-2 bold uppercase">Information</li>
+                <li *ngIf="product.reviewsEnable" onclick="changeTabsProductDetail(3)" class="title-tabs-product-detail title-tabs-3 bold uppercase">Reviews</li>
+              </ul>
+              <div class="content-tabs-product-detail relative content-tab-1 active-tabs-product-detail">
+                <div [innerHTML]="product.detail"></div>
+              </div>
+              <div class="content-tabs-product-detail relative content-tab-2">
+                <h3 *ngIf="product.fields">
+                  Specification
+                </h3>
+                <table width="100%" cellpadding="0" class="specification-table" cellspacing="0" border="1" *ngIf="product.fields.length>0">
+                  <tr *ngFor="let field of product.fields">
+                    <td width="20%" bgcolor="#f0f0f0"><b>{{field.fieldName}}</b></td>
+                    <td>{{field.value}}</td>
+                  </tr>
+                </table>
+                <br />
+                <div [innerHTML]="product.specification"></div>
+              </div>
+              <div *ngIf="product.reviewsEnable" class="content-tabs-product-detail relative content-tab-3">
+                <!--Rating Section Start-->
+                <app-product-star-rating></app-product-star-rating>
+                <!--Rating Section End-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-associative-products></app-associative-products>
+        <app-just-for-you></app-just-for-you>
+        
+      </div>
+    </div>
+    <ng-template #loginModel>
+      <div class="signInModal">
+        <div class="modal-header">
+          <h5 class="modal-title pull-left" id="exampleModalLabel">Login here</h5>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="signin-form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+            <div class="form-group">
+              <label>
+                <input type="email" class="form-control" name="email" placeholder="Email" autocomplete="off" [(ngModel)]="emaill"
+                       #email="ngModel"
+                       [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"
+                       pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"
+                       required>
+              </label>
+              <div *ngIf="(f.submitted || email?.touched) && email?.invalid" class="invalid-feedback">
+                <div *ngIf="email.errors?.required"><span class="text-danger">Email is required</span></div>
+                <div *ngIf="email.errors?.pattern"><span class="text-danger">Email is invalid</span></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="password" class="form-control" name="password" placeholder="Password"
+                       [(ngModel)]="passwordd" #password="ngModel"
+                       [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required>
+              </label>
+              <div *ngIf="(f.submitted || password?.touched) && password?.invalid" class="invalid-feedback">
+                <div *ngIf="password.errors.required"><span class="text-danger">Password is required</span></div>
+              </div>
+            </div>
+            <div class="form-group no-margin">
+              <button type="submit" class="btn btn-primary pull-right" [disabled]="!f.form.valid"> Login</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

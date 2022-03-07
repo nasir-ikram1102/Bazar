@@ -1,0 +1,224 @@
+<main id="main">
+  <app-menu-vendor></app-menu-vendor>
+  <div class="vendor-promotions-holder mb-30 bg-grey pt-40">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="vendor-page-widget whitebody mb-30">
+            <ul class="nav nav-tabs text-center" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#all-promotions" aria-controls="all-promotions" role="tab" data-toggle="tab">All Promotions</a>
+              </li>
+              <li role="presentation">
+                <a href="#my-promotions" aria-controls="my-promotions" role="tab" data-toggle="tab">My Promotions</a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active" id="all-promotions">
+                <div class="table-holder">
+                <div class="table-responsive">
+                  <table class="table-responsive all-promotions promotions-table">
+                    <thead>
+                      <tr>
+                        <th class="image-col"><i class="fa fa-image"></i></th>
+                        <th class="name-col">Promotion Name</th>
+                        <th class="sta-date-col">Start Date</th>
+                        <th class="end-date-col">End Date</th>
+                        <th class="las-date-col">Last Date to Register</th>
+                        <th class="no-prod-col">Sale Type</th>
+                        <th class="no-sell-col">Discount</th>
+                        <th class="action-col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of prmotionsList; let i = index">
+                        <td class="image-col">
+                          <span class="image-holder">
+                            <img src="{{item.saleLogo}}" onError="this.onerror=null;this.src='/no-image.png';" alt="Promotion Image">
+                          </span>
+                        </td>
+                        <td class="name-col">{{item.title}}</td>
+
+                        <td class="sta-date-col">{{item.startDate| date}}</td>
+                        <td class="end-date-col">{{item.endDate| date}}</td>
+
+
+                        <td class="las-date-col">{{item.applyDate|date}}</td>
+                        <td>
+                          <ng-template [ngIf]="item.saleTypeID ===1">Company Level</ng-template>
+                          <ng-template [ngIf]="item.saleTypeID ===2">Category Level</ng-template>
+                          <ng-template [ngIf]="item.saleTypeID ===3">Payment Level</ng-template>
+                        </td>
+
+                        <td class="no-sell-col">{{item.dicsountPercent}}%</td>
+                        <td class="action-col">
+                          <a class="action-text action-joined" href="javascript:void(0)" (click)="JoinSale(item.saleID,item.saleTypeID)">Join</a>
+                          <a class="action-text" (click)="openModal(template,item.id)">view</a>
+                        </td>
+                      </tr>
+                      <tr *ngIf="prmotionsList.length <=0">
+                        <td colspan="8" style="text-align:center">No Data Found</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="my-promotions">
+                <div class="table-holder">
+                  <div class="table-responsive">
+                    <table class="table-responsive promotions-table">
+                      <thead>
+                        <tr>
+                          <th class="image-col"><i class="fa fa-image"></i></th>
+                          <th class="name-col">Promotion Name</th>
+                          <th class="sta-date-col">Start Date</th>
+                          <th class="end-date-col">End Date</th>
+                          <th class="las-date-col">Last Date to Register</th>
+                          <th class="no-prod-col">Sale Type</th>
+                          <th class="no-sell-col">Discount</th>
+                          <th class="action-col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let myitem of myprmotionsList; let i = index">
+                          <td class="image-col">
+                            <span class="image-holder">
+                              <img src="{{myitem.saleLogo}}" onError="this.onerror=null;this.src='/no-image.png';" alt="Promotion Image">
+                            </span>
+                          </td>
+                          <td class="name-col">{{myitem.title}}</td>
+
+                          <td class="sta-date-col">{{myitem.startDate| date}}</td>
+                          <td class="end-date-col">{{myitem.endDate| date}}</td>
+
+
+                          <td class="las-date-col">{{myitem.applyDate|date}}</td>
+                          <td>
+                            <ng-template [ngIf]="myitem.saleTypeID ===1">Company Level</ng-template>
+                            <ng-template [ngIf]="myitem.saleTypeID ===2">Category Level</ng-template>
+                            <ng-template [ngIf]="myitem.saleTypeID ===3">Payment Level</ng-template>
+                          </td>
+
+                          <td class="no-sell-col">{{myitem.dicsountPercent}}%</td>
+                          <td class="action-col">
+                            <a class="action-text action-joined" href="javascript:void(0)" (click)="JoinSale(myitem.saleID,myitem.saleTypeID)">Add Promotions</a>
+                            <a class="action-text" (click)="openModal(template,myitem.id)">view</a>
+                          </td>
+                        </tr>
+                        <tr *ngIf="myprmotionsList.length<=0">
+                          <td colspan="8" style="text-align:center">No Data Found</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade viewPromotionModal" id="viewPromotionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <ng-template #template>
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{sales.title}}</h5>
+            <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
+              <span aria-hidden="true"><i class="fa fa-times"></i></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="date-row">
+              <div class="row">
+                <div class="col-md-5">
+                  <ul class="start-end-date dates-block list-unstyled">
+                    <li>
+                      <span class="type">Starting Date:</span>
+                      <strong>{{sales.startDate| date}}</strong>
+                    </li>
+                    <li>
+                      <span class="type">Ending Date:</span>
+                      <strong>{{sales.endDate| date}}</strong>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="col-md-7">
+                  <div class="reg-end-date dates-block">
+                    <span class="type">Registration End:</span>
+                    <strong>{{sales.applyDate|date}}</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-row">
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="promotion-image-holder">
+                    <img src="{{sales.saleLogo}}" onError="this.onerror=null;this.src='/no-image.png';" alt="Azadi Promotion Image">
+                  </div>
+                </div>
+                <div class="col-md-7">
+                  <div class="promotion-text">
+                    <strong class="heading">{{sales.title}}</strong>
+                    <p title="{{sales.description}}">{{sales.description| slice:0:600}}</p>
+                  </div>
+                  <div class="stat-info-block" *ngIf="sales.saleTypeID===3">
+                    <div class="row">
+                      <div class="col-sm-6 col-xs-12">
+                        <div class="icon-holder">
+                          <img src="/Images/SaleImages/{{sales.saleID}}-img.jpg" onError="this.onerror=null;this.src='/no-image.png';">
+                        </div>
+                        <div class="count-holder" *ngIf="sales.saleTypeID===3 || sales.saleTypeID===1">
+                          Dicsount% &nbsp;&nbsp;<label class="label labletext">{{sales.dicsountPercent}}%</label>
+
+                        </div>
+
+                        <div class="count-holder" *ngIf="sales.saleTypeID===3">
+                          <!---->
+                          Payment Method&nbsp;&nbsp; <label class="label labletext">{{paymentMethod.title}}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="clear"></div>
+                <br/>
+                <div class="col-md-12 col-xs-12" *ngIf="sales.saleTypeID===2">
+                  <div class="custom-scroll">
+                    <table class="table-responsive promotion-detail-table">
+                      <thead>
+                        <tr>
+                          <th class="cat-col">Parent Category</th>
+                          <th class="disc-col">Category</th>
+                          <th class="promo-col">SubCategory</th>
+                          <th class="brand-col">Criteria</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let saleCategories of saleCategoryList">
+                          <td class="cat-col">  {{saleCategories.parentCategoryName}}</td>
+                          <td class="disc-col"> {{saleCategories.categoryName}}</td>
+                          <td class="promo-col"> {{saleCategories.subCategoryName}}</td>
+                          <td class="brand-col">{{saleCategories.criteria}}%</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+
+  </div>
+</main>
+
+

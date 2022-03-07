@@ -1,0 +1,67 @@
+<div (deferLoad)="deferLoadShow = true">
+  <ng-container *ngIf="deferLoadShow">
+    <div class="clearfix bg-white full-width relative" *ngIf="applicationSetting.homePageContent">
+      <div class="container">
+        <div class="row">
+          <!-- Support -->
+          <div class="clearfix support-box support-box-v3 full-width">
+            <div class="cmspage">
+              <div [innerHTML]="applicationSetting.homePageContent | safeHtml"></div>
+            </div>
+          </div>
+          <!-- End Support Box -->
+        </div>
+      </div>
+    </div>
+    <div class="clearfix bg-white full-width relative">
+      <div class="container">
+        <div class="row">
+          <!-- Support -->
+          <div class="clearfix support-box support-box-v3 full-width">
+            <div class=" container ">
+              <div class="row">
+                <div class="support-box-info relative col-md-3 col-sm-6 col-xs-6">
+                  <div class="float-left">
+                    <i class="{{applicationSetting.contentOneIcon}}"></i>
+                  </div>
+                  <div class="float-left">
+                    <p>{{applicationSetting.contentOneHeading}}</p>
+                    <p>{{applicationSetting.contentOneDetail}}</p>
+                  </div>
+                </div>
+                <div class="support-box-info relative col-md-3 col-sm-6 col-xs-6">
+                  <div class="float-left">
+                    <i class="{{applicationSetting.contentTwoIcon}}"></i>
+                  </div>
+                  <div class="float-left">
+                    <p>{{applicationSetting.contentTwoHeading}}</p>
+                    <p>{{applicationSetting.contentTwoDetail}}</p>
+                  </div>
+                </div>
+                <div class="support-box-info relative col-md-3 col-sm-6 col-xs-6">
+                  <div class="float-left">
+                    <i class="{{applicationSetting.contentThreeIcon}}"></i>
+                  </div>
+                  <div class="float-left">
+                    <p>{{applicationSetting.contentThreeHeading}}</p>
+                    <p>{{applicationSetting.contentThreeDetail}}</p>
+                  </div>
+                </div>
+                <div class="support-box-info relative col-md-3 col-sm-6 col-xs-6">
+                  <div class="float-left">
+                    <i class="{{applicationSetting.contentFourIcon}}"></i>
+                  </div>
+                  <div class="float-left">
+                    <p>{{applicationSetting.contentFourHeading}}</p>
+                    <p>{{applicationSetting.contentFourDetail}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Support Box -->
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

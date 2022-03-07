@@ -1,0 +1,115 @@
+<!-- Breadcrumb -->
+<div class="container-web relative">
+  <div class="container">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="breadcrumb-web">
+          <ul class="clear-margin">
+            <li class="animate-default title-hover-red"><a href="">Home</a></li>
+            <li class="animate-default current">Contact Us</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Breadcrumb -->
+<!-- Content Category -->
+<div class="relative container-web text-intro bottom-margin-default">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 bottom-margin-default">
+        <h3><strong>Keep In Touch</strong></h3>
+      </div>
+    </div>
+    <div class="row">
+      <form (ngSubmit)="f.form.valid &&  ngSubmit()" #f="ngForm" novalidate> 
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="form-group">
+            <input type="text" class="form-control" name="firstNamee" placeholder="First Name" [(ngModel)]="firstName" #firstNamee="ngModel" [ngClass]="{ 'is-invalid': f.submitted && firstNamee?.invalid }" pattern="[a-z A-Z]+" required>
+          </div>
+          <div *ngIf="(f.submitted) && firstNamee?.invalid" class="invalid-feedback">
+            <div *ngIf="firstNamee.errors.required"><span class="text-danger">First name is required</span></div>
+            <div *ngIf="firstNamee.errors.pattern"><span class="text-danger">Only alphabets allowed</span></div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="form-group">
+            <input type="text" class="form-control" name="lastNamee" placeholder="Last Name" [(ngModel)]="LastName" #lastNamee="ngModel" [ngClass]="{ 'is-invalid': f.submitted && lastNamee?.invalid }" pattern="[a-z A-Z]+" required>
+          </div>
+          <div *ngIf="(f.submitted) && lastNamee?.invalid" class="invalid-feedback">
+            <div *ngIf="lastNamee.errors.required"><span class="text-danger">Last name is required</span></div>
+            <div *ngIf="lastNamee.errors.pattern"><span class="text-danger">Only alphabets allowed</span></div>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="form-group">
+            <input type="text" class="form-control"
+                   name="emaill"
+                   autocomplete="off"
+                   placeholder="Email Address"
+                   [(ngModel)]="email"
+                   #emaill="ngModel"
+                   pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"
+                   [ngClass]="{ 'is-invalid': f.submitted && emaill?.invalid }" required>
+          </div>
+          <div *ngIf="(f.submitted || emaill?.touched) && emaill?.invalid" class="invalid-feedback">
+            <div *ngIf="emaill.errors.required"><span class="text-danger">Email address is required</span></div>
+            <div *ngIf="emaill.errors?.pattern"><span class="text-danger">Email is invalid</span></div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Phone" name="Phonee"  [(ngModel)]="phone" #Phonee="ngModel" />
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="form-group">
+            <textarea class="form-control" rows="7" placeholder="Message" name="messagee" [(ngModel)]="message" #messagee="ngModel" [ngClass]="{ 'is-invalid': f.submitted && messagee?.invalid }" required></textarea>
+          </div>
+          <div *ngIf="(f.submitted) && messagee?.invalid" class="invalid-feedback">
+            <div *ngIf="messagee.errors.required"><span class="text-danger">Message is required</span></div>
+          </div>
+          <div class="clear"></div>
+        </div> 
+          <div class="col-md-12 col-sm-12 col-xs-12 text-right"> 
+            <button *ngIf="isSubmitted==false"  class="btn btn-primary"><i class="fa fa-spinner fa-spin"></i> Processing</button>
+            <button *ngIf="isSubmitted==true" class="btn btn-primary" type="submit" value="Submit">Submit</button>
+          </div>
+          <div class="clear"></div> 
+      </form>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="mapdiv">
+    <div class="container">
+      <div class="col-sm-5 col-xs-12 form-group">
+        <h3>Get in Touch</h3>
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet  ipsum dolor sit amet, consectetuer adipiscing elit.</p>
+        <ul class="getintouch">
+          <li>
+            <i class="fa fa-map-marker"></i><label>ncidunt ut laoreet  ipsum dolor sit amet, consectetuer adipiscing elit.</label>
+          </li>
+          <li>
+            <i class="fa fa-phone"></i><label>Primary: (100) 3434 55666<br />Second:  (20) 3434 9999</label>
+          </li>
+          <li>
+            <i class="fa fa-envelope"></i><label>Primary: info@geniuscourse.com<br />Second: mail@genius.info</label>
+          </li>
+        </ul>
+        <button class="btn btn-default btn-lg">Contact Us</button>
+      </div>
+      <div class="col-sm-7 col-xs-12">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d13613.44347264889!2d74.26199601977541!3d31.459257849999997!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1536227354100" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+<!-- End Sider Bar -->

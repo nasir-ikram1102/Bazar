@@ -1,0 +1,102 @@
+<div class="container-web relative">
+  <div class="container">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="breadcrumb-web">
+          <ul class="clear-margin">
+            <li class="animate-default title-hover-red"><a href="javascript:void(0)" [routerLink]="['/']">Home</a></li>
+            <li class="animate-default title-hover-red"><a href="javascript:void(0)" [routerLink]="['/customer']">My Account</a></li>
+            <li class="animate-default current">My Reviews</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Breadcrumb -->
+<!-- Content Category -->
+<div class="relative container-web text-intro bottom-margin-default">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 bottom-margin-default">
+        <h3><strong>My Reviews</strong></h3>
+      </div>
+    </div>
+    <div class="row">
+      <dashboard-customer-left-menu></dashboard-customer-left-menu>
+      <div class="col-md-9 col-sm-8 col-xs-12">
+        <div class="customer-detail-block">
+          <div class="my-reviews-holder">
+            <div class="my-review-holder" *ngFor="let x of productRatingList">
+              <div class="product-image-holder">
+                <a [routerLink]='["/product/", x.url]'>
+                  <img src="{{x.profileImage}}" onError="this.onerror=null; this.src='/no-image.png';" alt="Product">
+                </a>
+                <div class="clear"></div>
+              </div>
+              <div class="review-text">
+                <ul class="stars-rating list-unstyled" *ngIf="x.rating==5">
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li class="active"><i class="fa fa-star"></i></li>
+                </ul>
+                <ul class="stars-rating list-unstyled" *ngIf="x.rating==4">
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                </ul>
+                <ul class="stars-rating list-unstyled" *ngIf="x.rating==3">
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                </ul>
+                <ul class="stars-rating list-unstyled" *ngIf="x.rating==2">
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                </ul>
+                <ul class="stars-rating list-unstyled" *ngIf="x.rating==1">
+                  <li class="active"><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                </ul>
+                <a [routerLink]='["/product/", x.url]'>
+                  <strong class="product-name">Product: {{x.productName}}</strong>
+                </a>
+                <p>{{x.descriptionMessage}}</p>
+                <div class="thumbs-holder">
+                  <i class="fa fa-thumbs-up"></i>
+                  <span class="thumbs-counter">{{x.votes}}</span>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+            <div class="text-center" *ngIf="productRatingList?.length<=0">No Review Found</div>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="pagging account-paging text-right">
+          <div class="pagging relative" *ngIf="totalRecords != null && totalRecords > 0">
+            <ul class="pull-right">
+              <pagination [totalItems]="totalRecords" [itemsPerPage]="10" [maxSize]="5" (pageChanged)="PageChanged($event)"></pagination>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Sider Bar -->

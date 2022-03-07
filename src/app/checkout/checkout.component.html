@@ -1,0 +1,519 @@
+<div *ngIf="isLoaderShow" class="loader"></div>
+<div *ngIf="!isLoaderShow" class="container-web relative">
+  <div class="container">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="breadcrumb-web">
+          <ul class="clear-margin">
+            <li class="animate-default title-hover-red"><a href="#">Home</a></li>
+            <li class="animate-default current">Checkout</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Breadcrumb -->
+<!-- Shopping Cart Section -->
+<section [hidden]="isLoaderShow" class="cart-products-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="heading-block bottom-margin-default">
+          <h3><strong>Check Out</strong></h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="cart-steps-holder">
+          <tabset class="nav nav-tabs text-center" role="tablist" #staticTabs>
+            <tab heading="Cart" (select)="OpenCart()"></tab>
+            <tab heading="Login / Register" *ngIf="!isLoggedIn">
+              <div class="row login-form text-left">
+                <div class="col-md-6 col-xs-12">
+                  <div class="cart-user-login-block">
+                    <h4><strong>Already Registered? Sign In</strong></h4>
+                    <form class="tsb-form cart-signin-form" (submit)="Login()">
+                      <div class="form-group">
+                        <label>
+                          <input type="text" class="form-control" name="email" [(ngModel)]="loginModel.email" placeholder="Username/Email">
+                          <span>Username/Email</span>
+                        </label>
+                      </div>
+                      <div class="form-group">
+                        <label>
+                          <input type="password" class="form-control" name="password" [(ngModel)]="loginModel.password" placeholder="Password">
+                          <span>Password</span>
+                        </label>
+                      </div>
+                      <div class="form-group">
+                        <input class="btn btn-primary" type="submit" value="Sign in">
+                      </div>
+                      <div class="form-group">
+                        <label for="keep-me-sigin" class="checkbox-label">
+                          Keep me Signed In
+                          <input id="keep-me-sigin" type="checkbox">
+                          <span class="custom-checkbox"></span>
+                        </label>
+                        <label class="checkbox-label" style="float: right;margin-right: 10px;">
+                          <a [routerLink]="['/forgot-password']" style="float: right;">Forgot Password ?</a>
+                        </label>
+                      </div>
+                    </form>
+                    <span class="or-separator"><span>or</span></span>
+                    <span class="note-text text-center">with your social network</span>
+                    <ul class="social-login-buttons list-unstyled text-center">
+                      <li class="share-google-plus">
+                        <a href="#">
+                          <span class="social-icon"><i class="fa fa-google-plus"></i></span>
+                          <span class="social-btn-text">Sign in With Google</span>
+                        </a>
+                      </li>
+                      <li class="share-facebook">
+                        <a href="#">
+                          <span class="social-icon"><i class="fa fa-facebook"></i></span>
+                          <span class="social-btn-text">Sign in With Facebook</span>
+                        </a>
+                      </li>
+                      <li class="share-twitter">
+                        <a href="#">
+                          <span class="social-icon"><i class="fa fa-twitter"></i></span>
+                          <span class="social-btn-text">Sign in With Twitter</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                  <div class="already-user-block">
+                    <h4><strong>Register</strong></h4>
+                    <form (ngSubmit)="loginForm.form.valid && Register()" class="tsb-form cart-register-form" #loginForm="ngForm" novalidate>
+                      <div class="form-group">
+                        <label>
+                          <input type="text" class="form-control" name="firstName" placeholder="First Name" [(ngModel)]="userModel.firstName" #firstName="ngModel" [ngClass]="{ 'is-invalid': loginForm.submitted && firstName?.invalid }" pattern="[a-zA-Z]+" required>
+                          <span>First Name</span>
+                        </label>
+                        <div *ngIf="(loginForm.submitted || firstName?.touched) && firstName?.invalid" class="invalid-feedback">
+                          <div *ngIf="firstName.errors.required"><span class="text-danger">First Name is required</span></div>
+                          <div *ngIf="firstName.errors.pattern"><span class="text-danger">Only alphabets allowed</span></div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>
+                          <input type="text" class="form-control" name="lastName" placeholder="Last Name" [(ngModel)]="userModel.lastName" #lastName="ngModel" [ngClass]="{ 'is-invalid': loginForm.submitted && lastName?.invalid }" pattern="[a-zA-Z]+" required>
+                          <span>Last Name</span>
+                        </label>
+                        <div *ngIf="(loginForm.submitted || lastName?.touched) && lastName?.invalid" class="invalid-feedback">
+                          <div *ngIf="lastName.errors.required"><span class="text-danger">Last Name is required</span></div>
+                          <div *ngIf="lastName.errors.pattern"><span class="text-danger">Only alphabets allowed</span></div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>
+                          <input type="email" class="form-control" name="email" (keypress)="KeyPressEvenet()" (focusout)="IsUniqueEmail()" placeholder="Email" autocomplete="off" [(ngModel)]="userModel.email"
+                                 #email="ngModel"
+                                 [ngClass]="{ 'is-invalid': loginForm.submitted && email.invalid }"
+                                 pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"
+                                 required>
+                          <span>Email</span>
+                        </label>
+                        <div *ngIf="(loginForm.submitted || email?.touched) && email?.invalid" class="invalid-feedback">
+                          <div *ngIf="email.errors?.required"><span class="text-danger">Email is required</span></div>
+                          <div *ngIf="email.errors?.pattern"><span class="text-danger">Email is invalid</span></div>
+                        </div>
+                        <div class="invalid-feedback" *ngIf="email?.touched && !isUnique"><span class="text-danger">Email already exists</span></div>
+                      </div>
+                      <div class="form-group">
+                        <label>
+                          <input type="password" class="form-control" name="password" placeholder="Password" autocomplete="off"
+                                 autocomplete="new-password" accept=""
+                                 [(ngModel)]="userModel.password" #password="ngModel"
+                                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                 [ngClass]="{ 'is-invalid': loginForm.submitted && password.invalid }" required>
+
+                          <span>Password</span>
+                        </label>
+                        <div *ngIf="(loginForm.submitted || password?.touched) && password?.invalid" class="invalid-feedback">
+                          <div *ngIf="password.errors.required"><span class="text-danger">Password is required</span></div>
+                          <div *ngIf="password.errors.pattern"><span class="text-danger">Must contain at least one number and one uppercase and lowercase letter, and at least 8 characters</span></div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>
+                          <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" autocomplete="off"
+                                 (keyup)="checkPasswords()"
+                                 autocomplete="new-password" accept=""
+                                 [(ngModel)]="userModel.confirmPassword" #confirmPassword="ngModel"
+                                 required
+                                 [ngClass]="{ 'is-invalid': loginForm.submitted && confirmPassword.invalid }">
+                          <span>Confirm Password</span>
+                        </label>
+                        <div *ngIf="(loginForm.submitted || confirmPassword?.touched) && confirmPassword?.invalid" class="invalid-feedback">
+                          <div *ngIf="confirmPassword.errors.required"><span class="text-danger">Confirm password is required</span></div>
+                        </div>
+                        <div *ngIf="!isPasswordMatch && confirmPassword?.valid"><span class="text-danger">Password does not match</span></div>
+                      </div>
+                      <div class="form-group">
+                        <label>
+                          <input type="text" class="form-control" name="mobilePhone" placeholder="Phone" [(ngModel)]="userModel.mobilePhone" #mobilePhone="ngModel">
+                          <span>Phone</span>
+                        </label>
+                      </div>
+                      <div class="form-group">
+                        <input class="btn btn-primary" type="submit" value="Sign Up" [disabled]="!loginForm.form.valid || !isUnique || isSubmitted || !isPasswordMatch">
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="clear"></div>
+            </tab>
+            <tab heading="Address" *ngIf="!isLoggedIn" (click)="LoginNotification()"></tab>
+            <tab heading="Payment" *ngIf="!isLoggedIn" (click)="LoginNotification()"></tab>
+            <tab heading="Order Summary" *ngIf="!isLoggedIn" (click)="LoginNotification()"></tab>
+            <tab heading="You're Done" *ngIf="!isLoggedIn" (click)="LoginNotification()"></tab>
+
+            <tab heading="Address" *ngIf="isLoggedIn" [ngClass]="isLoggedIn ? 'active' : ''">
+              <h4 class="text-left"><strong>Shipping Address</strong></h4>
+              <form class="tsb-form shipping-address-form" (ngSubmit)="f.form.valid && AddShippingAddress()" #f="ngForm" novalidate>
+                <div class="row">
+                  <div class="col-md-6 col-sm-6 col-12">
+                    <div class="form-group">
+                      <input type="text" class="form-control" name="address1" #address1="ngModel" [(ngModel)]="addressModel.address1" placeholder="Address" required>
+
+                      <div *ngIf="(f.submitted || address1?.touched) && address1?.invalid" class="invalid-feedback">
+                        <div *ngIf="address1.errors.required"><span class="text-danger">Address is required</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-12">
+                    <div class="form-group">
+                      <input type="text" [(ngModel)]="countryName"
+                             [typeahead]="countryList"
+                             name="countryName"
+                             [typeaheadOptionsLimit]="7"
+                             autocomplete="new-password"
+                             typeaheadOptionField="countryName"
+                             (focusout)=" GetStatesByCountry($event)"
+                             (typeaheadOnSelect)="GetStatesByCountry($event)"
+                             placeholder="Country"
+                             class="form-control" required />
+                      <div *ngIf="!isCountryValidated"><span class="text-danger">Country is required</span></div>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="col-md-6 col-sm-6 col-12">
+                    <div class="form-group">
+                      <input type="text" [(ngModel)]="stateName"
+                             [typeahead]="stateList"
+                             autocomplete="new-password"
+                             (focusout)="SelectState($event)"
+                             (typeaheadOnSelect)="SelectState($event)"
+                             name="stateName"
+                             [typeaheadOptionsLimit]="7"
+                             typeaheadOptionField="stateName"
+                             placeholder="State"
+                             class="form-control" required />
+                      <div *ngIf="!isStateValidated"><span class="text-danger">State is required</span></div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-12">
+                    <div class="form-group">
+                      <input type="text" [(ngModel)]="cityName"
+                             [typeahead]="cityList"
+                             autocomplete="new-password"
+                             (focusout)="SelectCity($event)"
+                             name="city"
+                             (typeaheadOnSelect)="SelectCity($event)"
+                             [typeaheadOptionsLimit]="7"
+                             typeaheadOptionField="city"
+                             placeholder="City"
+                             class="form-control" required />
+                      <div *ngIf="(f.submitted || city?.touched) && city?.invalid" class="invalid-feedback">
+                        <div *ngIf="city.errors.required"><span class="text-danger">City is required</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                  <div class="col-md-6 col-sm-6 col-12">
+                    <div class="form-group">
+                      <input type="text" class="form-control" name="zip" #zip="ngModel" [(ngModel)]="addressModel.zip" placeholder="ZIP Code" required>
+                      <div *ngIf="(f.submitted || zip?.touched) && zip?.invalid" class="invalid-feedback">
+                        <div *ngIf="zip.errors.required"><span class="text-danger">ZIP Code is required</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 col-sm-6 col-xs-12">
+                    <div class="separator grey-separator"></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 col-xs-12">
+                    <h4><strong>Shipment Methods</strong></h4>
+                    <p>Please select your desired shipment method</p>
+
+
+                    <div class="form-group has-message" *ngFor="let method of shippingMethods">
+                      <label for="shipment-radio-tcs-{{method.shippingMethodID}}" class="radio-label">
+                        {{method.title}}
+                        <input id="shipment-radio-tcs-{{method.shippingMethodID}}" type="radio" name="shipment-radio" (click)="AddShippingMethod(method)" />
+                        <span class="custom-radio"></span>
+                      </label>
+                      <span class="shipment-message">{{method.description}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="btns-holder">
+                  <input  class="btn btn-primary pull-right" type="submit" [disabled]="!f.form.valid || !isCountryValidated || !isStateValidated" value="Continue">
+                 
+
+                </div>
+              </form>
+              <div class="clear"></div>
+            </tab>
+            <tab heading="Payment" *ngIf="isLoggedIn">
+              <div class="order-payment-holder">
+                <h4><strong>Payment</strong></h4>
+                <p>Please select your payment method</p>
+                <form class="tsb-form payment-methods-form" (submit)="AddPaymentMethod()">
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <div class="payment-tabs">
+                        <ul class="payment-tabs-list text-center list-unstyled" role="tablist">
+                          <li *ngFor="let method of paymentMethods; let i=index" [ngClass]="{'active': selectedItemId === method.paymentID}" (click)="ActivePaymentType(method)" [attr.data-toggle]="method.paymentID">{{method.title}}</li>
+                        </ul>
+                        <div *ngFor="let method of paymentMethods; let i=index" [ngClass]="(selectedItemId === method.paymentID) ? 'payment-content-tab active' : 'payment-content-tab'" id="{{method.paymentID}}">
+                          <div class="payment-content-holder">
+                            <p>{{method.description}}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="btns-holder">
+                    <input class="btn btn-default pull-left" (click)="StepBack(1)" type="button" value="Back">
+                    <input class="btn btn-primary pull-right" type="submit" value="Continue">
+                  </div>
+                </form>
+              </div>
+              <div class="clear"></div>
+            </tab>
+            <tab heading="Order Summary" *ngIf="isLoggedIn">
+              <div class="order-summary-holder">
+                <h4><strong>Order Summary</strong></h4>
+                <div class="row">
+                  <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="summaray-widget">
+                      <h5>Billed To</h5>
+                      <p><strong>{{customer.firstName + ' ' + customer.lastName}}</strong></p>
+                      <p>{{customer.mailingAddress}}</p>
+                      <p>{{cityName}}, {{customer.mailingStateName}}, {{customer.mailingCountryName}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="separator grey-separator"></div>
+                <div class="row" *ngIf="orderSummary != null && orderSummary != undefined && cartItems != null && cartItems.length > 0">
+                  <div class="col-xs-12">
+                    <div class="table-responsive">
+                      <table class="summary-table">
+                        <thead>
+                          <tr>
+                            <th class="item-holder">item</th>
+                            <th class="quantity-holder">Qty</th>
+                            <th class="price-holder">Unit Price</th>
+                            <th class="total-holder">Subtotal</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let product of cartItems">
+                            <tr>
+                              <!-- *ngIf="!product.isDeleted"-->
+                              <td class="item-holder">
+                                <img class="checkoutProductImage" src="{{product.imagePath}}" onError="this.onerror=null;this.src='/no-image.png';" alt="" />
+                                <strong>
+                                  <a [routerLink]="['/product/', product.url]">{{product.productName}}</a>
+                                  <p class="skuDiv">{{product.sku}}</p>
+                                  <span *ngFor="let varient of product.productVarients" class="color-btn">
+                                    <span class="product-size" data-text="">{{varient.slug}}</span>
+                                  </span>
+                                </strong>
+                                <div class="invalid-feedback" *ngIf="!product.isQuantityExist">
+                                  <div><span class="text-danger">Product out of stock</span></div>
+                                </div>
+                              </td>
+                              <td class="quantity-holder">{{product.quantity}}</td>
+                              <td class="price-holder">
+                                <strong *ngIf="product.salePrice < product.regularPrice && product.appliedDiscoutType > 0">{{product.salePrice | currencyConversion:DummyCounter}}</strong>
+                                <strong *ngIf="product.salePrice >= product.regularPrice || product.appliedDiscoutType == 0">{{product.regularPrice | currencyConversion:DummyCounter}}</strong>
+                              </td>
+                              <td class="total-holder">
+                                <span class="current-price">
+                                  {{product.totalUnitPrice | currencyConversion:DummyCounter}}
+                                </span>
+                                <!--<br />
+                                <span class="old-price" *ngIf="order.couponApplied && product.isCouponApplied">-{{product.couponAmount | currencyConversion:DummyCounter}}</span>-->
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colspan="4" class="padding15">
+                              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="50%" class="text-left padding15 coupontd">
+                                    <section class="checkout-ordersummary">
+                                      <form (submit)="ApplyCouponCode()">
+                                        <div class="form-group">
+                                          <div class="col-sm-12 col-xs-12 text-left">
+                                            <strong>DISCOUNT COUPON CODE</strong>
+                                          </div>
+                                          <div class="col-sm-8 col-xs-12">
+                                            <div class="input-holder">
+                                              <input type="text" name="couponCode" [(ngModel)]="couponCode" placeholder="Coupon Code">
+                                            </div>
+                                            <small class="pull-left" *ngIf="couponAmount > 0">Coupon {{order.couponCode}} is currently applied</small>
+                                          </div>
+                                          <div class="col-sm-4 col-xs-12">
+                                            <button type="submit" class="btn-check btn-apply-code btn-primary">Apply Code</button>
+                                          </div>
+                                        </div>
+                                      </form>
+                                    </section>
+                                  </td>
+                                  <td width="50%" class="padding15">
+                                    <table class="table table-total text-left" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                      <tr>
+                                        <td width="37%"></td>
+                                        <td width="34%">Items Subtotal </td>
+                                        <td class="fontweight-normal">{{subTotal | currencyConversion:DummyCounter}}</td>
+                                      </tr>
+                                      <tr *ngIf="couponAmount > 0">
+                                        <td></td>
+                                        <td>Coupon Discount</td>
+                                        <td class="fontweight-normal">- {{couponAmount | currencyConversion:DummyCounter}}</td>
+                                      </tr>
+                                      <tr>
+                                        <td></td>
+                                        <td>Shipping Charges</td>
+                                        <td class="fontweight-normal">{{orderSummary.order.shippingTotal | currencyConversion:DummyCounter}}</td>
+                                      </tr>
+                                      <tr>
+                                        <td></td>
+                                        <td><strong>Total</strong></td>
+                                        <td class="fontweight-normal">{{GetTotal() | currencyConversion:DummyCounter}}</td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="summary-bottom-links">
+                    <input class="btn btn-default pull-left" (click)="StepBack(2)" type="button" value="Back">
+                    <a *ngIf="!isProcessing" class="btn btn-primary pull-right" (click)="ProcessOrder()">Continue</a>
+                    <button *ngIf="isProcessing" class="btn btn-primary pull-right"><i class="fa fa-spinner fa-spin"></i> Processing</button>
+
+                  </div>
+                </div>
+              </div>
+              <div class="clear"></div>
+            </tab>
+            <tab heading="You're Done" *ngIf="isLoggedIn">
+              <div class="thankyou-holder text-center">
+                <div class="thankyou-outer">
+                  <div class="thankyou-inner">
+                    <strong class="thankyou-heading text-upeprcase">THANK YOU!</strong>
+                    <div class="checkmark-icon"><i class="fa fa-check"></i></div>
+                    <div class="order-breif-detail">
+                      <p>You have successfully placed an order at <a [routerLink]="['/']">E-Commerce Bazar</a></p>
+                      <p>Your order number is: <strong class="order-number">{{orderId}}</strong></p>
+                      <p>For further queries feel free to contact us at: <a href="tel:00 123 456 7891">{{sitePhone}}</a></p>
+                    </div>
+                    <div class="btn-holder">
+                      <a class="btn btn-primary" [routerLink]="['/']">Go Back E-Commerce</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="clear"></div>
+            </tab>
+          </tabset>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<div [hidden]="true" class="jsformWrapper">
+  <form name="jsform" #jsform method="post" action="https://sandbox.jazzcash.com.pk/PayaxisCustomerPortal/transactionmanagement/merchantform">
+    <input type="hidden" name="pp_Version" #pp_Version value="1.1">
+    <input type="hidden" name="pp_TxnType" #pp_TxnType value="MWALLET">
+    <input type="hidden" name="pp_Language" #pp_Language value="EN">
+    <input type="hidden" name="pp_MerchantID" #pp_MerchantID value="MC3653">
+    <input type="hidden" name="pp_SubMerchantID" #pp_SubMerchantID value="">
+    <input type="hidden" name="pp_Password" #pp_Password value="x129wz95th">
+    <input type="hidden" name="pp_BankID" #pp_BankID value="">
+    <input type="hidden" name="pp_ProductID" #pp_ProductID value="">
+
+    <div class="formFielWrapper">
+      <label class="active">Ref Number: </label>
+      <input type="text" name="pp_TxnRefNo" #pp_TxnRefNo value="T20181221180555">
+    </div>
+
+    <div class="formFielWrapper">
+      <label class="active">Amount: </label>
+      <input type="text" name="pp_Amount" #pp_Amount value="1000">
+    </div>
+
+    <input type="hidden" name="pp_TxnCurrency" #pp_TxnCurrency value="PKR">
+    <input type="hidden" name="pp_TxnDateTime" #pp_TxnDateTime value="20181221180555">
+    <div class="formFielWrapper">
+      <label class="active">Bill Reference: </label>
+      <input type="text" name="pp_BillReference" #pp_BillReference value="billRef">
+    </div>
+
+    <div class="formFielWrapper">
+      <label class="active">Description: </label>
+      <input type="text" name="pp_Description" #pp_Description value="Description of transaction">
+    </div>
+
+    <input type="hidden" name="pp_TxnExpiryDateTime" #pp_TxnExpiryDateTime value="20181221180555">
+
+    <div class="formFielWrapper">
+      <label class="active">Return URL: </label>
+      <input type="text" name="pp_ReturnURL" #pp_ReturnURL value="http://eCommerce.com/checkout">
+    </div>
+
+    <input type="hidden" name="pp_SecureHash" #pp_SecureHash value="13a8e4542918921fec7a063da3294b62593aaecee788eec6d2ca4cc63e627b2a">
+    <input type="hidden" name="ppmpf_1" #ppmpf_1 value="1">
+    <input type="hidden" name="ppmpf_2" #ppmpf_2 value="2">
+    <input type="hidden" name="ppmpf_3" #ppmpf_3 value="3">
+    <input type="hidden" name="ppmpf_4" #ppmpf_4 value="4">
+    <input type="hidden" name="ppmpf_5" #ppmpf_5 value="5">
+    <button type="button" (click)="jazzCashSubmit()">Submit</button>
+  </form>
+
+  <label id="salt" #salt style="display:none;">{ID}</label>
+  <br><br>
+  <div class="formFielWrapper">
+    <label class="active">Hash values string: </label>
+    <input type="text" id="hashValuesString" #hashValuesString value="">
+    <br><br>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<!-- Menu & Slider -->
+<app-slider></app-slider>
+<div *ngFor="let pageWidget of pageWidgets">
+
+  <!-- 1- Category One -->
+  <app-category-one [id]="pageWidget.id" *ngIf="pageWidget.widgetTemplateID==1"></app-category-one>
+
+  <!-- 2- Category Two -->
+  <app-category-two [id]="pageWidget.id" *ngIf="pageWidget.widgetTemplateID==2"></app-category-two>
+
+  <!-- 3- Popular Category -->
+  <app-popular-category [id]="pageWidget.id" *ngIf="pageWidget.widgetTemplateID==3"></app-popular-category>
+
+  <!-- 4- Brands -->
+  <app-brands [id]="pageWidget.id" *ngIf="pageWidget.widgetTemplateID==4"></app-brands>
+
+  <!-- 6- Best vendors-->
+  <app-best-vendors *ngIf="pageWidget.widgetTemplateID==6"></app-best-vendors>
+
+  <!-- 7- Banner-->
+  <app-banner [id]="pageWidget.id" *ngIf="pageWidget.widgetTemplateID==7"></app-banner>
+
+  <!-- 8- I Love App Banner-->
+  <app-send-me-app [id]="pageWidget.id" *ngIf="pageWidget.widgetTemplateID==8"></app-send-me-app>
+
+  <!-- 5- Products -->
+  <div *ngIf="pageWidget.widgetTemplateID==5">
+
+    <ng-container *ngFor="let pageWidgetContent of pageWidget.widgetContentList">
+      <!--Popular Products-->
+      <!--<app-popular-products></app-popular-products>-->
+      <!--Top Selling-->
+      <app-top-sellers *ngIf="pageWidgetContent.type=='Top Selling Products'"></app-top-sellers>
+
+      <!--Recent Products-->
+      <app-recent-products *ngIf="pageWidgetContent.type=='Recent Products'"></app-recent-products>
+
+      <!--Featured Products-->
+      <app-featured-products *ngIf="pageWidgetContent.type=='Featured Products'"></app-featured-products>
+
+      <!--On Sale Products-->
+      <app-on-sale-products *ngIf="pageWidgetContent.type=='Onsale Products'"></app-on-sale-products>
+
+      <!--Top rated-->
+      <app-top-rated *ngIf="pageWidgetContent.type=='Top Rated Products'"></app-top-rated>
+
+      <!--Flash Sale-->
+      <app-flash-sale [widgetContent]="pageWidgetContent" *ngIf="pageWidgetContent.type=='Flash Sale Products'"></app-flash-sale>
+
+      <!--Just for you-->
+      <app-just-for-you *ngIf="pageWidgetContent.type=='Just For You'"></app-just-for-you>
+
+    </ng-container>
+  </div>
+
+</div>
+
+<!--<app-brands-container></app-brands-container>-->
+<!--<div [innerHTML]="strDHtmlBody | safeHtml"></div>-->
+<!-- End Content Product -->
+<!--footer support-->
+<app-footer-support></app-footer-support>
+
+<!--footer shipping and support-->
+<app-footer-shipping-privacy-policy></app-footer-shipping-privacy-policy>
+

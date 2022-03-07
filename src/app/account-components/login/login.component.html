@@ -1,0 +1,114 @@
+<div class="user-account-modal default-modal wrappage">
+    <div class="sidebar loginpic">
+      <div class="image-holder">
+        <a href="javascript:void(0)" [routerLink]="['/']"><img class="height100" src="../../../assets/images/img01.jpg" alt="Sign in Image"></a>
+      </div>
+      <div class="headding-block">
+        <h2>Welcome Back</h2>
+        <p>Please sign in to your account.</p>
+      </div>
+    </div>
+    <div class="content">
+      <div class="text-center loginbox">
+        <form class="" (ngSubmit)="f.form.valid && ngSubmit()" #f="ngForm" novalidate>
+          <!--style="margin-left: 127px!important"-->
+          <strong class="tsb-form-heading">Sign In</strong>
+          <p>Registering to this website, you accept our <a href="#">Terms of User</a> and our <a href="#">Privacy</a></p>
+          <span class="note-text">with your social network</span>
+          <ul class="social-login-buttons list-unstyled text-center">
+            <li class="share-google-plus">
+              <a href="javascript:void(0)" (click)="socialSignIn('google')">
+                <span class="social-icon"><i class="fa fa-google-plus"></i></span>
+                <span class="social-btn-text">Sign in With Google</span>
+              </a>
+            </li>
+            <li class="share-facebook">
+              <a href="javascript:void(0)" (click)="socialSignIn('facebook')">
+                <span class="social-icon"><i class="fa fa-facebook"></i></span>
+                <span class="social-btn-text">Sign in With Facebook</span>
+              </a>
+            </li>
+            <!--<li class="share-twitter">
+              <a href="javascript:void(0)">
+                <span class="social-icon"><i class="fa fa-twitter"></i></span>
+                <span class="social-btn-text">Sign in With Twitter</span>
+              </a>
+            </li>-->
+          </ul>
+          <span class="or-separator"><span>or</span></span>
+          <div class="text-left">
+            <div class="form-group">
+              <input type="email" class="form-control" name="email" placeholder="Email" autocomplete="off" [(ngModel)]="loginModel.email"
+                     #email="ngModel"
+                     [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"
+                     pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"
+                     required>
+              <div *ngIf="(f.submitted || email?.touched) && email?.invalid" class="invalid-feedback">
+                <div *ngIf="email.errors?.required"><span class="text-danger">Email is required</span></div>
+                <div *ngIf="email.errors?.pattern"><span class="text-danger">Email is invalid</span></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" name="password" placeholder="Password"
+                     [(ngModel)]="loginModel.password" #password="ngModel"
+                     [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required>
+              <div *ngIf="(f.submitted || password?.touched) && password?.invalid" class="invalid-feedback">
+                <div *ngIf="password.errors.required"><span class="text-danger">Password is required</span></div>
+              </div>
+              <div class="checkbox-holder">
+                <br />
+                <label for="signed-in">
+                  <input id="signed-in" type="checkbox" name="rememberMe"
+                         [(ngModel)]="loginModel.rememberMe" #rememberMe="ngModel"> Keep me signed in
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="submit" value="Sign in" [disabled]="!f.form.valid" />
+            </div>
+            <div class="links-holder">
+              <span class="pull-left"><a href="javascript:void(0)" [routerLink]="['/forgot-password']">Forgot Password ?</a></span>
+              <span class="pull-right">Not a Member? <a href="javascript:void(0)" [routerLink]="['/register-customer']">Sign Up</a></span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+<ng-template #forgotPaswordModal>
+  <div class="signInModal">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Shipping Address</h5>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="signin-form" (ngSubmit)="f.form.valid && ngSubmit()" #f="ngForm" novalidate>
+        <div class="form-group">
+          <label>
+            <input type="text" class="form-control"
+                   name="email"
+                   autocomplete="off"
+                   (keypress)="KeyPressEvenet()"
+                   (focusout)="IsUniqueEmail()"
+                   placeholder="Email Address"
+                   [(ngModel)]="emailForgotPassword"
+                   #email="ngModel"
+                   pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"
+                   [ngClass]="{ 'is-invalid': f.submitted && email?.invalid }" required>
+            <span>Email Address</span>
+          </label>
+          <div *ngIf="(f.submitted || email?.touched) && email?.invalid" class="invalid-feedback">
+            <div *ngIf="email.errors.required"><span class="text-danger">Email Address is required</span></div>
+            <div *ngIf="email.errors?.pattern"><span class="text-danger">Email is invalid</span></div>
+          </div>
+          <div class="invalid-feedback" *ngIf="email?.touched && !isUnique"><span class="text-danger">Email already exists</span></div>
+        </div>
+        <div class="form-group no-margin">
+          <input type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,68 @@
+<div class="container-web relative">
+  <div class="container">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="breadcrumb-web">
+          <ul class="clear-margin">
+            <li class="animate-default title-hover-red"><a href="javascript:void(0)" [routerLink]="['/']">Home</a></li>
+            <li class="animate-default title-hover-red"><a href="javascript:void(0)" [routerLink]="['/customer']">My Account</a></li>
+            <li class="animate-default current">My wishlist</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="relative container-web text-intro bottom-margin-default">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 bottom-margin-default">
+        <h3><strong>My Wishlist</strong></h3>
+      </div>
+    </div>
+    <div class="row">
+      <dashboard-customer-left-menu></dashboard-customer-left-menu>
+      <div class="col-md-9 col-sm-8 col-xs-12">
+        <div *ngIf="wishList == null || wishList.length < 0" class="sm-loader"></div>
+        <div class="customer-detail-block" *ngIf="wishList?.length>0">
+          <div class="wishlist-items">
+            <div class="row">
+              <div class="col-md-3 col-sm-6 col-xs-12" *ngFor="let x of wishList ; let i = index">
+                <div class="item-holder">
+                  <div class="item-image-holder text-center">
+                    <a [routerLink]='["/product/", x.url]'>
+                      <img src="{{x.productDefaultImage}}" onError="this.onerror=null; this.src='/no-image.png';" alt="Product">
+                    </a>
+                  </div>
+                  <div class="item-text-holder">
+                    <!--<a [routerLink]='["/product-detail",x.productID]' href="javascript:void(0)">-->
+                    <strong class="item-name text-center">{{x.name | slice:0:25}}</strong>
+                    <!--</a>-->
+                    <div class="prices-holder text-center">
+                      <span class="current-price"><span class="old-price"><span class="old-price" *ngIf="x.appliedDiscoutType > 0 && x.salePrice < x.regularPrice">{{x.regularPrice | currencyConversion:DummyCounter}}</span></span></span><br /><span class="current-price"><span class="current-price" *ngIf="x.appliedDiscoutType > 0 && x.salePrice < x.regularPrice">{{x.salePrice | currencyConversion:DummyCounter}}</span></span>
+                      <span class="current-price"><span class="current-price" *ngIf="x.appliedDiscoutType == 0 || x.salePrice == x.regularPrice">{{x.regularPrice| currencyConversion:DummyCounter}}</span></span>
+                    </div>
+                  </div>
+                  <textarea rows="07" cols="07" [(ngModel)]="x.comments" placeholder="Comment"></textarea>
+                  <h5><strong>Qty</strong></h5>
+                  <div class="add-to-cart-holder">
+                    <input [(ngModel)]="x.quantity" type="text" placeholder="1">
+                    <a class="btn-cart" (click)="AddToCart(x,x.quantity)">Add to Cart</a>
+                  </div>
+                  <div class="links-holder">
+                    <a (click)="RemoveItem(x.wishListID,i)"><i class="fa fa-trash-o"></i> Remove Item </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="wishlist-btns-holder">
+            <a class="btn" (click)="UpdateWishList()" href="javascript:void(0)">Update Wish List</a>
+            <!--<a class="btn"  href="javascript:void(0)">Add All to Cart</a>-->
+          </div>
+        </div>
+        <div class="text-center" *ngIf="wishList?.length<=0">No item in wish list</div>
+      </div>
+    </div>
+  </div>
+</div>

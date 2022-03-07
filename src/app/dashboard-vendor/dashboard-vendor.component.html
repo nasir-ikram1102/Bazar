@@ -1,0 +1,196 @@
+<main id="main">
+  <app-menu-vendor></app-menu-vendor>
+  <div class="vendor-page-content bg-grey pt-40">
+    <div class="sales-stats-section mb-30 text-center">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="sales-stat-block bg-theme-color">
+              <span class="sale-text">Weekly Sales</span>
+              <span class="sale-counter">Rs {{WeeklySale}}</span>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="sales-stat-block bg-theme-color2">
+              <span class="sale-text">Monthly Sales</span>
+              <span class="sale-counter">Rs {{MonthlySale}}</span>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="sales-stat-block bg-blue">
+              <span class="sale-text">Yearly Sales</span>
+              <span class="sale-counter">Rs {{YearlySale}}</span>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="sales-stat-block bg-green">
+              <span class="sale-text">Lifetime Sales</span>
+              <span class="sale-counter">Rs {{LifeTimeSale}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="vendor-dashboard-chart mb-30">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="whitebody">
+              Chart Code Goes here
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sale-announcement-section mb-30">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-xs-12">
+            <div class="recent-block recent-sales-block whitebody">
+              <div class="heading-block">
+                <h2>Recent Item Sales</h2>
+                <a class="btn-view-all" href="javascript:void(0)" [routerLink]="['/purchase-orders-vendor']">View All</a>
+              </div>
+              <ul class="recent-list list-unstyled">
+                <li *ngFor="let i of recentItemsSale">
+                  <div class="image-holder">
+                    <a [routerLink]='["/product/",i.url]' href="javascript:void(0)">
+                      <img src="{{i.productImage}}" onError="this.onerror = null;this.src='/no-image.png';" width="50" alt="image not found" />
+                    </a>
+                  </div>
+                  <div class="text-holder">
+                    <a [routerLink]='["/product/",i.url]' class="product-name" href="javascript:void(0)">{{i.productName}}</a>
+                    <p class="product-price">{{i.totalPrice}}</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6 col-xs-12">
+            <div class="recent-block recent-notifications whitebody">
+              <div class="heading-block">
+                <h2>Recent Announcements</h2>
+                <a class="btn-view-all" [routerLink]="['/announcement-list']" href="javascript:void(0)">View All</a>
+              </div>
+              <div class="slides-frame">
+                <div class="slides">
+                  <div class="slide-1 slide" *ngFor="let i of announcementList">
+                    <div class="announcement-carousel">
+                      <div class="banner-slide">
+                        <h2>{{i.title}}</h2>
+                        <p>{{i.description | slice:0:100}}..</p>
+                        <div class="btn-holder text-right">
+                          <a (click)="OpenAnnouncementModel(i.id,announcementModel)" class="read-more" href="javascript:void(0)" data-toggle="modal" data-target="#order-view-modal">Read More</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="vendor-order-history">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="whitebody">
+              <div class="heading-block">
+                <h2>
+                  Order History
+                </h2>
+                <a class="btn-view-all" [routerLink]="['/purchase-orders-vendor']" href="javascript:void(0)">View All</a>
+              </div>
+              <div class="table-responsive whitebody">
+                <table class="order-history-table">
+                  <thead>
+                    <tr>
+                      <th class="product-id-col">Order ID</th>
+                      <th class="product-qty-col">Order Date</th>
+                      <th class="product-price-col">Price</th>
+                      <th class="product-status-col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let x of orderList">
+                      <td class="product-v-col">{{x.purchaseOrderID}}</td>
+                      <td class="product-qty-col">{{x.orderDate| date: 'dd-MM-yyyy'}}</td>
+                      <td class="product-price-col">{{x.shippingPrice}}</td>
+                      <td class="product-status-col">
+                        <span *ngIf="x.orderStatusName=='Pending'" class="order-status status-pending">
+                          {{x.orderStatusName}}
+                        </span>
+                        <span *ngIf="x.orderStatusName=='In Process'" class="order-status status-on-hold">
+                          {{x.orderStatusName}}
+                        </span>
+                        <span *ngIf="x.orderStatusName=='Shipped'" class="order-status status-complete">
+                          {{x.orderStatusName}}
+                        </span>
+                        <span *ngIf="x.orderStatusName=='Delivered'" class="order-status status-complete">
+                          {{x.orderStatusName}}
+
+                        </span> <span *ngIf="x.orderStatusName=='Canceled'" class="order-status status-cancel">
+                          {{x.orderStatusName}}
+                        </span>
+                        <span *ngIf="x.orderStatusName=='Reversal'" class="order-status status-pending">
+                          {{x.orderStatusName}}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<ng-template #announcementModel>
+  <div class="order-view-modal" id="order-view-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Announcement Detail </h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true"><i class="fa fa-times"></i></span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="tsb-form add-new-coupon-form">
+        <div class="form-group">
+          <label class="col-md-3 control-label" for="name">Title</label>
+          <div class="col-md-9">
+            <span> {{announcement.title}}</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label" for="name">Strat Date</label>
+          <div class="col-md-9">
+            <span> {{announcement.startDate | date: 'dd-MM-yyyy'}}</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label" for="name">End Date</label>
+          <div class="col-md-9">
+            <span> {{announcement.endDate | date: 'dd-MM-yyyy'}}</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label" for="name">Description</label>
+          <div class="col-md-9">
+            <span> {{announcement.description}}</span>
+          </div>
+        </div>
+      </form>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="bottom-links-holder text-right">
+            <input class="btn btn-primary" (click)="modalRef.hide()" value="Close">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

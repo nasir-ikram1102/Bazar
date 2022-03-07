@@ -1,0 +1,9 @@
+.logo-brand-son img { height: 80px !important; }
+@media(max-width:500px) {
+  .logo-brand-son { min-height: 150px!important; }
+  .logo-brand-son img{ height: 50px !important; max-width: 80% !important; }
+}
+@media(max-width:400px) {
+  .logo-brand-son { min-height: 110px!important; }
+  .logo-brand-son img{ height: 40px !important; max-width: 80% !important; }
+}

@@ -1,0 +1,6 @@
+.mapdiv{background:#f7f7f7;padding:100px 0;width:100%;min-height:380px;font-size:18px}
+.getintouch,.getintouch li{padding:0;margin:0;list-style:none}
+.getintouch{margin:30px 0}
+.getintouch li{margin-bottom:10px}
+.getintouch li i{top:-8px;position:relative;display:inline-block;margin-right:15px;border:solid 3px #b61f24;border-radius:100%;width:50px;height:50px;text-align:center;line-height:45px;color:#b61f24;font-size:25px}
+.getintouch li label{display:inline-block;font-weight:400;width:85%}

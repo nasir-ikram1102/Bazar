@@ -1,0 +1,12 @@
+.toggle{border-radius:5px;border:1px solid #ddd;margin-bottom:20px;overflow:hidden}
+.toggle .toggle-title{position:relative;display:block}
+.toggle .toggle-title h3{font-size:16px;margin:0px;line-height:35px;cursor:pointer;font-weight:400}
+.toggle .toggle-inner{padding:5px 10px;display:none}
+.toggle .toggle-inner div{max-width:100%}
+.toggle .toggle-title .title-name{display:block;padding:5px 10px}
+.toggle .toggle-title a i{font-size:22px;margin-right:5px}
+.toggle .toggle-title i {position:absolute;width:30px;font-size:30px;line-height:36px;transition:all 0.3s ease;margin:5px;right:0;text-align:center;color:#000}
+.toggle .toggle-title.active i{color:#fff}
+.toggle .toggle-title.active i:before{content:"\f106"!important}
+.toggle .toggle-title.active .title-name{color:#fff;background:#b61f24}
+.error{font-size:16px;color:#b61f24}

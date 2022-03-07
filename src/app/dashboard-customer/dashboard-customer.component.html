@@ -1,0 +1,158 @@
+
+<div class="relative container-web text-intro bottom-margin-default">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 bottom-margin-default">
+        <h3><strong>Account Dashboard </strong></h3>
+      </div>
+    </div>
+    <div class="row">
+      <dashboard-customer-left-menu></dashboard-customer-left-menu>
+      <div class="col-md-9 col-sm-8 col-xs-12">
+        <div class="customer-detail-block">
+          <h4><strong>Account Information</strong></h4>
+          <div class="row">
+            <div class="col-md-6 col-xs-12">
+              <div class="whitehalfbox">
+                <h4>Contact Information <a [routerLink]="['/profile-update']" class="pull-right"><i class="fa fa-edit"></i></a></h4>
+                <div class="paddingleftright">
+                  <p>{{customerModel.firstName}} {{customerModel.middleName}} {{customerModel.lastName}} </p>
+                  <p>{{customerModel.primaryPhone}}</p>
+                  <p>{{customerModel.mobilePhone}}</p>
+                  <p>{{customerModel.email}}</p>
+                </div>
+                <div class="buttondiv">
+                  <a [routerLink]="['/profile-update']">Edit</a>
+                  <a class="btn-write-review" href="javascript:void(0)" (click)="OpenChangePasswordModel(changePasswordModal)" data-toggle="modal" data-target="#signInModal">Change Password</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xs-12">
+              <div class="whitehalfbox">
+                <h4>Newsletters </h4>
+                <div class="paddingleftright">
+                  <p *ngIf="subscriberStatus==1">{{subscriberMsg}} </p>
+                  <p *ngIf="subscriberStatus==0">{{subscriberMsg}} <a href="javascript:void(0)" (click)="SubscribeNewsLetter()">Subscribe Now</a></p>
+                </div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <p><strong>Address Book <a [routerLink]="['/address-book']" href="javascript:void(0)" class="text-red">Manage Addresses</a></strong></p>
+          <div class="clearfix"></div>
+          <div class="row">
+            <div class="col-md-6 col-xs-12">
+              <div class="whitehalfbox">
+                <h4>
+                  Default Billing Address
+                  <a class="pull-right" [routerLink]="['/address-book']" href="javascript:void(0)"><i class="fa fa-edit"></i></a>
+                </h4>
+                <div class="paddingleftright" *ngIf="customerModel.mainStateID!=''">
+                  <div>
+                    {{customerModel.fullName}} <br />
+                    {{customerModel.mainAddress}}<br />
+                    {{customerModel.mainCity}} {{customerModel.billingStateName}} {{customerModel.billingCountryName}} {{customerModel.mainZipCode}}
+                  </div>
+                </div>
+                <div class="paddingleftright" *ngIf="customerModel.mainStateID==''">
+                  <div>
+                    You have no default billing address in your address book.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xs-12">
+              <div class="whitehalfbox">
+                <h4>
+                  Default Shipping Address
+                  <a class="pull-right" [routerLink]="['/address-book']" href="javascript:void(0)"><i class="fa fa-edit"></i></a>
+                </h4>
+                <div class="paddingleftright" *ngIf="customerModel.mailingStateID!=''">
+                  <div>
+                    {{customerModel.fullName}} <br />
+                    {{customerModel.mailingAddress}}<br />
+                    {{customerModel.mailingCity}} {{customerModel.mailingStateName}} {{customerModel.mailingCountryName}} {{customerModel.mailingZipCode}}
+                  </div>
+                </div>
+                <div class="paddingleftright" *ngIf="customerModel.mailingStateID==''">
+                  <div>
+                    You have no default shiping address in your address book.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  </div>
+
+
+<ng-template #changePasswordModal>
+  <div class="signInModal">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="signin-form" (submit)="f.form.valid && changePassword()" #f="ngForm" novalidate> 
+        <div class="form-group">
+          <label>
+            <input type="password" class="form-control"
+                   name="oldpassword"
+                   placeholder="Old Password"
+                   [(ngModel)]="changePasswordModel.oldpassword"
+                   #oldpassword="ngModel"
+                   [ngClass]="{ 'is-invalid': f.submitted && oldpassword?.invalid }" required>
+            <span>Old Password</span>
+          </label>
+          <div *ngIf="(f.submitted || oldpassword?.touched) && oldpassword?.invalid" class="invalid-feedback">
+            <div *ngIf="oldpassword.errors.required"><span class="text-danger">Old Password is required</span></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="password" class="form-control" name="newPassword" placeholder="New Password" autocomplete="off"
+                   autocomplete="new-password" accept=""
+                   [(ngModel)]="changePasswordModel.newPassword" #newPassword="ngModel"
+                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                   [ngClass]="{ 'is-invalid': f.submitted && newPassword.invalid }" required>
+            <span>New Password</span>
+          </label>
+          <div *ngIf="(f.submitted || newPassword?.touched)  && newPassword?.invalid" class="invalid-feedback">
+            <div *ngIf="newPassword.errors.required">
+              <span class="text-danger">Password is required</span>
+            </div>
+            <div *ngIf="newPassword.errors.pattern">
+              <span class="text-danger">Must contain at least one number and one uppercase and lowercase letter, and at least 8 characters</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="password" class="form-control"
+                   name="confirmPassword"
+                   placeholder="Confirm New Password"
+                   [(ngModel)]="changePasswordModel.confirmPassword"
+                   #confirmPassword="ngModel"
+                   [ngClass]="{ 'is-invalid': f.submitted && confirmPassword?.invalid }" required>
+            <span>Confirm New Password</span>
+          </label>
+          <div *ngIf="(f.submitted || confirmPassword?.touched) && confirmPassword?.invalid" class="invalid-feedback">
+            <div *ngIf="confirmPassword.errors.required">
+              <span class="text-danger">Confirm password is required</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group no-margin">
+          <input class="tsb-btn" type="submit" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>

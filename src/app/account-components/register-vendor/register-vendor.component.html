@@ -1,0 +1,414 @@
+<div class="relative full-width">
+  <!-- Breadcrumb -->
+  <div class="container-web relative">
+    <div class="container">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="breadcrumb-web">
+            <ul class="clear-margin">
+              <li class="animate-default title-hover-red"><a href="javascript:void(0)" [routerLink]="['/']">Home</a></li>
+              <li class="animate-default current">Vendor Sign Up</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Breadcrumb -->
+  <div class="vendor-signup-holder bg-grey">
+    <div class="container">
+      <div class="col-xs-12">
+        <div class="row">
+          <form class="tsb-form vendor-signup-form whitebody" (ngSubmit)="f.form.valid  && isUniqueShopName && isUnique &&  ngSubmit()" #f="ngForm" novalidate>
+            <div class="signup-widget">
+              <div class="widget-heading-section">
+                <h2><strong>Vendors Sign Up</strong></h2>
+                <p>Can Sign up store by providing this information</p>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="firstName" placeholder="First Name" [(ngModel)]="customerModel.firstName" #firstName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && firstName?.invalid }" pattern="[a-z A-Z]+" required>
+                      <span>First Name</span>
+                    </label>
+                    <div *ngIf="(f.submitted) && firstName?.invalid" class="invalid-feedback">
+                      <div *ngIf="firstName.errors.required"><span class="text-danger">First name is required</span></div>
+                      <div *ngIf="firstName.errors.pattern"><span class="text-danger">Only alphabets allowed</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="lastName" placeholder="Last Name" [(ngModel)]="customerModel.lastName" #lastName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && lastName?.invalid }" pattern="[a-z A-Z]+" required>
+                      <span>Last Name</span>
+                    </label>
+                    <div *ngIf="(f.submitted) && lastName?.invalid" class="invalid-feedback">
+                      <div *ngIf="lastName.errors.required"><span class="text-danger">Last name is required</span></div>
+                      <div *ngIf="lastName.errors.pattern"><span class="text-danger">Only alphabets allowed</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control"
+                             name="email"
+                             autocomplete="off"
+                             (keypress)="KeyPressEvenetEmail()"
+                             (focusout)="IsUniqueEmail()"
+                             placeholder="Email Address"
+                             [(ngModel)]="customerModel.email"
+                             #email="ngModel"
+                             pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"
+                             [ngClass]="{ 'is-invalid': f.submitted && email?.invalid }" required>
+                      <span>Email Address</span>
+                    </label>
+                    <div *ngIf="(f.submitted || email?.touched) && email?.invalid" class="invalid-feedback">
+                      <div *ngIf="email.errors.required"><span class="text-danger">Email address is required</span></div>
+                      <div *ngIf="email.errors?.pattern"><span class="text-danger">Email is invalid</span></div>
+                    </div>
+                    <div class="invalid-feedback" *ngIf="email?.touched && !isUnique"><span class="text-danger">Email already exists</span></div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label for="male" class="radio-label">
+                      Male
+                      <input id="male" type="radio" value="male" name="gender" [(ngModel)]="customerModel.gender" #gender="ngModel">
+                      <span class="custom-radio"></span>
+                    </label>
+                    <br />
+                    <label for="female" class="radio-label">
+                      Female
+                      <input id="female" type="radio" value="female" name="gender" [(ngModel)]="customerModel.gender" #gender="ngModel">
+                      <span class="custom-radio"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="password" class="form-control" name="password" placeholder="Password" autocomplete="off"
+                             accept="" autocomplete="new-password"
+                             [(ngModel)]="customerModel.password" #password="ngModel"
+                             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                             [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required>
+                      <span>Password</span>
+                    </label>
+                    <div *ngIf="(f.submitted || password?.touched) && password?.invalid" class="invalid-feedback">
+                      <div *ngIf="password.errors.required"><span class="text-danger">Password is required</span></div>
+                      <div *ngIf="password.errors.pattern"><span class="text-danger">Must contain at least one number and one uppercase and lowercase letter, and at least 8 characters</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" autocomplete="off"
+                             (keyup)="checkPasswords()"
+                             autocomplete="new-password" accept=""
+                             [(ngModel)]="customerModel.confirmPassword" #confirmPassword="ngModel"
+                             required
+                             [ngClass]="{ 'is-invalid': f.submitted && confirmPassword.invalid }">
+                      <span>Confirm Password</span>
+                    </label>
+                    <div *ngIf="(f.submitted || confirmPassword?.touched) && confirmPassword?.invalid" class="invalid-feedback">
+                      <div *ngIf="confirmPassword.errors.required"><span class="text-danger">Confirm password is required</span></div>
+                    </div>
+                    <div *ngIf="!isPasswordMatch && confirmPassword?.valid"><span class="text-danger">Password does not match</span></div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="ntnNumber" placeholder="NTN Number" [(ngModel)]="customerModel.ntnNumber" #ntnNumber="ngModel">
+                      <span>NTN Number</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="cnicNumber" placeholder="CNIC Number" [(ngModel)]="customerModel.cnicNumber" #cnicNumber="ngModel">
+                      <span>CNIC Number</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="contactPersonName" placeholder="Contact Person Name" [(ngModel)]="customerModel.contactPersonName" #contactPersonName="ngModel">
+                      <span>Contact Person Name</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="contactPersonNumber" placeholder="Contact Person Mobile" [(ngModel)]="customerModel.contactPersonNumber" #contactPersonNumber="ngModel">
+                      <span>Contact Person Mobile</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="shopTitle" placeholder="Shop Title"
+                             [(ngModel)]="customerModel.shopTitle"
+                             (input)="onTextChange($event.target.value)"
+                             #shopTitle="ngModel"
+                             [ngClass]="{ 'is-invalid': f.submitted && shopTitle?.invalid }" required>
+                      <span>Shop Title</span>
+                    </label>
+                    <div *ngIf="(f.submitted) && shopTitle?.invalid" class="invalid-feedback">
+                      <div *ngIf="shopTitle.errors.required"><span class="text-danger">Shop Title is required</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" (keypress)="KeyPressEvenetShopName()"
+                             (focusout)="IsUniqueShopName()"
+                             class="form-control"
+                             name="shopeName"
+                             placeholder="Shop Name"
+                             [(ngModel)]="customerModel.shopeName"
+                             #shopeName="ngModel"
+                             [ngClass]="{ 'is-invalid': f.submitted && shopeName?.invalid }" pattern="[a-z-A-Z]+" required>
+                      <span>Shop Name</span>
+                    </label>
+                    <div *ngIf="(f.submitted) && shopeName?.invalid" class="invalid-feedback">
+                      <div *ngIf="shopeName.errors.pattern"><span class="text-danger">Only alphabets allowed.Don't allow special characters</span></div>
+                      <div *ngIf="shopeName.errors.required"><span class="text-danger">Shop name is required</span></div>
+                    </div>
+                    <div class="invalid-feedback" *ngIf="shopeName?.touched && !isUniqueShopName"><span class="text-danger">Shop Name already exists</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="mobilePhone" placeholder="Mobile Phone" [(ngModel)]="customerModel.mobilePhone" #mobilePhone="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mobilePhone?.invalid }" required>
+                      <span>Mobile Phone</span>
+                    </label>
+                    <div *ngIf="(f.submitted) && mobilePhone?.invalid" class="invalid-feedback">
+                      <div *ngIf="mobilePhone.errors.required"><span class="text-danger">Contact number is required</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="bankName" placeholder="Bank Name" [(ngModel)]="customerModel.bankName" #bankName="ngModel">
+                      <span>Bank Name</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="accountTitle" placeholder="Account Title" [(ngModel)]="customerModel.accountTitle" #accountTitle="ngModel">
+                      <span>Account Title</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="accountNumber" placeholder="Account Number" [(ngModel)]="customerModel.accountNumber" #accountNumber="ngModel">
+                      <span>Account Number </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="branchCode" placeholder="Branch Code" [(ngModel)]="customerModel.branchCode" #branchCode="ngModel">
+                      <span>Branch Code</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="branchCity" placeholder="Branch City" [(ngModel)]="customerModel.branchCity" #branchCity="ngModel">
+                      <span>Branch City</span>
+                    </label>
+                  </div>
+                </div>
+              </div>  
+            </div>
+            <div class="signup-widget">
+              <div class="widget-heading-section">
+                <h2><strong>Billing Details</strong></h2>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <select class="form-control" name="maincountryID" (change)="GetMainStatesByCountry($event)" [(ngModel)]="customerModel.mainCountryID" #maincountryID="ngModel" [ngClass]="{ 'is-invalid': f.submitted && maincountryID.invalid }" required>
+                        <option value="">Select a Country</option>
+                        <option *ngFor="let country of countryList" [value]="country.countryID">{{country.countryName}}</option>
+                      </select>
+                      <span>Country</span>
+                    </label>
+                    <div *ngIf="(f.submitted) && maincountryID?.invalid" class="invalid-feedback">
+                      <div *ngIf="maincountryID.errors.required"><span class="text-danger">Country is requried</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <select class="form-control" name="mainStateID" (change)="GetMainCitesByState($event)" [(ngModel)]="customerModel.mainStateID" #mainStateID="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mainStateID.invalid }" required>
+                        <option value="">Select a State</option>
+                        <option *ngFor="let state of mainStateList" [value]="state.stateID">{{state.stateName}}</option>
+                      </select>
+                      <span>State</span>
+                    </label>
+                    <div *ngIf="(f.submitted) && mainStateID?.invalid" class="invalid-feedback">
+                      <div *ngIf="mainStateID.errors.required"><span class="text-danger">State is requried</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <select class="form-control" name="mainCityId" [(ngModel)]="customerModel.mainCityId" #mainCityId="ngModel" required>
+                        <option value="">Select a City</option>
+                        <option *ngFor="let x of mainCityList" [value]="x.id">{{x.city}}</option>
+                      </select>
+                      <span>City</span>
+                    </label>
+                    <div *ngIf="(f.submitted) && mainCityId?.invalid" class="invalid-feedback">
+                      <div *ngIf="mainCityId.errors.required"><span class="text-danger">City is requried</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="mainZipCode" placeholder="Zip Code" [(ngModel)]="customerModel.mainZipCode" #mainZipCode="ngModel" /><!--[ngClass]="{ 'is-invalid': f.submitted && mainZipCode?.invalid }" required-->
+                      <span>Zip Code</span>
+                    </label>
+                    <!--<div *ngIf="(f.submitted) && mainZipCode?.invalid" class="invalid-feedback">
+                      <div *ngIf="mainZipCode.errors.required"><span class="text-danger">Zip Code is required</span></div>
+                    </div>-->
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="mainAddress" placeholder="Address" [(ngModel)]="customerModel.mainAddress">
+                      <span>Enter your Address</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="widget-heading-section">
+              <h2><strong>Shipping Details</strong></h2>
+              <small>
+                <input type="checkbox" [(ngModel)]="showHideShipingDiv" name="isActive"> Same as billing address
+              </small>
+            </div>
+            <div class="signup-widget" *ngIf="!showHideShipingDiv">
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <select class="form-control" name="mailingCountryID" (change)="GetMailingStatesByCountry($event)" [(ngModel)]="customerModel.mailingCountryID" #mailingCountryID="ngModel" [ngClass]="{ 'is-invalid': f.submitted && mailingCountryID.invalid }" required>
+                        <option value="">Select a Country</option>
+                        <option *ngFor="let country of countryList" [value]="country.countryID">{{country.countryName}}</option>
+                      </select>
+                      <span>Country</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <select class="form-control" (change)="GetMailingCitesByState($event)" name="mailingStateID" [(ngModel)]="customerModel.mailingStateID" [ngClass]="{ 'is-invalid': f.submitted && mailingStateID.invalid }" #mailingStateID="ngModel" required>
+                        <option value="">Select a State</option>
+                        <option *ngFor="let state of mailingStateList" [value]="state.stateID">{{state.stateName}}</option>
+                      </select>
+                      <span>State</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <select class="form-control" name="mailingCityId" [(ngModel)]="customerModel.mailingCityId" #mailingCityId="ngModel" required>
+                        <option value="">Select a City</option>
+                        <option *ngFor="let x of mailingCityList" [value]="x.id">{{x.city}}</option>
+                      </select>
+                      <span>City</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="mailingZipCode" placeholder="Zip Code" [(ngModel)]="customerModel.mailingZipCode" #mainZipCode="ngModel" /><!--[ngClass]="{ 'is-invalid': f.submitted && mailingZipCode?.invalid }">-->
+                      <span>Zip Code</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12 col-xs-12">
+                  <div class="form-group">
+                    <label>
+                      <input type="text" class="form-control" name="mailingAddress" placeholder="Enter your Address" [(ngModel)]="customerModel.mailingAddress">
+                      <span>Enter your Address</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="signup-widget">
+              <div class="row">
+                <div class="col-xs-12">
+                  <button *ngIf="isSubmitted==false"  class="btn btn-primary"><i class="fa fa-spinner fa-spin"></i> Processing</button>
+                  <button *ngIf="isSubmitted==true"   class="btn btn-primary" type="submit" value="Create Account">Create Account</button>
+                  
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Footer Box <div class="row"></div> -->
+</div>

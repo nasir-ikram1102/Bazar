@@ -1,0 +1,86 @@
+
+<footer class="relative full-width" (deferLoad)="deferLoadShow = true">
+  <ng-container *ngIf="deferLoadShow">
+    <div class="newsletterdiv">
+      <div class="container">
+        <form (ngSubmit)="f.form.valid && SubscribeNewsLetter()" #f="ngForm" novalidate>
+          <div class="col-md-3 col-sm-5 text-right"><span>SIGN UP FOR NEWSLETTER</span></div>
+          <div class="col-md-6 col-sm-7">
+            <input type="text"
+                   name="email"
+                   autocomplete="off"
+                   placeholder="Enter email here..."
+                   [(ngModel)]="newsLetterSubscribeEmail"
+                   #email="ngModel"
+                   pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"
+                   required>
+            <button type="submit" class="btn btn-default">Send</button>
+          </div>
+          <div *ngIf="(f.submitted) && email?.invalid">
+            <div *ngIf="email.errors.required && isSubmitted"><span class="text-danger">Email Address is required</span></div>
+            <div *ngIf="email.errors?.pattern && isSubmitted"><span class="text-danger">Email is invalid</span></div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix container-web relative">
+      <div class=" container clear-padding">
+        <div class="clearfix col-md-3 col-sm-4 col-xs-12 text-footer">
+          <img class="footer-logo" src="{{systemSetting.siteLogo}}" onError="this.onerror=null;this.src='/no-image.png';" />
+          <div [innerHTML]="applicationSetting.pricacyPolicyText"></div>
+          <!--<a href="#" class="readmore"><i class="fa fa-chevron-circle-right" aria-hidden="true"></i> Read More</a>-->
+        </div>
+        <div class="clearfix col-md-9 col-sm-8 col-xs-12 text-footer">
+          <div class="row">
+            <div class="col-md-8 col-sm-8 col-xs-12">
+              <h3>FIND IT FAST</h3>
+
+              <div class="row">
+                <ul class="col-sm-12 list-footer">
+                  <li *ngFor="let menu of menuList"><a href="{{menu.url}}" target="{{menu.target}}">{{menu.name}}</a></li>
+                </ul>
+              </div>
+              <h3>PAYMENT METHODS</h3>
+              <ul class="payment-imgs">
+                <li *ngFor="let payment of paymentList">
+                  <img src="{{payment}}" onError="this.onerror=null; this.src='/no-image.png';" height="50">
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12 applications">
+              <h3>DOWNLOAD YOUR APP</h3><br />
+              <a href="{{applicationSetting.googleAppLink}}" target="_blank"><img width="100%" src="../assets/images/play-btn.png" alt="" /></a><br /><br />
+              <a href="{{applicationSetting.appleAppLink}}" target="_blank"><img width="100%" src="../assets/images/appstore.png" alt="" /></a>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <ul class="sociallinks">
+                <li *ngIf="applicationSetting.instagramActive"><a href="{{applicationSetting.instagramLink}}" target="_blank"><i class="fa fa-instagram rss" aria-hidden="true"></i> <strong>Follow Us <span>on Instagram</span></strong></a></li>
+                <li *ngIf="applicationSetting.twitterActive"><a href="{{applicationSetting.twitterLink}}" target="_blank"><i class="fa fa-twitter-square twitter" aria-hidden="true"></i> <strong>Follow Us <span>on Twitter</span></strong></a></li>
+                <li *ngIf="applicationSetting.facebookActive"><a href="{{applicationSetting.facebookLink}}" target="_blank"><i class="fa fa-facebook-square facebook" aria-hidden="true"></i> <strong>Find Us <span>on Facebook</span></strong></a></li>
+                <li *ngIf="applicationSetting.googleActive"><a href="{{applicationSetting.googleLink}}" target="_blank"><i class="fa fa-google-plus-square google" aria-hidden="true"></i> <strong>Find Us <span>on Google+</span></strong></a></li>
+                <li *ngIf="applicationSetting.whatsAppActive"><a href="{{applicationSetting.whatsAppLink}}" target="_blank"><i class="fa fa-whatsapp whatsapp-color" aria-hidden="true"></i> <strong>Find Us <span>on Whatsapp</span></strong></a></li>
+                <li *ngIf="applicationSetting.pinterestActive"><a href="{{applicationSetting.pinterestLink}}" target="_blank"><i class="fa fa-pinterest-square pinterest" aria-hidden="true"></i> <strong>Follow Us <span>on Pinterest</span></strong></a></li>
+                <li *ngIf="applicationSetting.youTubeActive"><a href="{{applicationSetting.youTubeLink}}" target="_blank"><i class="fa fa-youtube dribbble" aria-hidden="true"></i> <strong>Follow Us <span>on Youtube</span></strong></a></li>
+                <li *ngIf="applicationSetting.redditActive"><a href="{{applicationSetting.redditLink}}" target="_blank"><i class="fa fa-reddit reddit-color" aria-hidden="true"></i> <strong>Follow Us <span>on Reddit</span></strong></a></li>
+                <li *ngIf="applicationSetting.tumblrActive"><a href="{{applicationSetting.tumblrLink}}" target="_blank"><i class="fa fa-tumblr tumblr-color" aria-hidden="true"></i> <strong>Follow Us <span>on Tumblr</span></strong></a></li>
+                <li *ngIf="applicationSetting.flickrActive"><a href="{{applicationSetting.flickrLink}}" target="_blank"><i class="fa fa-flickr flickr-color" aria-hidden="true"></i> <strong>Follow Us <span>on Flickr</span></strong></a></li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class=" bottom-footer full-width">
+      <div class="clearfix container-web">
+        <div class=" container">
+          <div class="row">
+            <div class="clearfix col-md-12 text-center copyright">
+              <p>© {{systemSetting.siteCopyright}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</footer>

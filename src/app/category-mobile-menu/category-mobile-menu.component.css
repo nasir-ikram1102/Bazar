@@ -1,0 +1,134 @@
+.menu-web {
+  min-height: 387px;
+}
+
+.menu {
+  position: relative;
+  padding: 0 0 0 4px;
+  margin: 0
+}
+
+  .menu > li {
+    display: block;
+    position: static;
+  }
+
+    .menu > li > a {
+      display: block;
+      height: auto;
+      line-height: 22px;
+      margin: 0 5px;
+      padding: 1px 0;
+    }
+
+      .menu > li > a > p {
+        padding: 0;
+      }
+
+    .menu > li:hover > a {
+      color: #227087
+    }
+
+    .menu > li:hover {
+      background-color: #fff
+    }
+
+  .menu li .megadrop {
+    opacity: 0;
+      visibility: hidden;
+      position: absolute;
+      list-style: none;
+      top: -1px;
+      left: 148px;
+      width: 951px;
+      min-height: 362px;
+      text-align: left;
+      padding: 14px 0;
+      z-index: 99;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.99);
+      border: solid 1px #ccc;
+      margin-left: 66px;
+      overflow:auto;
+  }
+
+  .menu li:hover .megadrop {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+
+  .menu li .megadrop .menu-widget ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  .menu .megadrop ul li {
+    padding: 0;
+    list-style: none;
+    font-size: 12px;
+    line-height: 16px;
+    border-bottom: none;
+  }
+
+  .menu .megadrop h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 10px;
+    color: #b61f24;
+  }
+
+  .menu .megadrop ul li a {
+    display: inline-block;
+    vertical-align: top;
+    color: #000;
+  }
+
+    .menu .megadrop ul li a:hover {
+      color: #b61f24;
+      text-decoration: none
+    }
+
+  .menu > li > ul li ul, .menu li > ul li, .menu > li > .megadrop, .menu > li > ul, .menu > li {
+    transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-outs
+  }
+
+  .menu .megadrop .menu-widget {
+    margin: 0 0 20px;
+    position: relative
+  }
+
+    .menu .megadrop .menu-widget:after {
+      height: 1px;
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      background: #aaa;
+      right: 15px
+    }
+
+  /*.menu .megadrop .menu-widget:last-child:after {
+  display: none
+}*/
+
+  .menu .megadrop ul {
+    padding: 0 0 0 10px;
+    overflow: hidden
+  }
+
+    .menu .megadrop ul li {
+      margin: 0 0 7px
+    }
+
+  .menu .megadrop li a {
+    margin: 0
+  }
+
+.cursor-add {
+  cursor: pointer !important;
+}

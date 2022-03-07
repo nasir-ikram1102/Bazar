@@ -1,0 +1,102 @@
+.menu-web {
+  width: 220px;
+  height: 387px;
+  float: left;
+  background: #fff;
+  border: solid 1px #ddd;
+  z-index: 9;
+}
+
+  .menu-web ul {
+    margin: 0;
+  }
+
+.arrow-border {
+  width: 100%;
+  height: 28px;
+  position: absolute;
+  overflow: hidden;
+  left: 3px;
+  top: -28px;
+  z-index: 9
+}
+
+  .arrow-border:after, .arrow-border:before {
+    content: "";
+    width: 40px;
+    height: 40px;
+    left: -2px;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position: absolute
+  }
+
+  .arrow-border:before {
+    background-color: #d3d3d3;
+    top: 22px
+  }
+
+  .arrow-border:after {
+    background-color: #fff;
+    top: 23px
+  }
+
+.menu-web > ul li, .menu-mobile-left-content > ul li {
+  list-style: none;
+  transition: 0.5s ease;
+  -o-transition: 0.5s ease;
+  -moz-transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+}
+
+  .menu-web > ul li:last-child, .menu-mobile-left-content > ul li:last-child {
+    border-bottom: none
+  }
+
+  .menu-web > ul li img, .menu-mobile-left-content > ul li img {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 0 0 10px
+  }
+
+  .menu-web > ul li a, .menu-mobile-left-content > ul li a {
+    display: block;
+    margin: 0 5px 1px 5px;
+    color: #000;
+    text-decoration: none
+  }
+
+  .menu-web > ul li p, .menu-mobile-left-content > ul li p {
+    font-size: 13px;
+    margin: 0;
+  }
+
+  .menu-web > ul li i, .menu-mobile-left-content > ul li i {
+    font-size: 16px;
+    margin: 1px 5px 0 5px;
+    width: 20px;
+    text-align: center;
+    float: left
+  }
+
+  .menu-bg-white > ul li:last-child a, .menu-mobile-left-content > ul li:last-child a {
+    border: none;
+    margin: 0 10px
+  }
+
+  .menu-web > ul li:first-child::before, .menu-mobile-left-content > ul li:first-child::before {
+    display: none
+  }
+
+  .menu-web > ul li:hover > a, .menu-mobile-left-content > ul li:hover > a {
+    color: #b61f24
+  }
+
+  .menu-web > ul li a:hover {
+    text-decoration: none
+  }
+
+.menu-bg-white ul li, .menu-bg-white {
+  background: #fff
+}

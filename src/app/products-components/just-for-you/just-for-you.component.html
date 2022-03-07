@@ -1,0 +1,92 @@
+<div class="box-product full-width mb-30" *ngIf="products != undefined && products.length > 0" (deferLoad)="deferLoadShow = true">
+  <ng-container *ngIf="deferLoadShow">
+    <div class=" container relative">
+      <div class="row">
+        <div class="slider-heading">
+          <div class="col-sm-6"><h3>Just for You</h3></div>
+          <div class="col-sm-6 text-right">
+            <!--<a href="#">Shop More <i class="fa fa-angle-right" aria-hidden="true"></i></a>-->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="relative">
+          <div class="good-deal-product">
+            <div class="product-son-listing col-lg-5ths col-md-3 col-sm-6 col-xs-12" *ngFor="let product of products">
+              <div class="product-category discounted-product">
+                <span *ngIf="product.appliedDiscoutType > 0 && product.salePrice < product.regularPrice" class="product-discount text-center">{{product.regularPrice | calculateDiscount:product.salePrice}} %</span>
+                <div class="image-product overfollow-hidden">
+                  <div class="center-vertical-image">
+                    <!--<a [routerLink]='["/product-detail/", product.productID]'>-->
+                    <a (click)="chkJustForProduct(product.url)" class="cursor-add"><img src="{{product.productDefaultImage}}" alt="Product" onError="this.onerror=null;this.src='/no-image.png';" /></a>
+                  </div>
+                  <!--<span class="product-sku">{{product.sku}}: {{product.vendorSKU}}</span>-->
+                  <ul class="option-product animate-default">
+                    <!--<li class="relative"><a href="javascript:void(0)" title="Add to compare list" (click)="AddToCompareList(product.productID)"><i class="data-icon data-icon-ecommerce icon-ecommerce-bag"></i></a></li>-->
+                    <li class="relative"><a href="javascript:void(0)" title="Add to wish list" (click)="AddIntoWishList(product.productID)" [class.favourite]="product.isFavourite"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
+                    <!--<li class="relative"><a href="javascript:void(0)" title="Zoom image" (click)="OpenModal(template, product.productDefaultImage, product.productDefaultThumbnail)"><i class="data-icon data-icon-basic icon-basic-magnifier" aria-hidden="true"></i></a></li>-->
+                  </ul>
+                </div>
+                <h3 class="title-product clearfix full-width title-hover-black">
+                  <a href="javascript:void(0)" (click)="chkJustForProduct(product.url)">{{product.name}}</a>
+                </h3>
+                <span class="product-brand-name" *ngIf="product.brand!=null"><a href="javascript:void(0)" (click)="ProductDetail(product.url)">{{product.brand.brandName}}</a></span>
+
+                <!--<div class="price-holder">
+                <span *ngIf="product.appliedDiscoutType > 0 && product.salePrice < product.regularPrice">
+                  <span class="current-price">{{product.salePrice | currencyConversion:DummyCounter}}</span>
+                  <span class="old-price">{{product.regularPrice | currencyConversion:DummyCounter}}</span>
+                </span>
+                <span>
+                  <span *ngIf="product.appliedDiscoutType == 0 || product.salePrice == product.regularPrice" class="current-price">{{product.regularPrice | currencyConversion:DummyCounter}}</span>
+                </span>
+              </div>-->
+                <div class="price-holder">
+                  <span *ngIf="product.appliedDiscoutType>0">
+                    <span class="current-price">{{product.salePrice | currencyConversion:DummyCounter}}</span>
+                    <span class="old-price">{{product.regularPrice | currencyConversion:DummyCounter}}</span>
+                  </span>
+                  <span *ngIf="product.appliedDiscoutType <=0">
+                    <span class="current-price">{{product.regularPrice | currencyConversion:DummyCounter}}</span>
+                  </span>
+                </div>
+                <div class="clearfix ranking-product-category ranking-color">
+                  <i [ngClass]="((product.averageRating > 0 ) ? ((product.averageRating < 1) ? 'fa fa-star-half' : 'fa fa-star') : 'fa fa-star-o')" aria-hidden="true"></i>
+                  <i [ngClass]="((product.averageRating > 1 ) ? ((product.averageRating < 2) ? 'fa fa-star-half' : 'fa fa-star') : 'fa fa-star-o')" aria-hidden="true"></i>
+                  <i [ngClass]="((product.averageRating > 2 ) ? ((product.averageRating < 3) ? 'fa fa-star-half' : 'fa fa-star') : 'fa fa-star-o')" aria-hidden="true"></i>
+                  <i [ngClass]="((product.averageRating > 3 ) ? ((product.averageRating < 4) ? 'fa fa-star-half' : 'fa fa-star') : 'fa fa-star-o')" aria-hidden="true"></i>
+                  <i [ngClass]="((product.averageRating > 4 ) ? ((product.averageRating < 5) ? 'fa fa-star-half' : 'fa fa-star') : 'fa fa-star-o')" aria-hidden="true"></i>
+                </div>
+                <div class="product-btns-holder">
+                  <button (click)="Buy(product)" class="btn btn-primary pull-left"><i class="fa fa-shopping-basket"></i> Buy</button>
+                  <button (click)="AddToCart(product)" class="btn btn-secondary pull-right"><i class="fa fa-shopping-basket"></i> Add to Cart</button>
+                </div>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<ng-template #template>
+  <div class="modal-body">
+    <form name="form" (ngSubmit)="f.form.valid && confirm()" #f="ngForm" novalidate>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-12">
+            <ngx-image-zoom [thumbImage]=prodThumb [fullImage]=prodImage></ngx-image-zoom>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-12">
+            <button type="button" class="btn btn-default" (click)="Decline()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>

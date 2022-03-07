@@ -1,0 +1,224 @@
+<main id="main">
+  <app-menu-vendor></app-menu-vendor>
+  <div class="vendor-products-holder bg-grey pt-40">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="vendor-page-widget whitebody mb-30">
+            <div class="top-links-holder">
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <form class="bulk-action-form">
+                  <div class="select-holder">
+                    <select class="form-control" name="bulkActionId" [(ngModel)]="bulkActionId">
+                      <ng-container *ngFor="let x of productStatusListForBulkAction">
+                        <option [value]="x.value">
+                          {{x.display}}
+                        </option>
+                      </ng-container>
+                    </select>
+                  </div>
+                  <input (click)="BulkAction()" type="submit" value="Apply">
+                </form>
+              </div>
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <form class="bulk-action-form">
+                  <div class="select-holder">
+                    <select class="form-control" name="export" [(ngModel)]="exportProductId" #export="ngModel">
+                      <option value="1">Current</option>
+                      <option value="2">All</option>
+                      <option value="3">Selected</option>
+                    </select>
+                  </div>
+                  <button *ngIf="isFileDownload==false" class="btn btn-primary"><i class="fa fa-spinner fa-spin"></i></button>
+                  <button *ngIf="isFileDownload==true" (click)="exportProducts()" type="button" [disabled]="!isFileDownload" class="btn btn-primary">Export</button>
+                  <!--<input (click)="exportProducts()" type="submit" value="Export">-->
+                </form>
+              </div>
+              <a href="" #fileDownload download></a>
+              <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="form-group pull-right ">
+                  <a class="btn btn-primary" href="javascript:void(0)" [routerLink]="['/create-product']">Create New</a>
+                </div>
+              </div>
+            </div> 
+              <div class="clear"></div>
+              <div class="action-filter-block mb-30">
+                <form class="products-filter-form">
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="tsb-form vendor-product-search-form">
+                      <div class="form-group">
+                        <input type="search" placeholder="Search With Keyword" name="searchKeyword" [(ngModel)]="searchKeyword">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                      <div class="select-holder">
+                        <select class="form-control" name="inStock" [(ngModel)]="inStock">
+                          <option value="">Stock</option>
+                          <option value="true">In Stock</option>
+                          <option value="false">Out of Stock</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 col-sm-6 col-xs-12">
+                    <div class="form-group">
+                      <div class="select-holder">
+                        <select class="form-control" name="productStatusId" [(ngModel)]="productStatusId">
+                          <option value="0"> All </option>
+                          <ng-container *ngFor="let x of productStatusListForFiltration">
+                            <option [value]="x.value">
+                              {{x.display}}
+                            </option>
+                          </ng-container>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <!--<div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="form-group">
+            <div class="select-holder">
+              <select class="form-control" name="parentCategoryID" [(ngModel)]="parentCategoryID" (click)="GetCategoryListDropdown()">
+                <option value="0"> All </option>
+                <ng-container *ngFor="let parentCategory of parentCategoryList">
+                  <option [value]="parentCategory.categoryID">
+                    {{parentCategory.categoryName}}
+                  </option>
+                  <ng-container *ngFor="let category of categoryListDropdown">
+                    <option *ngIf="parentCategory.categoryID==category.parentCategoryID" [value]="category.categoryID">
+                      &nbsp;&nbsp;
+                      {{category.categoryName}}
+                    </option>
+                    <ng-container *ngFor="let subcategory of subCategoryList">
+                      <option *ngIf="category.categoryID==subcategory.parentCategoryID" [value]="subcategory.categoryID">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{subcategory.categoryName}}
+                      </option>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </select>
+            </div>
+          </div>
+        </div>-->
+
+                  <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="form-group have-btn">
+                      <div class="select-holder">
+                        <select class="form-control" name="isActive" [(ngModel)]="isActive">
+                          <option value="">Active-InActive</option>
+                          on
+                          <option value="true">Active</option>
+                          <option value="false">InActive</option>
+                        </select>
+                      </div>
+                      <input (click)="OnFilterChange()" type="submit" value="Filter">
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div *ngIf="ProductList == null || ProductList.length < 0" class="sm-loader"></div>
+          </div>
+
+          <div class="orders-table-holder whitebody">
+            <div class="table-responsive">
+              <table class="vendors-products-table">
+                <thead>
+                  <tr>
+                    <th class="select-col">
+                      <div class="checkbox-holder">
+                        <label for="product-select-all" class="checkbox-label">
+                          <input (click)="BulkCheckUnCheked()" [(ngModel)]="bulkChechUnCheck" id="product-select-all" type="checkbox">
+                          <span class="custom-checkbox"></span>
+                        </label>
+                      </div>
+                    </th>
+                    <th class="image-col"><i class="fa fa-image"></i></th>
+                    <th class="name-col">Product Name</th>
+                    <th class="sku-col">SKU</th>
+                    <th class="stock-col">Stock</th>
+                    <th class="price-col">Regular price</th>
+                    <th class="price-col">Sale price</th>
+                    <th class="price-col">Commission </th>
+                    <th class="categories-col">Status</th>
+                    <th class="date-col">Date</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let products of ProductList">
+                    <td class="select-col">
+                      <div class="checkbox-holder">
+                        <label for="{{products.id}}" class="checkbox-label">
+                          <input id="{{products.id}}" type="checkbox" [(ngModel)]="products.isCheck">
+                          <span class="custom-checkbox"></span>
+                        </label>
+                      </div>
+                    </td>
+                    <td class="image-col">
+                      <div class="image-holder">
+                        <a [routerLink]='["/product/",products.url]' href="javascript:void(0)">
+                          <img src="{{products.productDefaultImage}}" onError="this.onerror=null; this.src='/no-image.png';" alt="Product" width="50">
+                        </a>
+                      </div>
+                    </td>
+                    <td class="name-col">
+                      <strong class="product-name">
+                        <a [routerLink]='["/product/",products.url]' href="javascript:void(0)">{{ products.name}}</a>
+                        <ul class="product-links list-unstyled">
+                          <li>{{ products.productID}}</li>
+                          <li *ngIf="products.productType===1?true:false">
+                            <a class="" [routerLink]='["/edit-simple-product-vendor",products.id]'>Edit</a>
+                          </li>
+                          <li *ngIf="products.productType===2?true:false">
+                            <a class="" [routerLink]='["/edit-variable-product-vendor",products.id]' title="Detail">Edit</a>
+                          </li>
+                          <li *ngIf="products.productStatusId==4 && products.isActive"><a [routerLink]='["/product/",products.url]' href="javascript:void(0)">View</a></li>
+                          <!--<li><a href="#">Trash</a></li>-->
+                        </ul>
+                      </strong>
+                    </td>
+                    <th class="sku-col">{{products.sku}}:{{products.vendorSKU}}</th>
+                    <td class="stock-col">
+                      <span *ngIf="products.inStock==true" class="product-stock in-stock">In-stock</span>
+                      <span *ngIf="products.inStock==false" class="product-stock danger">Out-stock</span>
+                    </td>
+
+                    <td class="price-col">
+                      {{products.regularPrice  | currencyConversion:DummyCounter}}
+                    </td>
+
+                    <td class="price-col">
+                      {{products.salePrice  | currencyConversion:DummyCounter}}
+                    </td>
+                    <td class="price-col">
+                    {{products.commissionAmount  | currencyConversion:DummyCounter}}
+                    </td>
+                    <td class="price-col">{{products.productStatus}}</td>
+                    <td class="date-col">
+                      <span>{{products.createdDate | timeAgo}}</span>
+                    </td>
+                    <td class="stock-col">
+                      <span class="label label-danger" *ngIf="!products.isActive">InActive</span>
+                      <span class="label label-success" *ngIf="products.isActive">Active</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="text-center" *ngIf="ProductList?.length<=0">No Record Found</div>
+            </div>
+          </div>
+          <div class="vendor-page-widget whitebody">
+            <div class="pagging relative" *ngIf="totalRecords != null && totalRecords > 0">
+              <ul class="pull-right">
+                <pagination [totalItems]="totalRecords" [itemsPerPage]="10" [maxSize]="10" (pageChanged)="PageChanged($event)"></pagination>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ </div>
+</main>

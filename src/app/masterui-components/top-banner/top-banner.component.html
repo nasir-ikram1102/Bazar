@@ -1,0 +1,46 @@
+<div class="topbar header-top">
+  <div class="container">
+    <div class="row">
+      <p class="contact_us_header col-md-5 col-xs-12 col-sm-7 clear-margin">
+        <i class="fa fa-phone"></i> UAN: {{systemSetting.siteUAN}} &nbsp;&nbsp;&nbsp;<i class="fa fa-envelope"></i> {{systemSetting.administratorEmail}}
+      </p>
+      <div class="clear-padding menu-header-top text-right col-md-7 col-xs-12 col-sm-5">
+        <ul class="clear-margin">
+          <!--<li class="relative"><a href="#"><i class="fa fa-map-marker"></i> Track your Order</a></li>
+          <li class="relative" *ngIf="isShop"><a href="#"><i class="fa fa-shopping-bag"></i> Shop</a></li>--><!--Comment By Hassan-->
+
+          <li class="relative">
+            <a *ngIf="customerId==2" [routerLink]="['/customer']"><i class="fa fa-user"></i> My Dashboard</a>
+            <a *ngIf="customerId==1" [routerLink]="['/vendor']"><i class="fa fa-user"></i> My Dashboard</a>
+
+            <ul>
+              <li *ngIf="customerId==2" class="relative"><a href="javascript:void(0)" [routerLink]="['/profile-update']"><i class="fa fa-angle-right"></i> Edit Profile</a></li>
+              <li *ngIf="customerId==1" class="relative"><a href="javascript:void(0)" [routerLink]="['/account-setting-vendor']"><i class="fa fa-angle-right"></i> Edit Profile</a></li>
+              <li class="relative"><a  (click)="Logout()" href="javascript:void(0)"><i class="fa fa-sign-out"></i> Logout</a></li>
+            </ul>
+          </li>
+
+          <li *ngIf="!isLoggedIn" class="relative"><a href="javascript:void(0)" [routerLink]="['/login']"><i class="fa fa-sign-in"></i> Login</a></li>
+          <li class="relative" *ngIf="!isSellWith"><a href="javascript:void(0)" [routerLink]="['/register-vendor']"><i class="fa fa-sign-in"></i>Sell with us</a></li>
+          <li class="relative">
+            <a href="javascript:void(0)">{{symbol}} Currency</a>
+            <ul>
+              <li class="relative" (click)="CurrencyChange('£/'+rates.gbp)"><a href="javascript:void(0)">£-GBP</a></li>
+              <li class="relative" (click)="CurrencyChange('€/'+rates.eur)"><a href="javascript:void(0)">€-EUR</a></li>
+              <li class="relative" (click)="CurrencyChange('PKR/'+rates.pkr)"><a href="javascript:void(0)">Rs-PKR</a></li>
+              <li class="relative" (click)="CurrencyChange('$/'+rates.usd)"><a href="javascript:void(0)">$-USD</a></li>
+              <li class="relative" (click)="CurrencyChange('A$/'+rates.aud)"><a href="javascript:void(0)">A$-AUD</a></li>
+              <li class="relative" (click)="CurrencyChange('AED/'+rates.aed)"><a href="javascript:void(0)">Aed-AED</a></li>
+            </ul>
+            <!--(value)="currencyList[0].rates.gbp"
+    (value)="currencyList[0].rates.eur"
+    (value)="currencyList[0].rates.pkr"
+    (value)="currencyList[0].rates.usd"
+    (value)="currencyList[0].rates.aud"
+    (value)="currencyList[0].rates.aed"-->
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

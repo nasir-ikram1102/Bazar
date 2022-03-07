@@ -1,0 +1,103 @@
+<div class="user-account-modal default-modal wrappage">
+  <div class="sidebar loginpic">
+    <div class="image-holder">
+      <a href="javascript:void(0)" [routerLink]="['/']"><img class="height100" src="../../../assets/images/img01.jpg" alt="Sign in Image"></a>
+    </div>
+  </div>
+  <div class="content">
+    <div class="text-center loginbox">
+      <div class="text-center hiddenlogo"><a href="javascript:void(0)" [routerLink]="['/']"><img class="height100" src="../../../assets/images/logo.png" alt="logo"></a></div>
+      <form (ngSubmit)="f.form.valid && isUnique && ngSubmit()" #f="ngForm" novalidate>
+        <strong class="tsb-form-heading">Sign Up</strong>
+        <p>Registering to this website, you accept our <a href="#">Terms of Use</a> and our <a href="#">Privacy</a><br /><br /></p>
+        <div class="text-left">
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+              <input type="text" class="form-control" name="firstName" placeholder="First Name" [(ngModel)]="userModel.firstName" #firstName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && firstName?.invalid }" pattern="[a-z A-Z]+" required>
+              <div *ngIf="(f.submitted || firstName?.touched) && firstName?.invalid" class="invalid-feedback">
+                <div *ngIf="firstName.errors.required"><span class="text-danger">First Name is required</span></div>
+                <div *ngIf="firstName.errors.pattern"><span class="text-danger">Only alphabets allowed</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+              <input type="text" class="form-control" name="lastName" placeholder="Last Name" [(ngModel)]="userModel.lastName" #lastName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && lastName?.invalid }" pattern="[a-z A-Z]+" required>
+              <div *ngIf="(f.submitted || lastName?.touched) && lastName?.invalid" class="invalid-feedback">
+                <div *ngIf="lastName.errors.required"><span class="text-danger">Last Name is required</span></div>
+                <div *ngIf="lastName.errors.pattern"><span class="text-danger">Only alphabets allowed</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+              <input type="email" class="form-control" name="email" (keypress)="KeyPressEvenet()" (focusout)="IsUniqueEmail()" placeholder="Email" autocomplete="off" [(ngModel)]="userModel.email"
+                     #email="ngModel"
+                     [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"
+                     pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"
+                     required>
+              <div *ngIf="(f.submitted || email?.touched) && email?.invalid" class="invalid-feedback">
+                <div *ngIf="email.errors?.required"><span class="text-danger">Email is required</span></div>
+                <div *ngIf="email.errors?.pattern"><span class="text-danger">Email is invalid</span></div>
+              </div>
+              <div class="invalid-feedback" *ngIf="email?.touched && !isUnique"><span class="text-danger">Email already exists</span></div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group input-daterange" data-provide="datepicker">
+              <input type="text" class="form-control" [maxDate]="maxDate" (bsValueChange)="selectBirthDate($event)" name="birthDate" id="dateOfBirth" placeholder="Date of birth" [(ngModel)]="userModel.birthDate" #birthDate="ngModel" [ngClass]="{ 'is-invalid': f.submitted && birthDate.invalid }" bsDatepicker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+              <input type="password" class="form-control" name="password" placeholder="Password" autocomplete="off"
+                     autocomplete="new-password" accept=""
+                     [(ngModel)]="userModel.password" #password="ngModel"
+                     pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                     [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required>
+              <div *ngIf="(f.submitted || password?.touched) && password?.invalid" class="invalid-feedback">
+                <div *ngIf="password.errors.required"><span class="text-danger">Password is required</span></div>
+                <div *ngIf="password.errors.pattern"><span class="text-danger">Must contain at least one number and one uppercase and lowercase letter, and at least 8 characters</span></div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+              <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" autocomplete="off"
+                     (keyup)="checkPasswords()"
+                     autocomplete="new-password" accept=""
+                     [(ngModel)]="userModel.confirmPassword" #confirmPassword="ngModel"
+                     required
+                     [ngClass]="{ 'is-invalid': f.submitted && confirmPassword.invalid }">
+              <div *ngIf="(f.submitted || confirmPassword?.touched) && confirmPassword?.invalid" class="invalid-feedback">
+                <div *ngIf="confirmPassword.errors.required"><span class="text-danger">Confirm password is required</span></div>
+              </div>
+              <div *ngIf="!isPasswordMatch && confirmPassword?.valid"><span class="text-danger">Password does not match</span></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+              <input type="text" class="form-control" name="mobilePhone" placeholder="Phone" [(ngModel)]="userModel.mobilePhone" #mobilePhone="ngModel">
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group" style="padding-top:15px">
+              <label for="male" class="radio-label">
+                Male
+                <input id="male" type="radio" value="male" name="gender" [(ngModel)]="userModel.gender" #gender="ngModel">
+                <span class="custom-radio"></span>
+              </label>&nbsp;&nbsp;&nbsp;<label for="female" class="radio-label">
+                Female
+                <input id="female" type="radio" value="female" name="gender" [(ngModel)]="userModel.gender" #gender="ngModel">
+                <span class="custom-radio"></span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group no-margin">
+            <button *ngIf="isSubmitted==false" class="btn btn-primary"><i class="fa fa-spinner fa-spin"></i> Processing</button>
+            <button *ngIf="isSubmitted==true"   class="btn btn-primary" type="submit" value="Create Account">Create Account</button>
+            <!--<input type="submit" value="Register" [disabled]="!f.form.valid || !isUnique || isSubmitted || !isPasswordMatch">-->
+          </div>
+          <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+      </form>
+      <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>
+<div class="clear"></div>

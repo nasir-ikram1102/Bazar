@@ -1,0 +1,10 @@
+
+   <input type="text"  [(ngModel)]="search" (ngSubmit)="typeaheadOnSelect()" (keyup.enter)="typeaheadOnSelect()" placeholder="Search Products..."
+          class="form-control">
+   <button type="button" class="animate-default button-hover-red" (click)="typeaheadOnSelect()" ><i class="fa fa-search"></i></button>
+   <!--<div *ngIf="typeaheadLoading">Loading</div>-->
+
+   <!--<ng-template #customItemTemplate let-model="item" let-index="index">
+     <span [innerHTML]="model.name"></span>
+   </ng-template>-->
+

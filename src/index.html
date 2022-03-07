@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>E-Commerce</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="eCommerce">
+  <meta name="keywords" content="eCommerce">
+  <link id="favId" rel="icon" type="image/x-icon">
+</head>
+<body>
+  <script>
+    window.addEventListener('load', function () {
+    }, false)
+  </script>
+
+  <app-root>
+    <div class="loader"></div>
+  </app-root>
+
+  <link rel="stylesheet" type="text/css" href="assets/css/icon-font-linea.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-theme.min.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/themify-icons.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/effect.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/home.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/owl.theme.default.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/owl.carousel.min.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/responsive.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/includes/header.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/includes/leftnav.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/includes/slider.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/includes/faqs.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/includes/newsletter.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/includes/footer.css" />
+  <link rel="stylesheet" type="text/css" href="assets/vendor/bootstrap/toastr/ng2-toastr.min.css" />
+  <link rel="stylesheet" href="assets/vendor/bootstrap/css/bs-datepicker.css" />
+  
+  <script src="https://cdn.ckeditor.com/4.5.11/full/ckeditor.js"></script>
+  <script type="text/javascript">
+    window.smartlook || (function (d) {
+      var o = smartlook = function () { o.api.push(arguments) }, h = d.getElementsByTagName('head')[0];
+      var c = d.createElement('script'); o.api = new Array(); c.async = true; c.type = 'text/javascript';
+      c.charset = 'utf-8'; c.src = 'https://rec.smartlook.com/recorder.js'; h.appendChild(c);
+    })(document);
+    smartlook('init', '{ID}');
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id={ID}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', '{ID}');
+  </script>
+
+  <script>
+
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+
+      n.queue = []; t = b.createElement(e); t.async = !0;
+
+      t.src = v; s = b.getElementsByTagName(e)[0];
+
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+
+      'https://connect.facebook.net/en_US/fbevents.js');
+
+
+    fbq('init', '{ID}');
+
+    fbq('track', 'PageView');
+
+  </script>
+
+  <noscript>
+
+    <img height="1" width="1"
+         src="https://www.facebook.com/tr?id={ID}&ev=PageView&noscript=1" />
+
+  </noscript>
+
+</body>
+</html>

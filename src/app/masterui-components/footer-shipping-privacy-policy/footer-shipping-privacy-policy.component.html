@@ -1,0 +1,35 @@
+
+<div class="bg-white full-width relative" (deferLoad)="deferLoadShow = true">
+  <ng-container *ngIf="deferLoadShow">
+    <div class="container clear-padding">
+      <div class="col-md-7 col-sm-6 col-xs-12">
+        <h4 class="heading4">Shipping & Return Policy</h4>
+        <div class="cmspage">
+          <div [innerHTML]="applicationSetting.shippingPolicyText"></div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+      <div class="col-md-5 col-sm-6 col-xs-12">
+        <h4 class="heading4">Why Choose eCommerce</h4>
+        <div role="tabpanel" class="tab-pane active">
+          <div class="row">
+            <div *ngFor="let f of faqArr; let i = index" class="col-md-12 col-sm-12 col-xs-12">
+              <div class="toggle" *ngFor="let faq of f;">
+                <div class="toggle-title" [class.active]="faq.isShow" (click)="IsShow(faq)">
+                  <h3>
+                    <i *ngIf="!faq.isShow" class="fa fa-angle-down"></i>
+                    <i *ngIf="faq.isShow" class="fa fa-angle-up"></i>
+                    <span class="title-name">{{faq.question}}</span>
+                  </h3>
+                </div>
+                <div class="toggle-inner" *ngIf="faq.isShow">
+                  <p>{{faq.answers}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

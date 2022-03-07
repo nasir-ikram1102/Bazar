@@ -1,0 +1,294 @@
+<main id="main">
+  <app-menu-vendor></app-menu-vendor>
+  <div class="withdrawls-content-holder bg-grey pt-40">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="vendor-page-widget whitebody mb-30">
+            <div class="order-filter-area">
+              <div class="row">
+                <div class="col-md-6 col-sm-4 col-xs-12">
+                  <div class="heading-section">
+                    <h4><strong>Purchase Order for Withdrawal Request</strong></h4>
+                  </div>
+                </div>
+                <div class="col-md-3 col-sm-4 col-xs-12 pull-right">  
+                  <div class="form-group have-btn">
+                    <div class="select-holder">
+                      <select class="form-control" name="searchStatus" [(ngModel)]="searchStatus" (change)="GetPurchaseOrders()">
+                        <option value="0">All Status</option>
+                        <ng-container *ngFor="let x of purchasOrderStatuses">
+                          <option [value]="x.value">
+                            {{x.display}}
+                          </option>
+                        </ng-container>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-holder table-responsive">
+              <table class="table-responsive vendors-orders-table" [mfData]="filteredItems" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage">
+                <thead>
+                  <tr>
+                    <th class="select-col">
+                      <div class="checkbox-holder">
+                        <label for="order-select-all" class="checkbox-label">
+                          <input (click)="BulkCheckUnCheked()" [(ngModel)]="bulkChechUnCheck" id="order-select-all" type="checkbox">
+                          <span class="custom-checkbox"></span>
+                        </label>
+                      </div>
+                    </th>
+                    <th class="id-col">PO#</th>
+                    <th class="date-col">Date</th>
+                    <th class="total-col">Total</th>  
+                  <!--<th class="total-col">Total 2</th>-->
+                  <th class="total-col">Commission</th>
+                    <th class="total-col">Balance</th>
+                    <th class="status-col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of mf.data">
+                    <td class="select-col">
+                      <div class="checkbox-holder">
+                        <label for="{{x.purchaseOrderID}}" class="checkbox-label">
+                          <input id="{{x.purchaseOrderID}}" type="checkbox" [(ngModel)]="x.isCheck">
+                          <span class="custom-checkbox"></span>
+                        </label>
+                      </div>
+                    </td>
+                    <td class="id-col">{{x.purchaseOrderID}}</td>
+                    <td class="date-col">{{x.orderDate| date: 'dd-MM-yyyy'}}</td>
+                    <td class="total-col">{{x.shippingPrice}}</td>
+                 <!--<td class="total-col">{{x.price}}</td>-->
+                    <td class="total-col">{{x.totalCommision}}</td>
+                    <td class="total-col">{{x.withdrawalAmount}}</td>
+                    <td class="status-col">
+                      <span class="order-status status-complete">
+                        {{x.orderStatusName}}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="text-center" *ngIf="filteredItems?.length<=0">No Record Found</div>
+            </div>
+            <div class="clear"></div>
+            <div class="pagging relative" *ngIf="totalRecordsPO != null && totalRecordsPO > 0">
+              <ul class="pull-right">
+                <pagination [totalItems]="totalRecordsPO" [itemsPerPage]="10" [maxSize]="5" (pageChanged)="PageChangedPO($event)"></pagination>
+              </ul>
+            </div>
+            <div class="clear"></div>
+            <div class="vendor-order-widget">
+              <div class="pull-right">
+                <button (click)="OpenModel(withdrawalsModal)" class="btn btn-primary" data-toggle="modal" data-target="#order-view-modal">Request for withdrawal</button>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+          <div class="withdrawl-widget whitebody mb-30">
+            <div class="order-filter-area">
+              <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="heading-section">
+                    <h2><strong>Withdrawals Request</strong></h2>
+                  </div>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12 pull-right"> 
+                  <div class="form-group have-btn">
+                    <div class="select-holder">
+                      <select class="form-control" name="searchStatus" [(ngModel)]="searchWithDrawalStatus" (change)="GetWithDrawals()">
+                        <option value="0">All Status</option>
+                        <ng-container *ngFor="let x of withDrawlStatuses">
+                          <option [value]="x.value">
+                            {{x.display}}
+                          </option>
+                        </ng-container>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="clear"></div>
+            <div class="table-holder table-responsive">
+              <table class="table-responsive vendors-orders-table">
+                <thead>
+                  <tr>
+                    <th class="id-col">WD#</th>
+                    <th class="date-col">Date</th>
+                    <th class="method-col">Payment Method</th>
+                    <th class="amount-col">Amount</th>
+                    <th class="status-col">Status</th>
+                    <th class="status-col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let xx of withDrawalList">
+                    <td class="amount-col">{{xx.withDrawalID}}</td>
+                    <td class="date-col">{{xx.requestDate| date: 'dd-MM-yyyy'}}</td>
+                    <td class="method-col">Banking</td>
+                    <td class="amount-col">{{xx.totalAmmount}}</td>
+                    <td class="status-col">
+                      <span *ngIf="xx.statusName == 'Pending'" class="order-status status-complete">
+                        {{xx.statusName}}
+                      </span>
+                      <span *ngIf="xx.statusName=='Canceled'" class="order-status status-cancel">
+                        {{xx.statusName}}
+                      </span>
+                      <span *ngIf="xx.statusName == 'Approved'" class="order-status status-complete">
+                        {{xx.statusName}}
+                      </span>
+                      <span *ngIf="xx.statusName == 'Processed'" class="order-status status-complete">
+                        {{xx.statusName}}
+                      </span>
+                      <span *ngIf="xx.statusName == 'In Review'" class="order-status status-pending">
+                        {{xx.statusName}}
+                      </span>
+                    </td>
+                    <td class="action-col">
+                      <button (click)="OpenWithDrawalDetailModal(xx.withDrawalID,withdrawalDetailModal)" class="action-icon">View</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="text-center" *ngIf="withDrawalList?.length<=0">No Record Found</div>
+            </div>
+            <div class="clear"></div>
+            <div class="pagging relative" *ngIf="totalRecords != null && totalRecords > 0">
+              <ul class="pull-right">
+                <pagination [totalItems]="totalRecords" [itemsPerPage]="10" [maxSize]="5" (pageChanged)="PageChangedWithDrawal($event)"></pagination>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+ 
+
+<ng-template #withdrawalsModal>
+  <div class="order-view-modal" id="PrintSection">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Summray </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true"><i class="fa fa-times"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row order-info-widget">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <strong>Number of Purchase order</strong>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <span>{{NumberOfSelectedPurchaseOrder}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row order-info-widget">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <strong>Selected Purchase Order #</strong>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <span>{{SelectedPurchaseOrdersIds}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row order-info-widget">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <strong>Total Ammount</strong>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <span>{{totalAmmount}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row order-info-widget">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <strong>Commission</strong>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <span>{{totalComission}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row order-info-widget">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <strong>Balance</strong>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <span>{{totalBalance}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form class="tsb-form status-comment-form">
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group">
+                <div class="btn-holder text-right">
+                  <input type="submit" (click)="RequestForWithDrawal()" value="Submit">
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+  </div>
+</ng-template>
+
+<ng-template #withdrawalDetailModal>
+  <div class="order-view-modal"> 
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">With drawal detail </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true"><i class="fa fa-times"></i></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row"> 
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row order-info-widget">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <strong>Total Ammount</strong>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <span>{{withDrawalDetail.totalAmmount}}</span>
+              </div>
+            </div>
+          </div>  
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row order-info-widget">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <strong>Created Date</strong>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <span>{{withDrawalDetail.requestDate| date: 'dd-MM-yyyy'}}</span>
+              </div>
+            </div>
+          </div> 
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row order-info-widget">
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <strong>Purchase Order #</strong>
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12" *ngFor="let x of withDrawalDetail.purchaseOrderIds">
+                <span>{{x}}</span>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div> 
+  </div>
+</ng-template>

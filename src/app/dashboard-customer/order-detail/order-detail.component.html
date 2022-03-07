@@ -1,0 +1,214 @@
+<section class="cart-products-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="heading-block bottom-margin-default">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 col-xs-12">
+            <div class="order-summary-holder" id="print-section">
+              <div class="header-section" style="font-family:Arial;">
+                <div class="header-section-col heading-holder">
+                  <h4><strong>Order Detail</strong></h4>
+                </div>
+                <div class="header-section-col customer-holder text-right">
+                  <strong class="customer-name">{{orderDetail.customer.fullName}}</strong>
+                  <ul class="order-short-details list-unstyled">
+                    <li>
+                      <strong>Order Date:</strong>
+                      <span>{{orderDetail.order.orderDate | date:'medium'}}</span>
+                    </li>
+                    <li>
+                      <strong>Payment Method:</strong>
+                      <span>{{orderDetail.strPaymentMethod}}</span>
+                    </li>
+                    <li>
+                      <strong>Order Status:</strong>
+                      <span>{{orderDetail.strOrderStatus}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div style="font-family:Arial;font-size:12px;color:#5a5a5a;">
+                <div class="address-block">
+                  <div class="address-block-col">
+                    <strong class="address-col-heading">Shipping Address</strong>
+                    <ul class="list-unstyled">
+                      <li>
+                        <strong>Address</strong>
+                        <span>{{orderDetail.order.shippingAddress}}</span>
+                      </li>
+                      <li>
+                        <strong>City</strong>
+                        <span>{{orderDetail.order.shippingCity}}</span>
+                      </li>
+                      <li>
+                        <strong>State</strong>
+                        <span>{{orderDetail.shippingState}}</span>
+                      </li>
+                      <li>
+                        <strong>Country</strong>
+                        <span>{{orderDetail.shippingCountry}}</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="address-block-col">
+                    <strong class="address-col-heading">Billing Address</strong>
+                    <ul class="list-unstyled">
+                      <li>
+                        <strong>Address</strong>
+                        <span>{{orderDetail.order.billingAddress}}</span>
+                      </li>
+                      <li>
+                        <strong>City</strong>
+                        <span>{{orderDetail.order.billingCity}}</span>
+                      </li>
+                      <li>
+                        <strong>State</strong>
+                        <span>{{orderDetail.billingState}}</span>
+                      </li>
+                      <li>
+                        <strong>Country</strong>
+                        <span>{{orderDetail.billingCountry}}</span>
+                      </li>
+                      <ng-container *ngIf="orderDetail != undefined">
+                        <li *ngIf="orderDetail.coupon.couponID != 0">
+                          <strong>Coupon Applied:</strong>
+                          <span>{{orderDetail.coupon.couponCode}} - {{orderDetail.coupon.description}}</span>
+                        </li>
+                        <li *ngIf="orderDetail.coupon.couponID != 0">
+                          <strong>Coupon Ammount Applied:</strong>
+                          <span>{{orderDetail.coupon.couponAmount}}</span>
+                        </li>
+                      </ng-container>
+                    </ul>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="summary-table">
+                    <thead>
+                      <tr>
+                        <th class="item-holder" style="text-align:left">Item(s)</th>
+                        <th class="item-holder brand-col" style="text-align:left">Brand</th>
+                        <th class="price-holder" style="text-align:left">Price</th>
+                        <th class="quantity-holder" style="text-align:right">Quantity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let detailOrder of orderDetail.orderDetails">
+                        <td *ngIf="ifProductExist(detailOrder.productID)" style="text-align:left"></td>
+                        <ng-container *ngFor="let product of ProductList">
+                          <td class="item-holder name-col" style="text-align:left" *ngIf="product.productID==detailOrder.productID">
+                            <a [routerLink]='["/product",product.url]' href="javascript:void(0)" style="font-size:14px;color:#000;">
+                              <img class="checkoutProductImage" src="{{product.productDefaultImage}}" onError="this.onerror=null;this.src='/no-image.png';" style="height:50px; float:left;margin-right:10px;" alt="" />
+                              {{product.name| slice:0:50}}..
+                            </a>
+                            <i class="fa fa-eye" (click)="openProductModal(productModel,detailOrder.productID)"></i>
+                          </td>
+                        </ng-container>
+                        <td *ngIf="ifBrandExist(detailOrder.brandID)" style="text-align:left"></td>
+                        <ng-container *ngFor="let brand of brandtList">
+                          <td class="item-holder brand-col" style="text-align:left" *ngIf="brand.brandID == detailOrder.brandID">{{brand.brandName}}</td>
+
+
+                        </ng-container>
+                        <td class="price-holder" style="text-align:left">{{ detailOrder.price | currencyConversion:DummyCounter}}</td>
+                        <td class="quantity-holder" style="text-align:right">{{ detailOrder.quantity}}</td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="3">items Subtotal</td>
+                        <td>{{orderDetail.order.subTotal | currencyConversion:DummyCounter}}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3">Shipping Charges</td>
+                        <td>{{orderDetail.order.shippingPrice | currencyConversion:DummyCounter}}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3">Tax</td>
+                        <td>{{orderDetail.order.taxtTotal | currencyConversion:DummyCounter}}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3"><strong>Total</strong></td>
+                        <td>{{orderDetail.order.total | currencyConversion:DummyCounter}}</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="summary-bottom-links">
+              <button class="btn btn-primary pull-right" (click)="print()">Print</button>
+              <a [routerLink]="['/my-orders']" class="btn btn-default pull-left">Back to list</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #productModel>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Product Information</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form name="form" #f="ngForm" novalidate>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-3">
+            <!--left col-->
+            <div class="text-center">
+              <img [src]="productDetail.productDefaultImage" onError="this.onerror=null;this.src='/no-image.png';"
+                   class="avatar img-circle img-thumbnail" alt="avatar">
+              <canvas hidden></canvas>
+            </div><br />
+          </div>
+          <div class="col-sm-9 clearfix"></div>
+          <div class="col-sm-9">
+            <div class="col-sm-6"><span>Name:</span> {{productDetail.name}}</div>
+            <div class="col-sm-6"><span>SKU:</span> {{productDetail.sku}}</div>
+          </div>
+          <div class="col-sm-9 clearfix"></div>
+          <div class="col-sm-9">
+            <div class="col-sm-6 "><span>Sale Price:</span> {{productDetail.salePrice}}</div>
+            <div class="col-sm-6"><span>Regular Price:</span> {{productDetail.regularPrice}}</div>
+          </div>
+          <div class="col-sm-9 clearfix"></div>
+          <div class="col-sm-9">
+            <div class="col-sm-8">
+              <div *ngFor="let varrr of productDetail.productVarients">
+                <span>{{varrr.name}}: </span> {{varrr.slug}}
+              </div>
+            </div>
+
+          </div>
+          <div class="col-sm-9 clearfix"></div>
+          <!--<div class="col-sm-9">
+            <div class="col-sm-8">
+              <span>Detail: </span>
+              <app-read-more [text]="productDetail.detail"></app-read-more>
+            </div>
+          </div>-->
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-12">
+            <button type="button" class="btn btn-default pull-right" (click)="modalRef.hide()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>

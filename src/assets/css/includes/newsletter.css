@@ -1,0 +1,54 @@
+.newsletterdiv {
+  color: #fff !important;
+  background: #b61f24 !important;
+  padding: 15px 0 0 0 !important;
+  font-size: 16px !important;
+  line-height: 30px !important
+}
+  .newsletterdiv:after {
+    content: "" !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-left: 15px solid transparent !important;
+    border-right: 15px solid transparent !important;
+    border-top: 15px solid #b61f24 !important;
+    position: relative !important;
+    margin: auto !important;
+    display: block !important;
+    bottom: -15px !important
+  }
+  .newsletterdiv span {
+    padding-top: 5px !important;
+    display: block !important
+  }
+  .newsletterdiv input {
+    width: 80% !important;
+    border: none !important;
+    padding: 5px 10px !important;
+    border-radius: 2px !important;
+    color: #000 !important;
+  }
+  .newsletterdiv .btn {
+    width: 20% !important;
+    padding: 5px 10px !important;
+    height: 40px !important;
+    background: #faa51a !important;
+    border: solid 1px #faa51a !important;
+    color: #000 !important;
+    text-shadow: none !important;
+    margin-top: -3px !important;
+    margin-left: -5px !important;
+    font-weight: 700 !important;
+    -webkit-border-top-right-radius: 2px !important;
+    -webkit-border-bottom-right-radius: 2px !important;
+    -moz-border-radius-topright: 2px !important;
+    -moz-border-radius-bottomright: 2px !important;
+    border-top-right-radius: 2px !important;
+    border-bottom-right-radius: 2px !important
+  }
+    .newsletterdiv .btn:hover {
+      color: #fff !important
+    }
+  .newsletterdiv .text-danger {
+    color: #ff8f00!important;
+  }

@@ -1,0 +1,52 @@
+<!--<app-top-banner></app-top-banner>-->
+<div class="vendor-breadcrumb-section" [ngStyle]="{'background-image': 'url(' + coverImagePath + ')'}">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <nav aria-label="breadcrumb">
+            <!--<ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item"><a href="vendor-dashboard.html">Dashboard</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Promotions</li>
+            </ol>-->
+          </nav>
+          <div class="vendor-page-heading">
+            <h1> </h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+<div class="vendor-pages-menu">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <ul class="page-navigation list-unstyled">
+          <li [class.active]="activeLi=='/vendor'">
+            <a [routerLink]="['/vendor']" href="javascript:void(0)">
+              <i class="fa fa-tachometer"></i>Dashboard
+            </a>
+          </li>
+          <li [class.active]="activeLi==='/purchase-orders-vendor'"><a [routerLink]="['/purchase-orders-vendor']" href="javascript:void(0)"><i class="fa fa-list"></i>Orders</a></li>
+          <li [class.active]="activeLi==='/products-vendor'" class="has-child">
+            <a [routerLink]="['/products-vendor']"><i class="fa fa-cubes"></i>Products</a>
+            <ul class="page-sub-navigation list-unstyled">
+              <li><a [routerLink]="['/products-vendor']" href="javascript:void(0)">All Products</a></li>
+              <li><a [routerLink]="['/create-product']" href="javascript:void(0)">Add Product</a></li>
+             <li><a [routerLink]="['/product-import']" href="javascript:void(0)">Import Product</a></li>
+
+            </ul>
+          </li>
+          <li [class.active]="activeLi==='/coupons-vendor'"><a [routerLink]="['/coupons-vendor']" href="javascript:void(0)"><i class="fa fa-cogs"></i>Coupon Management</a></li>
+          <li [class.active]="activeLi==='/account-setting-vendor'"><a [routerLink]="['/account-setting-vendor']" href="javascript:void(0)"><i class="fa fa-cogs"></i>Settings</a></li>
+          <li [class.active]="activeLi==='Promomtions'"><a [routerLink]="['/vendor-promotions']" href="javascript:void(0)"><i class="fa fa-bullhorn"></i>Promotions</a></li>
+          <!--<li [class.active]="activeLi==='Statements'"> <a href="#"><i class="fa fa-bar-chart"></i>Statements</a></li>-->
+          <li [class.active]="activeLi==='/withdarawl-vendor'"><a [routerLink]="['/withdarawl-vendor']" href="javascript:void(0)"><i class="fa fa-bar-chart"></i>Withdrawals</a></li>
+          <li ><a [routerLink]="['/store',shopName]" href="javascript:void(0)"><i class="fa fa-credit-card-alt"></i>View Store</a></li>
+          <li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,243 @@
+<!-- Breadcrumb -->
+<div class="relative" *ngIf="!categoryBreadCrumbs">
+  <div class="container">
+    <div class="breadcrumb-web">
+      <ul class="clear-margin">
+        <li class="animate-default title-hover-red"><a [routerLink]='["/"]'>Home</a></li>
+        <li class="animate-default current">{{heading}}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="relative" *ngIf="categoryBreadCrumbs">
+  <div class="container">
+    <div class="breadcrumb-web">
+      <ul class="clear-margin">
+        <li class="animate-default title-hover-red">
+          <a [routerLink]='["/"]'>Home</a>
+        </li>
+        <li *ngFor="let breadcrumb of breadcrumbs; let i = index" [ngClass]="(CheckEquals(i)) ? 'animate-default current' : 'animate-default title-hover-red'" class="animate-default title-hover-red">
+          <a href="/{{breadcrumb.url}}" target="_parent">{{breadcrumb.categoryName}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- End Breadcrumb -->
+<!-- Content Category -->
+<div class="relative container-web">
+  <div class="container">
+    <div class="relative category-slider-banner-big">
+      <div class="">
+        <div class="col-sm-12 col-xs-12 relative clear-padding button-show-sidebar">
+          <p onclick="showSideBar()"><span class="ti-filter"></span> Sidebar</p>
+        </div>
+        <carousel [noPause]="false" *ngIf="!isCategory && saleID===0">
+          <slide *ngFor="let category of bannerImages | slice:0:5;">
+            <figure class="slider__item"><img src="{{category.largeImage}}" onError="this.onerror=null; this.src='/no-image.png';" /></figure>
+          </slide>
+        </carousel>
+        <carousel [noPause]="false" *ngIf="saleID!=0">
+          <slide *ngFor="let category of bannerImages | slice:0:5;">
+            <figure class="slider__item"><img src="{{category}}" onError="this.onerror=null; this.src='/no-image.png';" /></figure>
+          </slide>
+        </carousel>
+        <carousel [noPause]="false" *ngIf="isCategory">
+          <slide>
+            <figure class="slider__item"><img src="{{categoryBannerImage}}" onError="this.onerror=null; this.src='/no-image.png';" /></figure>
+          </slide>
+        </carousel>
+      </div>
+      <br />
+      <div class="category-banner-thumbnails" *ngIf="bannerCategories != null && bannerCategories.length > 0 && !isCategory">
+        <!--, navText: ['<i class=fa fa-angle-left aria-hidden=true></i>','<i class=fa fa-angle-right aria-hidden=true></i>']-->
+        <owl-carousel [options]="carouselOptions" [carouselClasses]="['category-banner-thumbnails','owl-carousel','owl-theme']">
+          <div class="slide" *ngFor="let category of bannerCategories">
+            <a href="/{{category.url}}">
+              <div class="image-holder">
+                <img src="{{category.smallImage}}" onError="this.onerror=null; this.src='/no-image.png';" alt="Category Banner Thumbnails Image">
+              </div>
+              <span class="category-name text-center">{{category.categoryName}}</span>
+            </a>
+          </div>
+        </owl-carousel>
+      </div>
+    </div>
+    <div class="row">
+      <!-- Sider Bar -->
+
+      <div class="col-md-3 relative right-padding-default clear-padding" id="slide-bar-category">
+        <div class="col-md-12" *ngIf="showFilter"><a href="javascript:void(0)" class="text-center text-danger" (click)="clearAllFilter()">Clear All Filter's</a></div>
+        <div *ngIf="!isCategory" class="sider-bar-category bottom-margin-default">
+          <p class="title-siderbar bold">Category</p>
+          <div *ngIf="categoryList == null || categoryList.length == 0" class="treeview-text">
+            No items found
+          </div>
+          <div class="form-group" *ngIf="categoryList != null && categoryList.length != 0">
+            <div class="category-suggestion-list-widget">
+              <div class="category-suggestions-lists">
+                <ul class="list-unstyled">
+                  <li *ngFor="let parent of categoryList">
+                    <span (click)="ToggleShow(parent)"><i *ngIf="parent.isShow" class="fa fa-angle-down"></i><i *ngIf="!parent.isShow" class="fa fa-angle-right"></i> {{ parent.text }}</span>
+                    <ul class="list-unstyled" *ngIf="parent.isShow">
+                      <li *ngFor="let sub of parent.children">
+                        <span (click)="ToggleShow(sub)"><i *ngIf="sub.isShow" class="fa fa-angle-down"></i><i *ngIf="!sub.isShow" class="fa fa-angle-right"></i> {{sub.text}}</span>
+                        <ul class="list-unstyled" *ngIf="sub.isShow">
+                          <li *ngFor="let child of sub.children">
+                            <a href="/{{child.url}}" target="_parent"><i class="fa fa-angle-right"></i> {{child.text}}</a>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sider-bar-category bottom-margin-default">
+          <p class="title-siderbar bold">Brands</p>
+          <ul *ngIf="brandList != null && brandList.length > 0" class="brandslist clear-margin clear-margin">
+            <li *ngFor="let brand of brandList">
+              <label (click)="ToggleClass(brand)">
+                <input type="checkbox" [(ngModel)]="brand.isChecked" [value]="brand.brandID" (change)="OnBrandSelect()">
+                <img [ngClass]="brand.selectedClass" src="{{imageServerPath}}{{brand.brandLogoImage}}" onError="this.onerror=null; this.src='/no-image.png';" />
+              </label>
+            </li>
+          </ul>
+          <div *ngIf="brandList == null || brandList.length == 0" class="treeview-text">
+            No items found
+          </div>
+          <div class="col-md-12" *ngIf="brandFilter"><a href="javascript:void(0)" class="text-center text-danger" (click)="clearBrand()">Clear Brand Filter</a></div>
+        </div>
+        <div class="relative bottom-margin-default sider-bar-category">
+          <div class="relative no-border-t no-border-l no-border-r bottom-padding-default">
+            <p class="title-siderbar bold">Filter by Price</p>
+            <span *ngIf="options.ceil != 0">
+              <div class="range-slider">
+                <ng5-slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="options" (userChangeEnd)="RangeValueChange()"></ng5-slider>
+              </div>
+              <div class="input-filter-range">
+                <div class="input-range-holder pull-left">
+                  <label for="min-range">Min:</label>
+                  <input type="text" (click)="setFilterPrice()" [(ngModel)]="minPrice">
+                </div>
+                <div class="input-range-holder pull-right">
+                  <label for="max-range">Max:</label>
+                  <input type="text" (click)="setFilterPrice()" [(ngModel)]="maxPrice">
+                </div>
+              </div>
+            </span>
+            <div *ngIf="options.ceil == 0" class="treeview-text">
+              No range value found
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="priceFilter"><a href="javascript:void(0)" class="text-center text-danger" (click)="clearFilterPrice()">Clear Price Filter</a></div>
+        </div>
+        <div class="sider-bar-category bottom-margin-default">
+          <div *ngFor="let filter of filtersList" class="relative info-box full-width">
+            <p class="title-siderbar bold">{{filter.fieldName | titlecase}}</p>
+            <div *ngIf="filtersValuesList != null && filtersValuesList.length > 0" class="product-colors product-colors2 clearfix">
+              <span *ngFor="let value of filtersValuesList"><span *ngIf="filter.fieldID == value.fieldID" (click)="OnDynamicFilterChange(value)" [ngClass]="!value.active ? 'color-btn color-btn2' : 'color-btn color-btn2 checked'">{{value.value}}</span></span>
+            </div>
+            <div *ngIf="filtersValuesList == null || filtersValuesList.length == 0" class="treeview-text">
+              No items found
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12" *ngIf="variantFilter"><a href="javascript:void(0)" class="text-center text-danger" (click)="clearVariationFilter()">Clear Value Filter</a></div>
+      </div>
+      <!-- End Sider Bar Box -->
+      <!-- Content Category -->
+      <div class="col-md-9 relative overfollow-hidden category-slider-banner-big">
+        <div class="slide-brand-box full-width">
+          <!--<div class="row">
+            <div class="nav-prev nav-slide-brand"></div>
+            <div class="nav-next nav-slide-brand"></div>
+          </div>-->
+          <div class="bar-category bottom-margin-default no-border-r no-border-l no-border-t">
+            <div class="row">
+              <div class="col-md-5 col-sm-5 col-xs-12">
+                <p class="title-category-page clear-margin">{{heading}}</p>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-12"></div>
+              <div class="col-md-4 col-sm-4 col-xs-12 text-right signInModal">
+                <div class="select-holder">
+                  <select class="form-control float-right" [(ngModel)]="sortType" (change)="OnFilterChange()">
+                    <option value="">Recent </option>
+                    <option value="Low">Price low to high </option>
+                    <option value="High">Price high to low </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Product Content Category -->
+          <div *ngIf="products.products == null || products.products.length == 0" class="treeview-text">
+            No items found
+          </div>
+          <div class="row" *ngIf="products.products != null && products.products.length > 0">
+            <div class="col-md-3 col-sm-6 col-xs-12 relative animate-default" *ngFor="let product of products.products">
+              <div class="product-category discounted-product">
+                <span *ngIf="product.appliedDiscoutType > 0 && product.salePrice < product.regularPrice" class="product-discount text-center">{{product.regularPrice | calculateDiscount:product.salePrice}} %</span>
+                <div class="image-product overfollow-hidden">
+                  <div class="center-vertical-image">
+                    <a [routerLink]='["/product/", product.url]'><img src="{{product.productDefaultImage}}" onError="this.onerror=null; this.src='/no-image.png';" alt="Product"></a>
+                  </div>
+                  <!--<span class="product-sku">{{product.sku}}: {{product.vendorSKU}}</span>-->
+                  <ul class="option-product animate-default">
+                    <!--<li title="Compare">
+                      <a (click)="AddToCompareList(product.productID)" href="javascript:void(0)"><span class="ti-reload"></span></a>
+                    </li>-->
+                    <li class="relative"><a href="javascript:void(0)" title="Add to wish list" (click)="AddIntoWishList(product.productID)" [class.favourite]="product.isFavourite"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
+
+                    <!--<li title="Add to Wishlist">
+                      <a (click)="AddToWishList(product.productID)" [class.favourite]="product.isFavourite" href="javascript:void(0)"><span class="fa fa-heart"></span></a>
+                    </li>-->
+                    <!--<li title="View" data-toggle="modal" data-target="#productuickview">
+                      <a (click)="AddToCompareList(product.productID)" href="javascript:void(0)"><span class="ti-zoom-in"></span></a>
+                    </li>-->
+                  </ul>
+                </div>
+                <h3 class="title-product clearfix full-width title-hover-black"><a [routerLink]='["/product/", product.url]'>{{product.name}}</a></h3>
+                <span class="product-brand-name" *ngIf="product.brand!=null"><a href="javascript:void(0)">{{product.brand.brandName}}</a></span>
+                <div class="price-holder">
+                  <span *ngIf="product.appliedDiscoutType>0">
+                    <span class="current-price">{{product.salePrice | currencyConversion:DummyCounter}}</span>
+                    <span class="old-price">{{product.regularPrice | currencyConversion:DummyCounter}}</span>
+                  </span>
+                  <span *ngIf="product.appliedDiscoutType <=0">
+                    <span class="current-price">{{product.regularPrice | currencyConversion:DummyCounter}}</span>
+                  </span>
+                </div>
+                <div class="clearfix ranking-product-category ranking-color">
+                  <i [ngClass]="((product.averageRating > 0 ) ? ((product.averageRating < 1) ? 'fa fa-star-half' : 'fa fa-star') : 'fa fa-star-o')" aria-hidden="true"></i>
+                  <i [ngClass]="((product.averageRating > 1 ) ? ((product.averageRating < 2) ? 'fa fa-star-half' : 'fa fa-star') : 'fa fa-star-o')" aria-hidden="true"></i>
+                  <i [ngClass]="((product.averageRating > 2 ) ? ((product.averageRating < 3) ? 'fa fa-star-half' : 'fa fa-star') : 'fa fa-star-o')" aria-hidden="true"></i>
+                  <i [ngClass]="((product.averageRating > 3 ) ? ((product.averageRating < 4) ? 'fa fa-star-half' : 'fa fa-star') : 'fa fa-star-o')" aria-hidden="true"></i>
+                  <i [ngClass]="((product.averageRating > 4 ) ? ((product.averageRating < 5) ? 'fa fa-star-half' : 'fa fa-star') : 'fa fa-star-o')" aria-hidden="true"></i>
+                </div>
+                <div class="product-btns-holder">
+                  <a class="btn btn-primary pull-left" (click)="Buy(product)" href="javascript:void(0)"><i class="fa fa-shopping-basket"></i> Buy</a>
+                  <a class="btn btn-secondary pull-right" (click)="AddToCart(product)" href="javascript:void(0)"><i class="fa fa-shopping-basket"></i> Add to Cart</a>
+                </div>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+          <div class="row">
+            <div class="pagging relative" *ngIf="totalRecords != null && totalRecords > 0">
+              <ul class="pull-right">
+                <pagination [totalItems]="totalRecords" [itemsPerPage]="12" [maxSize]="5" (pageChanged)="PageChanged($event)"></pagination>
+              </ul>
+            </div>
+          </div>
+          <!-- End Product Content Category -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Sider Bar -->

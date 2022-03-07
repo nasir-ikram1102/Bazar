@@ -1,0 +1,158 @@
+
+<h3>Edit Store</h3>
+<hr />
+<div class="col-sm-8 col-lg-offset-2">
+  <div class="panel">
+    <div class="panel-heading">
+      <h3 class="panel-title">Store Detail</h3>
+    </div>
+    <div class="panel-body">
+      <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-6">
+              <label>Store Name</label>
+              <div class="input-group">
+                <input type="text" class="form-control" name="storeName" placeholder="Store Name" [(ngModel)]="store.storeName" #storeName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && storeName.invalid }" required>
+                <span class="input-group-addon"><i class="fa fa-wikipedia-w"></i></span>
+              </div>
+              <div *ngIf="f.submitted && storeName.invalid" class="invalid-feedback">
+                <div *ngIf="storeName.errors.required"><span class="text-danger">Store Name is required</span></div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <label>Email</label>
+              <div class="input-group">
+                <input type="text" class="form-control" name="email" placeholder="Email" [(ngModel)]="store.email" #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" required>
+                <span class="input-group-addon"><i class="fa fa-bars"></i></span>
+              </div>
+              <div *ngIf="f.submitted && email.invalid" class="invalid-feedback">
+                <div *ngIf="email.errors.required"><span class="text-danger">Email is required</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-6">
+              <label>Phone Number</label>
+              <div class="input-group">
+                <input type="text" class="form-control" name="phoneNumber" placeholder="Phone Number" [(ngModel)]="store.phoneNumber" #phoneNumber="ngModel" [ngClass]="{ 'is-invalid': f.submitted && phoneNumber.invalid }" required>
+                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+              </div>
+              <div *ngIf="f.submitted && phoneNumber.invalid" class="invalid-feedback">
+                <div *ngIf="phoneNumber.errors.required"><span class="text-danger">Phone Number is required</span></div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <label>Store Products Per Page</label>
+              <div class="input-group">
+                <input type="text" class="form-control" name="numberOfProductsPerPage" placeholder="Store Products Per Page" [(ngModel)]="store.numberOfProductsPerPage" #numberOfProductsPerPage="ngModel" [ngClass]="{ 'is-invalid': f.submitted && numberOfProductsPerPage.invalid }" required>
+                <span class="input-group-addon"><i class="fa fa-arrow-up"></i></span>
+              </div>
+              <div *ngIf="f.submitted && numberOfProductsPerPage.invalid" class="invalid-feedback">
+                <div *ngIf="numberOfProductsPerPage.errors.required"><span class="text-danger">Products Per Page is required</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-12">
+              <label>Address</label>
+              <div class="input-group">
+                <input type="text" class="form-control" name="address" placeholder="Address" [(ngModel)]="store.address">
+                <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-6">
+              <br />
+              <label class="fancy-checkbox custom-bgcolor-green">
+                <input type="checkbox" name="isActive" [(ngModel)]="store.isActive">
+                <span>Is Active</span>
+              </label>
+            </div>
+            <div class="col-sm-6">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-6">
+              <label>Profile Image</label>
+              <div class="input-group">
+                <input type="file" class="form-control" accept="Image/*" (change)="uploadProfileImage($event.target.files)" />
+                <span class="input-group-addon"><i class="fa fa-image"></i></span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <label>Banner Image</label>
+              <div class="input-group">
+                <input type="file" class="form-control" accept="Image/*" (change)="uploadBannerImage($event.target.files)" />
+                <span class="input-group-addon"><i class="fa fa-image"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-6">
+              <img *ngIf="!selectedProfileImage" src="/Images/StoreImages/ProfileImages/{{store.profileImage}}" width="200" alt="Image not found" />
+              <img [src]="selectedProfileImage" width="200" alt="" />
+            </div>
+            <div class="col-sm-6">
+              <img *ngIf="!selectedBannerImage" src="/Images/StoreImages/BannerImages/{{store.bannerImage}}" width="200" alt="Image not found" />
+              <img [src]="selectedBannerImage" width="200" alt="" />
+            </div>
+          </div>
+        </div>
+        <div class="panel-heading">
+          <h3 class="panel-title">Payment Settings</h3>
+        </div>
+        <hr />
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-6">
+              <label>Prefered Method</label>
+              <select class="form-control" name="preferedMethod" [(ngModel)]="store.preferedMethod" (change)="onPaymentChange($event)">
+                <option value="">---Select---</option>
+                <option value="PayPal">PayPal</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+            <div class="col-sm-6" *ngIf="showPayPalEmail">
+              <label>PayPal Email</label>
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="PayPal Email" name="payPalEmail" [(ngModel)]="store.payPalEmail" />
+                <span class="input-group-addon"><i class="fa fa-globe"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="showBankDetail">
+          <div class="row">
+            <div class="col-sm-12">
+              <label>Other Bank Detail</label>
+              <textarea class="form-control" name="otherBankDetail" [(ngModel)]="store.otherBankDetail"></textarea>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-10">
+              <a [routerLink]='["/store-list"]' class="btn btn-primary"> Store List</a>
+            </div>
+            <div class="col-sm-2">
+              <button type="submit" class="btn btn-primary pull-right"> <i class="fa fa-refresh"></i> Update</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

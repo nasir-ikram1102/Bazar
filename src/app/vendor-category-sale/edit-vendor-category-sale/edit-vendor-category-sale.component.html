@@ -1,0 +1,96 @@
+<div class="col-sm-8 col-lg-offset-2">
+  <div class="panel">
+    <div class="panel-heading">
+      <h3 class="panel-title">Category Level Sale</h3>
+    </div>
+    <div class="panel-body">
+      <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="name">Parent Category</label>
+              <div class="input-group">
+                <input type="text" readonly disabled class="form-control" name="parentCategory" value="{{parentCategory.categoryName}}" />
+                <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <label for="name">Category</label>
+              <div class="input-group">
+                <input type="text" readonly disabled class="form-control" name="category" value="{{category.categoryName}}" />
+                <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <label for="name">SubCategory</label>
+              <div class="input-group">
+                <input type="text" readonly disabled class="form-control" name="subCategory" value="{{subCategory.categoryName}}" />
+                <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+
+            <div class="col-sm-4">
+              <label for="name">From Date</label>
+              <div class="input-group">
+                <input type="text" readonly disabled class="form-control" name="startDate" value="{{categoryLevelSale.startDate}}" />
+                <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <label for="name">End Date</label>
+              <div class="input-group">
+                <input type="text" readonly disabled class="form-control" name="endDate" value="{{categoryLevelSale.endDate}}" />
+                <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <label for="name">Title</label>
+              <div class="input-group">
+                <input type="text" readonly disabled class="form-control" name="title" value="{{categoryLevelSale.title}}" />
+                <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-12">
+              <label for="url">Detail</label>
+              <textarea id="detail" class="form-control" name="description" readonly disabled>{{categoryLevelSale.description}}</textarea>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-4">
+              Company Discount Percent
+              <input type="text" class="form-control" value="{{categoryLevelSale.dicsountPercent}}" placeholder="Company Dicsount Percent" readonly disabled>
+            </div>
+            <div class="col-sm-4">
+              My  Discount Percent
+              <input type="text" max="100" min="0" class="form-control" name="dicsountPercent" id="dicsountPercent" placeholder="Dicsount Percent" [(ngModel)]="vendorCategoryLevelSale.vendorDicsountPercent">
+            </div>
+            <div class="col-sm-4">
+              <label class="fancy-checkbox custom-bgcolor-green">
+                <input type="checkbox" id="isActive" name="isActive" placeholder="Is Active" [(ngModel)]="vendorCategoryLevelSale.isActive">
+                <span>Is Active</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-12">
+              <button class="btn btn-primary"><i class="fa fa-edit"></i>Edit</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

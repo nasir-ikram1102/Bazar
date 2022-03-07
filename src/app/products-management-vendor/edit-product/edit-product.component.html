@@ -1,0 +1,451 @@
+<div class="content-heading">
+  <div class="container">
+    <div class="heading-left">
+      <h1 class="page-title">Update Product</h1>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <a [routerLink]='["/edit-variable-product-vendor",masterProductID]' class="btn btn-default pull-right"><i class="fa fa-angle-double-left"></i> Back To List  </a>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="row">
+      <div class="panel">
+        <div class="panel-body">
+          <form class="form-horizontal label-left" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="name">Product Name</label>
+              <div class="col-sm-6">
+                <input type="text" max="150" class="form-control" name="name" [(ngModel)]="product.name" #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" (input)="onTextChange($event.target.value)" required placeholder="Name" />
+                <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+                  <div *ngIf="name.errors.required"><span class="text-danger">Product Name is required</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="url">Url</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control bg-white" name="url" [(ngModel)]="product.url" #url="ngModel" [ngClass]="{ 'is-invalid': f.submitted && url.invalid }" required readonly />
+                <div *ngIf="f.submitted && url.invalid" class="invalid-feedback">
+                  <div *ngIf="url.errors.required"><span class="text-danger">Url is required</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3">Selected Category</label>
+              <div class="col-sm-6">
+                {{SelectedCategory}}
+              </div>
+            </div>
+            <hr />
+
+            <div class="form-group">
+              <label class="control-label col-sm-3">Brands</label>
+              <div class="col-sm-6">
+                <select class="form-control" name="brandID" [(ngModel)]="product.brandID" #brandID="ngModel">
+                  <!--[ngClass]="{'invalid-data': brandID.invalid && f.submitted, 'valid-data': brandID.valid && f.submitted}" required-->
+                  <option [ngValue]="null">Select Brand</option>
+                  <ng-container *ngFor="let brand of brandList">
+                    <option [value]="brand.brandID">
+                      {{brand.brandName}}
+                    </option>
+                  </ng-container>
+                </select>
+                <!--<div *ngIf="brandID.invalid && f.submitted">
+                  <span class="text-danger">Please Select Brand.</span>
+                </div>-->
+              </div>
+            </div>
+            <!--<div class="form-group">
+              <label class="control-label col-sm-3" for="url">Short Detail</label>
+              <div class="col-sm-6">
+                <textarea height="150px" minHeight="50px" class="form-control" [placeholder]="'Enter Short Detail...'" name="shortDetail" [spellcheck]="true" [(ngModel)]="shortDetail"></textarea>
+              </div>
+            </div>-->
+            <div class="form-group">
+              <label class="control-label col-sm-3">Short Detail</label>
+              <div class="col-sm-8">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <ckeditor [(ngModel)]="shortDetail" [config]="configuration" debounce="500" name="shortDetail"></ckeditor>
+              </div>
+            </div>
+
+
+
+            <div class="form-group">
+              <label class="control-label col-sm-3">Long Detail</label>
+              <div class="col-sm-8">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <ckeditor [(ngModel)]="detail" [config]="configuration" debounce="500" name="detail"></ckeditor>
+              </div>
+            </div>
+
+
+
+
+
+
+            <div class="form-group">
+              <label class="control-label col-sm-3">Specification</label>
+              <div class="col-sm-8">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <ckeditor [(ngModel)]="specification" [config]="configuration" debounce="500" name="specification"></ckeditor>
+              </div>
+            </div>
+
+
+            <div class="form-group" *ngFor="let categryField of categryFields;">
+              <label class="control-label col-sm-3" for="{{categryField.fieldName}}">{{categryField.fieldName}}</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" [(ngModel)]="categryField.value" [value]="categryField.value" id="input-{{categryField.fieldName}}" name="input-{{categryField.fieldName}}" />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3"></div>
+              <div class="col-sm-6">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <label class="fancy-checkbox custom-bgcolor-green">
+                      <input type="checkbox" id="isActive" name="isActive" placeholder="Is Active" [(ngModel)]="product.isActive">
+                      <span>Is Active</span>
+                    </label>
+                  </div>
+                  <div class="col-sm-6">
+                    <label class="fancy-checkbox custom-bgcolor-green">
+                      <input type="checkbox" id="isFeature" name="isFeature" placeholder="Is Feature" [(ngModel)]="product.isFeature">
+                      <span>Is Feature</span>
+                    </label>
+                  </div>
+                  <div class="col-sm-6">
+                    <label class="fancy-checkbox custom-bgcolor-green">
+                      <input type="checkbox" id="inStock" name="inStock" placeholder="Is Stock" [(ngModel)]="product.inStock">
+                      <span>In Stock</span>
+                    </label>
+                  </div>
+                  <div class="col-sm-6">
+                    <label class="fancy-checkbox custom-bgcolor-green">
+                      <input type="checkbox" id="reviewsEnable" name="reviewsEnable" placeholder="Enable Rewies" [(ngModel)]="product.reviewsEnable">
+                      <span>Enable Reviews</span>
+                    </label>
+                  </div>
+                  <div class="col-sm-6">
+                    <label class="fancy-checkbox custom-bgcolor-green">
+                      <input type="checkbox" id="isExcluded" name="isExcluded" placeholder="Excluded from Sale" [(ngModel)]="product.isExcluded">
+                      <span>Excluded from Sale</span>
+                    </label>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label class="fancy-checkbox custom-bgcolor-green">
+                      <input type="checkbox" id="isOnCash" name="isOnCash" placeholder="Is OnCash" [(ngModel)]="product.isOnCash">
+                      <span>Is OnCash</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3">Warranty Type</label>
+              <div class="col-sm-6">
+                <div class="select-holder">
+                  <select class="form-control" name="warentyType" [(ngModel)]="product.warentyType" #warentyType="ngModel" [ngClass]="{'invalid-data': warentyType.invalid && f.submitted, 'valid-data': warentyType.valid && f.submitted}" required>
+                    <ng-container *ngFor="let warenty of warrantyList">
+                      <option [value]="warenty.warrantyID">
+                        {{warenty.name}}
+                      </option>
+                    </ng-container>
+                  </select>
+                </div>
+                <div *ngIf="warentyType.invalid && f.submitted">
+                  <span class="text-danger">Please Select WarrantyType.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-3">Return Policy</label>
+              <div class="col-sm-6">
+                <div class="select-holder">
+                  <select class="form-control" name="returnPolicy" [(ngModel)]="product.returnPolicy" #returnPolicy="ngModel" [ngClass]="{'invalid-data': returnPolicy.invalid && f.submitted, 'valid-data': returnPolicy.valid && f.submitted}" required>
+                    <ng-container *ngFor="let policy of returnPolicyLIst">
+                      <option [value]="policy.returnPolicyID">
+                        {{policy.name}}
+                      </option>
+                    </ng-container>
+                  </select>
+                </div>
+                <div *ngIf="returnPolicy.invalid && f.submitted">
+                  <span class="text-danger">Please Select Return Policy.</span>
+                </div>
+              </div>
+            </div>
+            <div class="panel-heading panel-heading-new">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h4>Product Dimensions</h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="name">Product Weight</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" name="weight" [placeholder]="'Enter Product Weight...'" [(ngModel)]="product.weight" #weight="ngModel" [ngClass]="{ 'is-invalid': f.submitted && weight.invalid }" required (keypress)="keyPress($event)" appTwoDigitDecimaNumber />
+                <div *ngIf="f.submitted && weight.invalid" class="invalid-feedback">
+                  <div *ngIf="weight.errors.required"><span class="text-danger">Product Weight is required</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="product.masterProduct===0">
+              <div class="form-group">
+                <label class="control-label col-sm-3">Associative Categories</label>
+                <div class="col-sm-6">
+                  <input placeholder="Search Category..." class="form-control" (input)="onSearch($event.target.value,2)">
+                  <i class="fa fa-info-circle">&nbsp;</i><span>Minimum 2 Characters</span><br />
+                </div>
+
+              </div>
+              <div class="form-group" *ngIf="showCategorySuggestion">
+                <label class="control-label col-sm-3">Suggestions</label>
+                <div class="col-sm-6 category-suggestion-list-widget">
+                  <div class="category-suggestions-lists">
+                    <ul class="list-unstyled">
+                      <li *ngFor="let parent of displayCategory">
+                        <span class="suggestion-text on-cursor" (click)="addRelatedCategories(parent.categoryID,parent.categoryName)">{{parent.categoryName }}</span>
+                        <ul class="list-unstyled">
+                          <li *ngFor="let sub of parent.subCategory">
+                            <span class="suggestion-text on-cursor" (click)="addRelatedCategories(sub.categoryID,sub.categoryName)">{{sub.categoryName}}</span>
+                            <ul class="list-unstyled">
+                              <li *ngFor="let child of sub.subCategory">
+                                <span class="suggestion-text on-cursor" (click)="addRelatedCategories(child.categoryID,child.categoryName)">{{child.categoryName}}</span>
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="showchoseCategory">
+                <label class="control-label col-sm-3">Selected Category</label>
+                <div class="col-sm-6">
+                  <span *ngFor="let cat of selectedProductInCategoies; let i=index" class="label label-primary pull-left mr-md-5">{{cat.categoryName}} <a href="javascript:void(0);" class="fa fa-remove colorWhite" (click)="removeCategory(i)"></a></span>
+                </div>
+                <div class="col-sm-3">
+                </div>
+              </div>
+
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="url">Product width</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" [placeholder]="'Enter Product Width...'" name="width" [spellcheck]="true" #width="ngModel" [(ngModel)]="product.width" (keypress)="keyPress($event)" appTwoDigitDecimaNumber required />
+                <div *ngIf="f.submitted && width.invalid" class="invalid-feedback">
+                  <div *ngIf="width.errors.required"><span class="text-danger">Product Width is required</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="url">Product Length</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" [placeholder]="'Enter Product Length...'" name="length" [spellcheck]="true" #length="ngModel" [(ngModel)]="product.length" (keypress)="keyPress($event)" appTwoDigitDecimaNumber required />
+                <div *ngIf="f.submitted && length.invalid" class="invalid-feedback">
+                  <div *ngIf="length.errors.required"><span class="text-danger">Product Length is required</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="url">Product height</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" [placeholder]="'Enter Product Height...'" name="height" [spellcheck]="true" #height="ngModel" [(ngModel)]="product.height" (keypress)="keyPress($event)" appTwoDigitDecimaNumber required />
+                <div *ngIf="f.submitted && height.invalid" class="invalid-feedback">
+                  <div *ngIf="height.errors.required"><span class="text-danger">Product Height is required</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-heading panel-heading-new">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h4>SEO Setting</h4>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="url">Product Meta Title</label>
+              <div class="col-sm-6">
+                <textarea height="150px" minHeight="50px" class="form-control" [placeholder]="'Enter Product Meta Title...'" name="metaTitle" [spellcheck]="true" [(ngModel)]="product.metaTitle"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="url">Product Meta KeyWords</label>
+              <div class="col-sm-6">
+                <textarea height="150px" minHeight="50px" class="form-control" [placeholder]="'Enter Product Meta KeyWords...'" name="metaKeyWords" [spellcheck]="true" [(ngModel)]="product.metaKeyWords"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="url">Product Meta Discription</label>
+              <div class="col-sm-6">
+                <textarea height="150px" minHeight="50px" class="form-control" [placeholder]="'Enter Product Meta Discription...'" name="metaDiscription" [spellcheck]="true" [(ngModel)]="product.metaDiscription"></textarea>
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="regularPrice">Regular Price</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" name="regularPrice" (keypress)="keyPress($event)" [(ngModel)]="product.regularPrice" #regularPrice="ngModel" [ngClass]="{ 'is-invalid': f.submitted && regularPrice.invalid }" required appTwoDigitDecimaNumber />
+                <div *ngIf="f.submitted && regularPrice.invalid" class="invalid-feedback">
+                  <div *ngIf="regularPrice.errors.required"><span class="text-danger">Regular Price is required</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="salePrice">Sale Price</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" name="salePrice" (focusout)="SalePriceCheck()" (keyup)="hideCommision()" (keypress)="keyPress($event)" (focus)="hideCommision()" [(ngModel)]="product.salePrice" #salePrice="ngModel" appTwoDigitDecimaNumber /><!--[ngClass]="{ 'is-invalid': f.submitted && salePrice.invalid }" required-->
+                <!--<div *ngIf="f.submitted && salePrice.invalid" class="invalid-feedback">
+                  <div *ngIf="salePrice.errors.required"><span class="text-danger">Sale Price is required</span></div>
+                </div>-->
+                <div *ngIf="!salePriceMessage"><span class="text-danger">Sale Price must be less then from Regular Price</span></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="commissionType">Commission Types</label>
+              <div class="col-sm-6">
+                <select class="form-control" name="commissionType" [(ngModel)]="commissionType" (change)="GetCommissionType($event.target.value)">
+                  <option value="true">Fixed</option>
+                  <option value="false">Percent</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="regularPrice">Commission</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" name="commissionAmount" (input)="calculateCommission($event.target.value)" placeholder="Enter Commission" (keypress)="keyPress($event)" [(ngModel)]="commissionAmount" appTwoDigitDecimaNumber />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="regularPrice">Price after Commission</label>
+              <div class="col-sm-6">
+                {{product.commissionPrices}}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="stockQuantity">InStock Quantity</label>
+              <div class="col-sm-6">
+                <input type="number" min="0" class="form-control" name="stockQuantity" [(ngModel)]="product.stockQuantity" #stockQuantity="ngModel" (keypress)="keyPress($event)" /><!--[ngClass]="{ 'is-invalid': f.submitted && stockQuantity.invalid }" required-->
+                <!--<div *ngIf="f.submitted && stockQuantity.invalid" class="invalid-feedback">
+                  <div *ngIf="stockQuantity.errors.required"><span class="text-danger">InStock Quantity is Required</span></div>
+                </div>-->
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="sKU">SKU</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" name="vendorSKU" [(ngModel)]="product.vendorSKU" #vendorSKU="ngModel" [ngClass]="{ 'is-invalid': f.submitted && vendorSKU.invalid }" required />
+                <div *ngIf="f.submitted && vendorSKU.invalid" class="invalid-feedback">
+                  <div *ngIf="vendorSKU.errors.required"><span class="text-danger">SKU is required</span></div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <div class="col-sm-3">Existing Images</div>
+              <div class="col-md-6">
+
+                <ng-container *ngFor="let p of productImages; index as i">
+                  <div class="col-sm-3" style="margin-bottom:1px;">
+                    <!--<a class="closebtn" (click)="removeImage(p.id,i)"><span class="glyphicon glyphicon-trash"></span></a>-->
+                    <img src="{{p.thumnailImage}}" onError="this.onerror=null;this.src='/no-image.png';" width="50" alt="image not found" />
+                  </div>
+                </ng-container>
+
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-3"></div>
+              <div class="col-md-4">
+                <div class="inline-block full-width">
+                  <div ngfDrop
+                       multiple="1"
+                       selectable="1"
+                       [(validDrag)]="validComboDrag"
+                       [(files)]="files"
+                       accept="image/*"
+                       [maxSize]="maxSize"
+                       [(dragFiles)]="dragFiles"
+                       class="well my-drop-zone"
+                       [class.invalid-drag]="validComboDrag===false"
+                       [class.valid-drag]="validComboDrag">
+                    Combo drop/select <strong>image</strong> only zone
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3"><h3>{{ files.length }} Files Selected</h3></div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-3"></div>
+              <div class="col-md-6">
+                <div class="col-sm-3 pic-div" *ngFor="let item of files;let i=index">
+                  <div *ngIf="['image/gif','image/png','image/jpeg'].indexOf(item.type)>=0">
+                    <div class="previewIcon" id="img-{{i}}" [ngfBackground]="item"></div>
+                  </div>
+                  <a class="closebtn" (click)="files.splice(i,1)"><span class="glyphicon glyphicon-trash"></span></a>
+                </div>
+              </div>
+            </div>
+            <br />
+            <hr />
+            <div class="form-group">
+              <div class="col-sm-6">
+                <a [routerLink]='["/edit-variable-product-vendor",masterProductID]' class="btn btn-default pull-left"><i class="fa fa-angle-double-left"></i> Back To List  </a>
+              </div>
+              <div class="col-sm-6">
+                <button class="btn btn-primary pull-right"><i class="fa fa-refresh"></i>Update</button>
+                <br />
+                <span style="font-weight:bold;color:green;" *ngIf="progress > 0 && progress < 100">
+                  {{progress}}%
+                </span>
+                <span style="font-weight:bold;color:green;" *ngIf="message">
+                  {{message}}
+                </span>
+              </div>
+            </div>
+          </form>
+          <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+</div>
+

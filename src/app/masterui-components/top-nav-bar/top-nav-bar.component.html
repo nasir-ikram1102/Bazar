@@ -1,0 +1,187 @@
+<div class="clearfix container-web relative">
+  <div class=" container">
+    <div class="row"> 
+      <div *ngIf="roleId!=1" class="clearfix header-content full-width relative">
+        <div class="clearfix icon-menu-bar Mobilehover">
+ 
+          <i class="data-icon data-icon-arrows icon-arrows-hamburger-2" (mouseenter)="myFunction()" aria-hidden="true"></i>
+          <div (mouseleave)="showToggle=false" class="hide" [ngClass]="{'show': showToggle}">
+            <app-category-menu-items></app-category-menu-items>
+          </div>
+        </div>
+        <div class="icon-menu-bar mobileClick">
+          <i class="data-icon data-icon-arrows icon-arrows-hamburger-2" (click)="myFunctionclick()" aria-hidden="true"></i>
+          <div class="mobilemenudiv hide" [ngClass]="{'show': showToggle}">
+
+            <app-category-mobile-menu></app-category-mobile-menu>
+
+          </div>
+        </div>
+        <div class="clearfix logo">
+          <a href="#" [routerLink]="['/']"><img alt="Logo" onError="this.onerror=null; this.src='/Images/WebsiteImages/WebsiteLogo.jpg';" src="{{systemSetting.siteLogo}}" /></a>
+        </div>
+        <div class="clearfix search-box relative float-left">
+          <!--<input type="text" name="s" placeholder="Search for products brands and more">-->
+          <!--header-search-->
+          <app-header-search></app-header-search>
+        </div>
+        <div class="clearfix icon-search-mobile absolute">
+          <i onclick="showBoxSearchMobile()" class="data-icon data-icon-basic icon-basic-magnifier"></i>
+        </div>
+        <div class="clearfix qrcode" data-toggle="modal" data-target="#qrcode">
+          <img src="../assets/images/qrcode.png" alt="" (click)="openModal(qrModel)" />
+        </div>
+        <div class="clearfix bell-website absolute" *ngIf="showBell">
+          <a href="javascript:void(0);" class="dropdown-toggle icon-menu" data-toggle="dropdown" (click)='CheckNotification()'>
+            <i class="fa fa-bell-o"></i>
+            <p class="count-total-shopping absolute">{{notificationCounter}}</p>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right notifications" *ngIf="notificationList.length>0">
+            <ng-container *ngFor="let notification of notificationList">
+              <li>
+                <a [attr.href]="notification.actionUrl ? notification.actionUrl : null" class="notification-item">
+                  <i class="fa fa-bullhorn custom-bg-purple"></i>
+                  <p>
+                    <span class="text" innerHtml="{{notification.notificationDetail  | slice:0:40}}"><ng-container *ngIf="notification.notificationDetail.length>40">...</ng-container></span>
+                    <span class="timestamp">{{notification.createdDate | timeAgo}}</span>
+                  </p>
+                </a>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+        
+        <div class="clearfix fav-website absolute">
+          <i (click)="wishList()" class="fa fa-heart-o" aria-hidden="true"></i>
+          <p class="count-total-shopping absolute">{{wishlistCount}}</p>
+        </div>
+        <div class="clearfix cart-website absolute" (mouseover)="ShowCartBoxDetail()">
+          <i class="fa fa-shopping-cart"></i>
+          <p class="count-total-shopping absolute" *ngIf="cartCounters > 0">{{cartCounters}}</p>
+        </div>
+        <div *ngIf="cart != undefined && cart.length > 0" [ngClass]="(displayDropdown) ? 'cart-detail-header-show cart-detail-header border' : 'cart-detail-header border'" (mouseover)="displayDropdown = true" (mouseout)="displayDropdown = false">
+          <div class="relative cartDropdown">
+            <ng-container *ngFor="let item of cart">
+              <div class="product-cart-son clearfix">
+                <!-- *ngIf="!item.isDeleted"    (click)="ChangeRoute(item.productID)" -->
+                <a href="/product/{{item.url}}">
+                  <div class="image-product-cart float-left center-vertical-image ">
+                    <img src="{{item.imagePath}}" onError="this.onerror=null;this.src='/no-image.png';" alt="" />
+                  </div>
+                  <div class="info-product-cart float-left">
+                    <p class="title-product title-hover-black"><a class="animate-default" href="/product/{{item.url}}">{{item.productName | truncate:[20, '...']}}</a></p>
+                    <div class="price-product">
+                      <span *ngIf="item.appliedDiscoutType > 0 && item.salePrice < item.regularPrice">
+                        <span class="current-price">
+                          {{item.salePrice | currencyConversion:DummyCounter}}
+                        </span>
+                        <span class="price-old">{{item.regularPrice | currencyConversion:DummyCounter}}</span><br />
+                      </span>
+                      <span>
+                        <span *ngIf="item.appliedDiscoutType <= 0 || item.salePrice >= item.regularPrice">{{item.regularPrice | currencyConversion:DummyCounter}}</span>
+                        <span class="total-product-cart-son">(x{{item.quantity}})</span>
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </ng-container>
+          </div>
+          <div *ngIf="cart.length > 0" class="relative border no-border-l no-border-r total-cart-header">
+            <p class="bold clear-margin">Subtotal:</p>
+            <p class=" clear-margin bold">{{subTotal | currencyConversion:DummyCounter}}</p>
+          </div>
+          <div class="relative btn-cart-header">
+            <a href="javascript:void(0)" [routerLink]='["/cart"]' class="uppercase bold animate-default">view cart</a>
+            <a href="javascript:void(0)" [routerLink]='["/checkout"]' class="uppercase bold button-hover-red animate-default">checkout</a>
+          </div>
+        </div>
+        <div *ngIf="cart == null || cart == undefined" class="cart-detail-header border">
+          No items found in cart
+        </div>
+        <div class="mask-search absolute clearfix" onclick="hiddenBoxSearchMobile()"></div>
+        <div class="clearfix box-search-mobile">
+        </div>
+      </div>
+
+      <div *ngIf="roleId==1" class="clearfix header-content full-width relative">  
+        <div class="clearfix logo">
+          <a href="#" [routerLink]="['/vendor']"><img alt="Logo" src="{{systemSetting.siteLogo}}" /></a>
+        </div>
+        <div class="clearfix headerheading relative float-left">
+          <h1>Welcome to E-Commerce Seller </h1>
+        </div>
+        <div class="clearfix icon-search-mobile absolute">
+          <i onclick="showBoxSearchMobile()" class="data-icon data-icon-basic icon-basic-magnifier"></i>
+        </div>
+        <div class="clearfix qrcode" data-toggle="modal" data-target="#qrcode">
+          <img src="../assets/images/qrcode.png" alt="" (click)="openModal(qrModel)" />
+        </div>
+        <div class="clearfix bell-website absolute" *ngIf="showBell">
+          <a href="javascript:void(0);" class="dropdown-toggle icon-menu" data-toggle="dropdown" (click)='CheckNotification()'>
+            <i class="fa fa-bell-o"></i>
+            <p class="count-total-shopping absolute">{{notificationCounter}}</p>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right notifications" *ngIf="notificationList.length>0">
+            <ng-container *ngFor="let notification of notificationList">
+              <li>
+                <a [attr.href]="notification.actionUrl ? notification.actionUrl : null" class="notification-item">
+                  <i class="fa fa-bullhorn custom-bg-purple"></i>
+                  <p>
+                    <span class="text" innerHtml="{{notification.notificationDetail  | slice:0:40}}"><ng-container *ngIf="notification.notificationDetail.length>40">...</ng-container></span>
+                    <span class="timestamp">{{notification.createdDate | timeAgo}}</span>
+                  </p>
+                </a>
+              </li>
+            </ng-container>
+          </ul>
+        </div> 
+        
+        <div class="mask-search absolute clearfix" onclick="hiddenBoxSearchMobile()"></div>
+        <div class="clearfix absolute box-search-mobile">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #qrModel>
+  <div class="signInModal">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Scan QR with your Mobile</h5>
+      <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+        <span aria-hidden="true"><i class="fa fa-times"></i></span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="qr-code-modal">
+        <div class="col-md-6 col-xs-12">
+          <div class="qr-code-holder">
+            <!--<img src="../assets/images/frame.png" alt="QR Code Image">-->
+            <qrcode [qrdata]="myAngularxQrCode" [size]="256" [level]="'M'"></qrcode>
+          </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+          <div class="qr-code-text">
+            <p>Scan the QR code on left side OR send us your Mobile Number</p>
+          </div>
+          <form class="tsb-form qr-code-form" (ngSubmit)="f.form.valid && ngSubmit()" #f="ngForm" novalidate>
+            <div class="form-group">
+              <input (keypress)="_keyPress($event)" maxlength="13" name="phone" (focus)="onFocus($event)" (focusout)="focusOutFunction($event)" #phone="ngModel" required [(ngModel)]="phoneNo" type="tel" class="form-control" placeholder="+923449999999">
+            </div>
+            <div *ngIf="phone.invalid && f.submitted">
+              <span class="text-danger">Please enter mobile no.</span>
+            </div>
+            <div class="form-group">
+              <input type="submit" value="Submit">
+            </div>
+            <div class="form-group">
+              <a href="{{appleAppLink}}" target="_blank"><img src="../assets/images/play-btn.png" style="height:35px" alt=""></a>&nbsp;&nbsp;
+              <a href="{{googleAppLink}}" target="_blank"><img src="../assets/images/appstore.png" style="height:35px" alt=""></a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,178 @@
+<main id="main">
+  <app-menu-vendor></app-menu-vendor>
+  <div class="vendor-promotions-holder mb-30 bg-grey pt-40">
+    <div class="container">
+      <h3><b>Company Level Promotion</b></h3>
+      <h5>All your products</h5>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="vendor-page-widget whitebody mb-30">
+            <!--<ul class="nav nav-tabs text-center" role="tablist">
+          <li role="presentation" class="active">
+            <a href="#all-promotions" aria-controls="all-promotions" role="tab" data-toggle="tab">All Products</a>
+          </li>
+          <li role="presentation">
+            <a href="#my-promotions" aria-controls="my-promotions" role="tab" data-toggle="tab">My Promoted Products</a>
+          </li>
+        </ul>-->
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active" id="all-promotions">
+                <div class="table-holder">
+                <div class="table-responsive">
+                  <form class="form-horizontal label-left" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+                    <table class="all-promotions promotions-table">
+                      <thead>
+                        <tr>
+                          <th class="image-col"><i class="fa fa-image"></i></th>
+                          <th class="name-col">Product Name</th>
+                          <th class="sta-date-col">Product SKU</th>
+                          <th class="end-date-col">Regular Price</th>
+                          <th class="las-date-col">Company Participation</th>
+                          <th class="no-prod-col">Vendor Participation</th>
+                          <th class="no-sell-col">Discount Type</th>
+                          <th class="no-sell-col">Status</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let saleProduct of saleProductList; let i = index">
+                          <td class="image-col">
+                            <span class="image-holder">
+                              <img src="{{saleProduct.thumbnailImage}}" onError="this.onerror=null;this.src='/no-image.png';" alt="Promotion Image">
+                            </span>
+                          </td>
+                          <td class="name-col"> {{saleProduct.productName}}</td>
+
+                          <td class="sta-date-col">{{saleProduct.productSku}}</td>
+                          <td class="end-date-col"> {{saleProduct.regularPrice}}</td>
+
+
+                          <td class="las-date-col">
+                            {{saleProduct.companyParticipation}}
+                            <!--<input type="text" name="company" readonly only [value]="saleProduct.companyParticipation" class="form-control" (keypress)="keyPress($event)" placeholder="Enter..." [(ngModel)]="saleProduct.companyParticipation" appTwoDigitDecimaNumber />-->
+                          </td>
+                          <td>
+                            <input id="{{i}}" type="number" name="vendor{{i}}" [value]="saleProduct.venderParticipation" class="form-control" (blur)="keyPress($event,i)" placeholder="Enter..." [(ngModel)]="saleProduct.venderParticipation" appTwoDigitDecimaNumber />
+                          </td>
+
+                          <td class="no-sell-col">
+                            <ng-template [ngIf]="saleProduct.discountType ===2">Fixed</ng-template>
+                            <ng-template [ngIf]="saleProduct.discountType ===1">Percent</ng-template>
+                          </td>
+                          <td>
+                            <label class="switch">
+                              <input (click)="ChangeStatus(saleProduct.id)" [checked]="saleProduct.isEnable" type="checkbox">
+                              <span class="slider round"></span>
+                            </label>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="4">
+                            <div class="vendor-orders-top-btns text-left pb-30">
+                              <a routerLink="/vendor-promotions" id="add" class="btn btn-primary pull-left"><i class="fa fa-angle-double-left"></i> Go Back</a>
+                            </div>
+                          </td>
+                          <td colspan="4" *ngIf="saleProductList.length>0">
+                            <div class="vendor-orders-top-btns text-right pb-30">
+                              <button type="submit" id="add" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Save</button>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr *ngIf="saleProductList.length<=0">
+                          <td colspan="8" style="text-align:center">No Data Found</td>
+                        </tr>
+                      </tbody>
+
+                    </table>
+                  </form>
+                </div>
+                </div>
+
+
+              </div>
+              <div role="tabpanel" class="tab-pane" id="my-promotions">
+                <div class="table-holder">
+                <div class="table-responsive">
+                  <table class="table-responsive promotions-table">
+                    <thead>
+                      <tr>
+                        <th class="image-col"><i class="fa fa-image"></i></th>
+                        <th class="name-col">Promotion Name</th>
+                        <th class="sta-date-col">Start Date</th>
+                        <th class="end-date-col">End Date</th>
+                        <th class="las-date-col">Last Date to Register</th>
+                        <th class="no-prod-col">No. of Products</th>
+                        <th class="no-sell-col">No. of Sellers</th>
+                        <th class="action-col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="image-col">
+                          <span class="image-holder">
+                            <img src="images/promotion-image-01.jpg" alt="Promotion Image">
+                          </span>
+                        </td>
+                        <td class="name-col">Azadi Promotion</td>
+                        <td class="sta-date-col">10 Aug, 2018</td>
+                        <td class="end-date-col">15 Aug, 2018</td>
+                        <td class="las-date-col">01 Aug, 2018</td>
+                        <td class="no-prod-col">568</td>
+                        <td class="no-sell-col">102</td>
+                        <td class="action-col"><a data-toggle="modal" data-target="#viewPromotionModal" href="#">View</a></td>
+                      </tr>
+                      <tr>
+                        <td class="image-col">
+                          <span class="image-holder">
+                            <img src="images/promotion-image-01.jpg" alt="Promotion Image">
+                          </span>
+                        </td>
+                        <td class="name-col">Azadi Promotion</td>
+                        <td class="sta-date-col">10 Aug, 2018</td>
+                        <td class="end-date-col">15 Aug, 2018</td>
+                        <td class="las-date-col">01 Aug, 2018</td>
+                        <td class="no-prod-col">568</td>
+                        <td class="no-sell-col">102</td>
+                        <td class="action-col"><a data-toggle="modal" data-target="#viewPromotionModal" href="#">View</a></td>
+                      </tr>
+                      <tr>
+                        <td class="image-col">
+                          <span class="image-holder">
+                            <img src="images/promotion-image-01.jpg" alt="Promotion Image">
+                          </span>
+                        </td>
+                        <td class="name-col">Azadi Promotion</td>
+                        <td class="sta-date-col">10 Aug, 2018</td>
+                        <td class="end-date-col">15 Aug, 2018</td>
+                        <td class="las-date-col">01 Aug, 2018</td>
+                        <td class="no-prod-col">568</td>
+                        <td class="no-sell-col">102</td>
+                        <td class="action-col"><a data-toggle="modal" data-target="#viewPromotionModal" href="#">View</a></td>
+                      </tr>
+                      <tr>
+                        <td class="image-col">
+                          <span class="image-holder">
+                            <img src="images/promotion-image-01.jpg" alt="Promotion Image">
+                          </span>
+                        </td>
+                        <td class="name-col">Azadi Promotion</td>
+                        <td class="sta-date-col">10 Aug, 2018</td>
+                        <td class="end-date-col">15 Aug, 2018</td>
+                        <td class="las-date-col">01 Aug, 2018</td>
+                        <td class="no-prod-col">568</td>
+                        <td class="no-sell-col">102</td>
+                        <td class="action-col"><a data-toggle="modal" data-target="#viewPromotionModal" href="#">View</a></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+

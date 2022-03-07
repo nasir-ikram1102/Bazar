@@ -1,0 +1,57 @@
+<div class="container-web relative">
+  <div class="container">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="breadcrumb-web">
+          <ul class="clear-margin">
+            <li class="animate-default title-hover-red"><a href="javascript:void(0)" [routerLink]="['/']">Home</a></li>
+            <li class="animate-default title-hover-red"><a href="javascript:void(0)" [routerLink]="['/customer']">My Account</a></li>
+            <li class="animate-default current">Payment Methods</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="relative container-web text-intro bottom-margin-default">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 bottom-margin-default">
+        <h3><strong>Payment Methods</strong></h3>
+      </div>
+    </div>
+    <div class="row">
+      <dashboard-customer-left-menu></dashboard-customer-left-menu>
+      <div class="col-md-9 col-sm-8 col-xs-12">
+        <div class="customer-detail-block">
+          <h4><strong> Prefer Payment Methods - <span class="sub-text"> {{customerModel.paymentMethod}}</span></strong></h4>
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12"> 
+              <div *ngIf="paymentList == null || paymentList.length < 0" class="sm-loader"></div>
+              <form (ngSubmit)="ngSubmit()" class="tsb-form acount-payment-methods myorders">
+                <table class="table table-hover table-striped" width="100%">
+                  <tbody>
+                    <tr *ngFor="let x of paymentList">
+                      <td>
+                        <label class="paymentmethods-styling">
+                          <input type="radio"
+                                 name="paymentID" [(ngModel)]="customerModel.paymentMethodID" #paymentID="ngModel"
+                                 (change)="onSelectionChange(x.paymentID)"
+                                 [value]="x.paymentID">
+                          <img src="{{x.paymentLogo}}" onError="this.onerror=null;this.src='/no-image.png';" width="50" alt="image not found" />
+                          {{ x.title }}
+                        </label>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <input class="pull-right tsb-btn" type="submit" value="Save">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,41 @@
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!forecasts"><em>Loading...</em></p>
+
+<table class='table' *ngIf="forecasts">
+  <thead>
+    <tr>
+      <th>CategoryID</th>
+      <th>CategoryName</th>
+      <th>IsParent</th>
+      <th>ParentCategoryID</th>
+      <th>ProductCounter</th>
+    </tr>
+    </thead>
+  <tbody>
+    <tr *ngFor="let forecast of forecasts">
+      <td>{{ forecast.categoryID }}</td>
+      <td>{{ forecast.categoryName }}</td>
+      <td>{{ forecast.isParent }}</td>
+      <td>{{ forecast.parentCategoryID }}</td>
+      <td>{{ forecast.productCount }}</td>
+    </tr>
+  </tbody>
+</table>
+<ul>
+  <li *ngFor="let parent of parent" > {{ parent.categoryName }}
+  <ul>
+    <li *ngFor="let sub of parent.subCategory">
+      {{ sub.categoryName }}
+      <ul>
+        <li *ngFor="let child of sub.subCategory">
+          {{ child.categoryName }}
+          {{ child.productCount }}
+        </li>
+      </ul>
+    </li>    
+  </ul>
+  </li>
+</ul>

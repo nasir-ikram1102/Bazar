@@ -1,0 +1,7 @@
+<!-- Loading Content dynamically from template -->
+<!-- deferLoad is used for Lazy laoding -->
+<div (deferLoad)="deferLoadShow = true">
+  <ng-container *ngIf="deferLoadShow">
+    <div [innerHTML]="strDHtmlBody | safeHtml"></div>
+  </ng-container>
+</div>

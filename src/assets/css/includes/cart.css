@@ -1,0 +1,8 @@
+.single-list {
+    border-bottom: 1px solid #eaeaea;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}

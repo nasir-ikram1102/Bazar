@@ -1,0 +1,111 @@
+body {
+  background: #f0f0f0 !important;
+}
+.carousel {
+  background: #fff;
+  /*padding: 20px;*/
+  /*width: 500px;*/
+  overflow: hidden;
+  white-space: nowrap;
+  /*margin: 15px auto;*/
+  position: relative;
+}
+
+.item {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  /*animation: 4s slider-animation infinite;*/
+}
+
+input {
+  position: absolute;
+  z-index: 99;
+  display: none;
+}
+
+label {
+  display: none;
+  position: absolute;
+  z-index: 99;
+}
+
+  label.next {
+    right: 10px;
+    background: #fff;
+    top: 50%;
+  }
+
+  label.prev {
+    left: 10px;
+    background: #fff;
+    top: 50%;
+  }
+
+
+input#img1:checked ~ .item {
+  left: 0;
+  transition: 2s all;
+}
+
+input#img2:checked ~ .item {
+  left: -200px;
+  transition: 2s all;
+}
+
+input#img3:checked ~ .item {
+  left: -400px;
+  transition: 2s all;
+}
+
+
+input#img4:checked ~ .item {
+  left: -600px;
+  transition: 2s all;
+}
+
+input#img1:checked + label,
+input#img1:checked + label + label,
+input#img2:checked + label,
+input#img2:checked + label + label,
+input#img3:checked + label,
+input#img3:checked + label + label,
+input#img4:checked + label,
+input#img4:checked + label + label {
+  display: block;
+}
+
+
+
+@keyframes slide-step-right {
+
+  100% {
+    left: 100px;
+  }
+}
+
+@keyframes slider-animation {
+  0% {
+    left: 0px;
+  }
+
+  20% {
+    left: -200px;
+  }
+
+  40% {
+    left: -400px;
+  }
+
+  60% {
+    left: -600px;
+  }
+
+  80% {
+    left: -800px;
+  }
+
+  100% {
+    left: 0;
+  }
+}

@@ -1,0 +1,21 @@
+.btn-style {
+  padding: 12px 30px;
+  border-radius: 3px !important;
+  margin-top: 20px;
+}
+.green {
+  color: #018601;
+}
+.order-breif-detail {
+  font-size: 16px;
+}
+.btn-holder {
+  margin-top: 30px;
+}
+.red {
+  color: #b61f24;
+  font-weight: 700;
+}
+strong.order-number {
+  color: #b61f24;
+}

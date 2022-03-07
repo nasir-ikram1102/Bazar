@@ -1,0 +1,123 @@
+<div class="content-heading clearfix">
+  <div class="heading-left">
+    <h1 class="page-title">Import products</h1>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="form-group col-sm-12">
+        <a [routerLink]='["/products-vendor"]' class="btn btn-default pull-right">
+          <i class="fa fa-angle-double-left"></i>
+          Back To List
+        </a>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-body">
+        <div class="clearfix"></div>
+
+        <div class="row">
+          <div class="form-group">  
+            <div class="col-sm-8">
+              <input #file type="file" multiple (change)="genrateColumns(file.files)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+
+            </div>
+            <div class="col-sm-2">
+              <button #btnImport type="button" class="btn btn-default" (click)="ImportFile()">
+                <span>
+                  <i class="fa fa-upload"></i>&nbsp; Save
+                </span>
+                <span hidden>
+                  <i class="fa fa-spinner fa-spin"></i>&nbsp; Processing ..
+                </span>
+              </button>
+            </div>
+            <div class="col-sm-2">
+              <button #btnSync type="button" [disabled]="remainingPicCount == '0'" class="btn btn-info" (click)="SyncPictures()">
+                <span>
+                  <i class="fa fa-refresh"> </i>&nbsp;Sync Images
+                </span>
+                <span hidden>
+                  <i class="fa fa-spinner fa-spin"></i>&nbsp; Processing ..
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group pull-right" style="margin-right:5px">
+            <div><b style="color:red;font-size:20px">{{remainingPicCount}}</b> remaining image(s) to sync</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+
+          <div #alertSuccess hidden class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Success!</h4>
+            <p>{{msg.detail}}</p>
+          </div>
+
+          <div #alertPartialFailed hidden class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Partially failed!</h4>
+            <p>Products are imported with following failed products </p>
+            <hr>
+            <p class="mb-0">Please correct errors and re-start import process only with failed products.</p>
+            <table class="table table-striped table-hover">
+              <tr>
+                <th>Product ID </th>
+                <th>Product Name </th>
+                <th>Error </th>
+              </tr>
+              <tr *ngFor="let d of msg.data">
+                <td>{{d.productID}}</td>
+                <td>{{d.name}}</td>
+                <td>{{d.exception}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <div #alertFailed hidden class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Failed!</h4>
+            <p> {{msg.detail}} </p>
+            <hr>
+            <p class="mb-0" *ngIf="msg.exception != ''"><b>Exception:</b> {{msg.exception}}</p>
+          </div>
+        </div>
+        <div class="customscroll" *ngIf="isFileUploaded">
+          <div class="table-responsive">
+            <table class='table table-striped table-hover'>
+              <tr>
+                <th class="col-sm-6">
+                  Excel Fields
+                </th>
+                <th class="col-sm-6">
+                  Category Fields
+                </th>
+              </tr>
+              <tbody>
+                <tr *ngFor="let excelColumn of excelColumns" [ngClass]="{'error': ifNotSelected(excelColumn)}">
+                  <td class="col-sm-6">
+                    {{excelColumn}}
+                  </td>
+                  <td class="col-sm-6">
+                    <select class="form-control" name="categoryFields" [value]='excelColumn' (ngModel)="excelColumn" #keyValue (change)="updateitemInDictinoray(excelColumn,keyValue.value)">
+                      <option value="0">----- None -----</option>
+                      <ng-container *ngFor="let excelColumnoption of productColumns">
+                        <option [value]="excelColumnoption">
+                          {{excelColumnoption}}
+                        </option>
+
+                      </ng-container>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+<main id="main" role="main">
+  <!-- Content Box -->
+  <div class="relative full-width">
+    <!-- Breadcrumb -->
+    <div class="relative">
+      <div class="container">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="breadcrumb-web">
+              <ul class="clear-margin">
+                <li class="animate-default title-hover-red"><a href="javascript:void(0)" [routerLink]="['/']">Home</a></li>
+                <li class="animate-default title-hover-red"><a href="javascript:void(0)" [routerLink]="['/customer']">Account Dashboard</a></li>
+                <li class="animate-default current">Recommended Products</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Breadcrumb -->
+    <!-- Content Category -->
+
+    <div class="relative container-web text-intro">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 bottom-margin-default">
+            <h3><strong>Recommended Products</strong></h3>
+          </div>
+        </div>
+        <div class="row">
+          <dashboard-customer-left-menu></dashboard-customer-left-menu>
+          <div class="col-md-9 col-sm-8 col-xs-12">
+            <div class="customer-detail-block innerboxheight">
+              <div *ngIf="products == null || products.length < 0" class="sm-loader"></div>
+              <div class="row" *ngIf="products != null && products.length > 0">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 relative animate-default" *ngFor="let product of products">
+                  <div class="product-category discounted-product">
+                    <span *ngIf="product.appliedDiscoutType > 0 && product.salePrice < product.regularPrice" class="product-discount text-center">{{product.regularPrice | calculateDiscount:product.salePrice}} %</span>
+                    <div class="image-product overfollow-hidden">
+                      <div class="center-vertical-image">
+                        <a [routerLink]='["/product/", product.url]'><img src="{{product.productDefaultImage}}" onError="this.onerror=null; this.src='/no-image.png';" alt="Product"></a>
+                      </div>
+                      <span class="product-sku">{{product.sku}}: {{product.vendorSKU}}</span>
+                      <ul class="option-product animate-default">  
+                        <li title="Add to Wishlist">
+                          <a (click)="AddIntoWishList(product.productID)" [class.favourite]="product.isFavourite" href="javascript:void(0)"><span class="fa fa-heart" aria-hidden="true"></span></a>
+                        </li> 
+                      </ul>
+                    </div>
+                    <h3 class="title-product clearfix full-width title-hover-black"><a [routerLink]='["/product/", product.url]'>{{product.name}}</a></h3>
+                    <span *ngIf="product.brand!=null" class="product-brand-name"><a href="javascript:void(0)">{{product.brand.brandName}}</a></span>
+        
+                    <div class="price-holder">
+                      <span *ngIf="product.appliedDiscoutType>0">
+                        <span class="current-price">{{product.salePrice | currencyConversion:DummyCounter}}</span>
+                        <span class="old-price">{{product.regularPrice | currencyConversion:DummyCounter}}</span>
+                      </span>
+                      <span *ngIf="product.appliedDiscoutType<=0">
+                        <span class="current-price">{{product.regularPrice | currencyConversion:DummyCounter}}</span>
+                      </span>
+                    </div> 
+                    <div class="product-btns-holder">
+                      <a class="btn btn-primary pull-left" (click)="Buy(product)" href="javascript:void(0)">Buy</a>
+                      <a class="btn btn-secondary pull-right" (click)="AddToCart(product)" href="javascript:void(0)">Add to Cart</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <div class="text-center" *ngIf="products?.length<=0">No item found</div>
+            </div> 
+          </div> 
+        </div>
+      </div>
+    </div>
+    <!-- End Sider Bar -->
+  </div>
+</main>
